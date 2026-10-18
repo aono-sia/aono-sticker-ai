@@ -1,4 +1,5 @@
 export default async function handler(req, res) {
+  // استقبال طلبات POST فقط
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
@@ -10,32 +11,19 @@ export default async function handler(req, res) {
       return res.status(400).json({ error: "الرجاء كتابة وصف للملصق" });
     }
 
-    // إضافة اسم A&O ووصف الملصق الاحترافي
-    const stickerPrompt = `${prompt}, sticker style, featuring "A&O" logo signature, die-cut sticker with white border, clean vector art, high resolution`;
+    // تحسين الوصف لتوليد ملصق احترافي بشعار A&O
+    const stickerPrompt = `sticker style of ${prompt}, with text logo A&O, die-cut vector sticker, white border, vibrant colors, clean background`;
 
-    const response = await fetch("https://api.openai.com/v1/images/generations", {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${process.env.OPENAI_API_KEY}`,
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        model: "dall-e-3",
-        prompt: stickerPrompt,
-        n: 1,
-        size: "1024x1024"
-      })
-    });
+    // استخدام محرك الذكاء الاصطناعي المجاني (Pollinations AI)
+    const encodedPrompt = encodeURIComponent(stickerPrompt);
+    const randomSeed = Math.floor(Math.random() * 1000000);
+    const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&seed=${randomSeed}&nologo=true&model=flux`;
 
-    const data = await response.json();
+    // إرجاع رابط الصورة المولد بنجاح
+    return res.status(200).json({ url: imageUrl });
 
-    if (!response.ok) {
-      return res.status(response.status).json({ error: data.error?.message || "فشل توليد الصورة" });
-    }
-
-    return res.status(200).json({ url: data.data[0].url });
   } catch (error) {
-    return res.status(500).json({ error: error.message });
+    return res.status(500).json({ error: 'حدث خطأ أثناء توليد الملصق' });
   }
-      }
-    
+  }
+  
