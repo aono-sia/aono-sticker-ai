@@ -1,3 +1,14 @@
+// دالة لترجمة أي لغة إلى الإنجليزية لضمان فهم الذكاء الاصطناعي بدقة
+async function translateToEnglish(text) {
+  try {
+    const res = await fetch(`https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=en&dt=t&q=${encodeURIComponent(text)}`);
+    const data = await res.json();
+    return data[0][0][0];
+  } catch (error) {
+    return text; // في حالة وقع مشكل يرجع النص الأصلي
+  }
+}
+
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
@@ -7,20 +18,28 @@ export default async function handler(req, res) {
     const { prompt } = req.body;
 
     if (!prompt) {
-      return res.status(400).json({ error: "الرجاء كتابة وصف للملصق" });
+      return res.status(400).json({ error: 'Prompt is required' });
     }
 
-    // تجهيز النص وتحسينه
-    const cleanPrompt = encodeURIComponent(`die cut sticker, ${prompt}, white border, vector, highly detailed, logo A&O`);
-    
-    // استخدام مصدر مجاني ومباشر يولد الصور فوراً
-    const randomCache = Math.floor(Math.random() * 999999);
-    const imageUrl = `https://image.pollinations.ai/prompt/${cleanPrompt}?width=512&height=512&nologo=true&private=true&enhance=false&seed=${randomCache}`;
+    // 1. ترجمة الإدخال تلقائياً للإنجليزية
+    const translatedPrompt = await translateToEnglish(prompt);
 
-    return res.status(200).json({ url: imageUrl });
+    // 2. تعزيز البرومبت لإجبار الألوان، الوضوح، واستيل الستيكر الممتاز
+    const finalEnhancedPrompt = `die-cut sticker of ${translatedPrompt}, vibrant bright full color, highly detailed 4k, vector art style, thick crisp white border, high resolution, sharp lines, glossy finish, isolated background`;
+
+    const cleanPrompt = encodeURIComponent(finalEnhancedPrompt);
+    const randomCache = Math.floor(Math.random() * 1000000);
+    
+    // 3. توليد رابط الصورة المحسنة بالذكاء الاصطناعي
+    const imageUrl = `https://image.pollinations.ai/prompt/${cleanPrompt}?nologo=true&seed=${randomCache}&width=768&height=768`;
+
+    return res.status(200).json({ 
+      success: true, 
+      imageUrl: imageUrl 
+    });
 
   } catch (error) {
-    return res.status(500).json({ error: 'حدث خطأ أثناء توليد الملصق' });
+    return res.status(500).json({ error: 'Internal server error' });
   }
-        }
-        
+}
+  
