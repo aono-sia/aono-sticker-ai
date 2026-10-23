@@ -53,14 +53,14 @@
       color: #cbd5e1;
       font-weight: bold;
     }
-    /* قائمة عمودية قابلة للتمرير بسلاسة لجميع لغات العالم */
+    /* قائمة عمودية أنيقة قابلة للتمرير تحتوي على جميع لغات العالم */
     .lang-container {
       display: flex;
       flex-direction: column;
       gap: 6px;
-      max-height: 220px;
+      max-height: 230px;
       overflow-y: auto;
-      padding: 5px;
+      padding: 6px;
       border: 1px solid #334155;
       border-radius: 10px;
       background-color: #0f172a;
@@ -145,9 +145,9 @@
     <h1 id="app-title">AONOVERSE AI</h1>
     <p id="app-desc">صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!</p>
 
-    <!-- قائمة جميع لغات العالم عمودياً -->
+    <!-- قائمة لغات العالم عمودياً وبدون استثناء -->
     <div class="option-group">
-      <label id="lbl-lang">🌐 اختر لغتك (All Languages):</label>
+      <label id="lbl-lang">🌐 اختر لغتك (Global Languages):</label>
       <div class="lang-container">
         <button class="lang-btn active" onclick="setLanguage('ary', this)">🇲🇦 الدارجة المغربية (Darija)</button>
         <button class="lang-btn" onclick="setLanguage('ar', this)">🇸🇦 العربية الفصحى (Arabic)</button>
@@ -156,12 +156,23 @@
         <button class="lang-btn" onclick="setLanguage('es', this)">🇪🇸 Español (الإسبانية)</button>
         <button class="lang-btn" onclick="setLanguage('de', this)">🇩🇪 Deutsch (الألمانية)</button>
         <button class="lang-btn" onclick="setLanguage('it', this)">🇮🇹 Italiano (الإيطالية)</button>
-        <button class="lang-btn" onclick="setLanguage('tr', this)">🇹🇷 Türkçe (التركية)</button>
-        <button class="lang-btn" onclick="setLanguage('ja', this)">🇯🇵 日本語 (اليابانية)</button>
-        <button class="lang-btn" onclick="setLanguage('ko', this)">🇰🇷 한국어 (الكورية)</button>
-        <button class="lang-btn" onclick="setLanguage('zh', this)">🇨🇳 中文 (الصينية)</button>
         <button class="lang-btn" onclick="setLanguage('pt', this)">🇧🇷 Português (البرتغالية)</button>
         <button class="lang-btn" onclick="setLanguage('ru', this)">🇷🇺 Русский (الروسية)</button>
+        <button class="lang-btn" onclick="setLanguage('zh', this)">🇨🇳 中文 (الصينية)</button>
+        <button class="lang-btn" onclick="setLanguage('ja', this)">🇯🇵 日本語 (اليابانية)</button>
+        <button class="lang-btn" onclick="setLanguage('ko', this)">🇰🇷 한국어 (الكورية)</button>
+        <button class="lang-btn" onclick="setLanguage('tr', this)">🇹🇷 Türkçe (التركية)</button>
+        <button class="lang-btn" onclick="setLanguage('hi', this)">🇮🇳 हिन्दी (الهندية)</button>
+        <button class="lang-btn" onclick="setLanguage('ur', this)">🇵🇰 اردو (الأردية)</button>
+        <button class="lang-btn" onclick="setLanguage('fa', this)">🇮🇷 فارسی (الفارسية)</button>
+        <button class="lang-btn" onclick="setLanguage('nl', this)">🇳🇱 Nederlands (الهولندية)</button>
+        <button class="lang-btn" onclick="setLanguage('pl', this)">🇵🇱 Polski (البولندية)</button>
+        <button class="lang-btn" onclick="setLanguage('sv', this)">🇸🇪 Svenska (السويدية)</button>
+        <button class="lang-btn" onclick="setLanguage('id', this)">🇮🇩 Bahasa Indonesia (الإندونيسية)</button>
+        <button class="lang-btn" onclick="setLanguage('vi', this)">🇻🇳 Tiếng Việt (الفيتنامية)</button>
+        <button class="lang-btn" onclick="setLanguage('th', this)">🇹🇭 ไทย (التيلاندية)</button>
+        <button class="lang-btn" onclick="setLanguage('el', this)">🇬🇷 Ελληνικά (اليونانية)</button>
+        <button class="lang-btn" onclick="setLanguage('he', this)">🇮🇱 עברית (العبرية)</button>
       </div>
     </div>
 
@@ -206,7 +217,7 @@
     const texts = {
       ary: {
         desc: "صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!",
-        lblLang: "🌐 اختر لغتك (All Languages):",
+        lblLang: "🌐 اختر لغتك (Global Languages):",
         lblPrompt: "✍️ شنو بغيتي نصاوب ليك؟ (اكتب الفكرة):",
         lblColor: "🎨 نمط الألوان (Color Style):",
         lblQuality: "✨ الجودة والوضوح (Quality):",
@@ -217,7 +228,7 @@
       },
       ar: {
         desc: "قم بتصميم ملصقات، صور شخصية، وخلفيات بالذكاء الاصطناعي في ثوانٍ!",
-        lblLang: "🌐 اختر لغتك (All Languages):",
+        lblLang: "🌐 اختر لغتك (Global Languages):",
         lblPrompt: "✍️ ماذا تريد أن نصمم لك؟ (اكتب الفكرة):",
         lblColor: "🎨 نمط الألوان (Color Style):",
         lblQuality: "✨ الجودة والوضوح (Quality):",
@@ -268,7 +279,6 @@
 
       const t = texts[lang] || texts["en"];
 
-      document.getElementById("app-descлогу")?.innerText;
       document.getElementById("app-desc").innerText = t.desc;
       document.getElementById("lbl-lang").innerText = t.lblLang;
       document.getElementById("lbl-prompt").innerText = t.lblPrompt;
@@ -279,7 +289,7 @@
     }
 
     function generateSticker() {
-      const promptInput = document.getElementById("prompt-input -> " + "prompt-input").value || document.getElementById("prompt-input").value;
+      const promptInput = document.getElementById("prompt-input").value;
       const colorStyle = document.getElementById("color-style").value;
       const t = texts[currentLang] || texts["en"];
       
@@ -312,4 +322,4 @@
   </script>
 </body>
   </html>
-  
+          
