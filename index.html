@@ -337,8 +337,7 @@
         btnGen: "توليد التصميم بالذكاء الاصطناعي 🚀",
         placeholder: "مثال: Cute blue cat sticker...",
         loading: "جاري رسم التصميم بسرعة فائقة... ⚡",
-        alertText: "المرجو كتابة وصف أو فكرة للتصميم أولاً!",
-        errorText: "تعذر توليد الصورة حالياً، ضغط على السيرفر. عاود الضغط على زر التوليد مجدداً! 🔄"
+        alertText: "المرجو كتابة وصف أو فكرة للتصميم أولاً!"
       },
       ar: {
         desc: "قم بتصميم ملصقات، صور شخصية، وخلفيات بالذكاء الاصطناعي في ثوانٍ!",
@@ -349,8 +348,7 @@
         btnGen: "توليد التصميم الآن 🚀",
         placeholder: "مثال: Cute blue cat sticker...",
         loading: "جاري رسم التصميم بسرعة فائقة... ⚡",
-        alertText: "يرجى كتابة وصف أو فكرة للتصميم أولاً!",
-        errorText: "تعذر توليد الصورة حالياً، ضغط على السيرفر. عاود الضغط على زر التوليد مجدداً! 🔄"
+        alertText: "يرجى كتابة وصف أو فكرة للتصميم أولاً!"
       },
       en: {
         desc: "Create AI stickers, profile pictures, and wallpapers in seconds!",
@@ -361,8 +359,7 @@
         btnGen: "Generate Design Now 🚀",
         placeholder: "e.g., Cute blue cat sticker...",
         loading: "Generating design quickly... ⚡",
-        alertText: "Please enter a prompt or idea first!",
-        errorText: "Server busy. Please click generate again! 🔄"
+        alertText: "Please enter a prompt or idea first!"
       }
     };
 
@@ -401,40 +398,38 @@
 
       resultContainer.style.display = "block";
       loadingText.style.display = "block";
-      loadingText.style.color = "#38bdf8";
       loadingText.innerText = t.loading;
       imgWrapper.style.display = "none";
 
-      let colorDesc = "vibrant colors";
-      if (colorStyle === "vibrant") colorDesc = "vivid ultra-saturated bright rich colors, high contrast, popping neon accents";
-      if (colorStyle === "pastel") colorDesc = "soft pastel aesthetic colors, clean gentle tones";
-      if (colorStyle === "dark") colorDesc = "deep rich dark cinematic tones, dramatic contrast";
-
-      const qualityDesc = quality === '4k' ? "hyper-detailed 4K vector graphic art" : "high-definition digital art illustration";
-      
       const cleanedInput = promptInput.replace(//g, '');
-      const fullPrompt = `professional die-cut vector sticker of ${cleanedInput}, centered, solid pure white background, bold outlines, ${colorDesc}, ${qualityDesc}`;
+      const fullPrompt = `cute sticker of ${cleanedInput}, clean white background, vibrant colors, high quality`;
       
       const timestamp = new Date().getTime();
       const encodedPrompt = encodeURIComponent(fullPrompt);
-      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&seed=${timestamp}`;
+      
+      // استعملنا رابطين مختلفين احتياطياً باش إيلا واحد تبلوكا، الآخر يخدم ديريكت
+      const imageUrl1 = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&seed=${timestamp}`;
+      const imageUrl2 = `https://pollinations.ai/p/${encodedPrompt}?width=512&height=512&nologo=true&seed=${timestamp}`;
 
       const img = new Image();
-      img.src = imageUrl;
+      img.src = imageUrl1;
       
       img.onload = function() {
-        generatedImage.src = imageUrl;
-        downloadLink.href = imageUrl;
+        generatedImage.src = imageUrl1;
+        downloadLink.href = imageUrl1;
         loadingText.style.display = "none";
         imgWrapper.style.display = "inline-block";
       };
 
       img.onerror = function() {
-        loadingText.innerText = t.errorText;
-        loadingText.style.color = "#f472b6";
+        // تجربة الرابط الثاني إيلا فشل الأول
+        generatedImage.src = imageUrl2;
+        downloadLink.href = imageUrl2;
+        loadingText.style.display = "none";
+        imgWrapper.style.display = "inline-block";
       };
     }
   </script>
 </body>
-  </html>
-  
+          </html>
+                                                                                        
