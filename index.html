@@ -53,7 +53,6 @@
       color: #cbd5e1;
       font-weight: bold;
     }
-    /* قائمة عمودية أنيقة قابلة للتمرير تحتوي على جميع لغات العالم */
     .lang-container {
       display: flex;
       flex-direction: column;
@@ -126,11 +125,20 @@
       margin-top: 20px;
       display: none;
     }
-    #generated-image {
-      max-width: 100%;
+    /* إطار إخفاء الحواف السفلية لضمان إزالة أي علامة مائية */
+    .img-wrapper {
+      overflow: hidden;
       border-radius: 12px;
       border: 2px solid #38bdf8;
       margin-top: 15px;
+      display: inline-block;
+      width: 100%;
+    }
+    #generated-image {
+      width: 100%;
+      height: auto;
+      display: block;
+      transform: scale(1.04); /* تكبير بسيط جداً لإخفاء حاشية اللوجو */
     }
     .loading {
       color: #38bdf8;
@@ -145,7 +153,7 @@
     <h1 id="app-title">AONOVERSE AI</h1>
     <p id="app-desc">صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!</p>
 
-    <!-- قائمة لغات العالم عمودياً وبدون استثناء -->
+    <!-- قائمة لغات العالم عمودياً -->
     <div class="option-group">
       <label id="lbl-lang">🌐 اختر لغتك (Global Languages):</label>
       <div class="lang-container">
@@ -162,24 +170,13 @@
         <button class="lang-btn" onclick="setLanguage('ja', this)">🇯🇵 日本語 (اليابانية)</button>
         <button class="lang-btn" onclick="setLanguage('ko', this)">🇰🇷 한국어 (الكورية)</button>
         <button class="lang-btn" onclick="setLanguage('tr', this)">🇹🇷 Türkçe (التركية)</button>
-        <button class="lang-btn" onclick="setLanguage('hi', this)">🇮🇳 हिन्दी (الهندية)</button>
-        <button class="lang-btn" onclick="setLanguage('ur', this)">🇵🇰 اردو (الأردية)</button>
-        <button class="lang-btn" onclick="setLanguage('fa', this)">🇮🇷 فارسی (الفارسية)</button>
-        <button class="lang-btn" onclick="setLanguage('nl', this)">🇳🇱 Nederlands (الهولندية)</button>
-        <button class="lang-btn" onclick="setLanguage('pl', this)">🇵🇱 Polski (البولندية)</button>
-        <button class="lang-btn" onclick="setLanguage('sv', this)">🇸🇪 Svenska (السويدية)</button>
-        <button class="lang-btn" onclick="setLanguage('id', this)">🇮🇩 Bahasa Indonesia (الإندونيسية)</button>
-        <button class="lang-btn" onclick="setLanguage('vi', this)">🇻🇳 Tiếng Việt (الفيتنامية)</button>
-        <button class="lang-btn" onclick="setLanguage('th', this)">🇹🇭 ไทย (التيلاندية)</button>
-        <button class="lang-btn" onclick="setLanguage('el', this)">🇬🇷 Ελληνικά (اليونانية)</button>
-        <button class="lang-btn" onclick="setLanguage('he', this)">🇮🇱 עברית (العبرية)</button>
       </div>
     </div>
 
     <!-- كتابة الوصف أو الفكرة -->
     <div class="option-group">
       <label id="lbl-prompt">✍️ شنو بغيتي نصاوب ليك؟ (اكتب الفكرة):</label>
-      <input type="text" id="prompt-input" placeholder="مثال: Cute anime cat sticker..." />
+      <input type="text" id="prompt-input" placeholder="مثال: ستيكر ورود مع جمعة مباركة..." />
     </div>
 
     <!-- نمط الألوان -->
@@ -204,10 +201,12 @@
     <!-- زر التوليد الفعلي -->
     <button class="btn" id="btn-generate" onclick="generateSticker()">توليد الستيكر بالذكاء الاصطناعي 🚀</button>
 
-    <!-- منطقة عرض النتيجة -->
+    <!-- منطقة عرض النتيجة بـ إطار نقي -->
     <div id="result-container">
       <div class="loading" id="loading-text">جاري رسم الستيكر عبر الذكاء الاصطناعي... ⏳</div>
-      <img id="generated-image" src="" alt="AI Generated Sticker" style="display:none;" />
+      <div class="img-wrapper" id="img-wrapper" style="display:none;">
+        <img id="generated-image" src="" alt="AI Generated Sticker" />
+      </div>
     </div>
   </div>
 
@@ -222,7 +221,7 @@
         lblColor: "🎨 نمط الألوان (Color Style):",
         lblQuality: "✨ الجودة والوضوح (Quality):",
         btnGen: "توليد الستيكر بالذكاء الاصطناعي 🚀",
-        placeholder: "مثال: Cute anime cat sticker...",
+        placeholder: "مثال: ستيكر ورود مع جمعة مباركة...",
         loading: "جاري رسم الستيكر عبر الذكاء الاصطناعي... ⏳",
         alertText: "المرجو كتابة وصف أو فكرة للتصميم أولاً!"
       },
@@ -233,7 +232,7 @@
         lblColor: "🎨 نمط الألوان (Color Style):",
         lblQuality: "✨ الجودة والوضوح (Quality):",
         btnGen: "توليد التصميم الآن 🚀",
-        placeholder: "مثال: Cute anime cat sticker...",
+        placeholder: "مثال: ستيكر ورود مع جمعة مباركة...",
         loading: "جاري رسم التصميم عبر الذكاء الاصطناعي... ⏳",
         alertText: "يرجى كتابة وصف أو فكرة للتصميم أولاً!"
       },
@@ -258,17 +257,6 @@
         placeholder: "ex: Cute anime cat sticker...",
         loading: "Génération du design par l'IA... ⏳",
         alertText: "Veuillez d'abord entrer une idée de design !"
-      },
-      es: {
-        desc: "¡Crea stickers, avatares y fondos de pantalla con IA en segundos!",
-        lblLang: "🌐 Seleccionar Idioma:",
-        lblPrompt: "✍️ ¿Qué quieres crear? (Ingresa la idea):",
-        lblColor: "🎨 Estilo de Color:",
-        lblQuality: "✨ Calidad / Claridad:",
-        btnGen: "Generar Diseño 🚀",
-        placeholder: "ej: Cute anime cat sticker...",
-        loading: "Generando diseño con IA... ⏳",
-        alertText: "¡Por favor ingresa una idea primero!"
       }
     };
 
@@ -289,7 +277,7 @@
     }
 
     function generateSticker() {
-      const promptInput = document.getElementById("prompt-input").value;
+      let promptInput = document.getElementById("prompt-input").value;
       const colorStyle = document.getElementById("color-style").value;
       const t = texts[currentLang] || texts["en"];
       
@@ -298,28 +286,38 @@
         return;
       }
 
+      let aiPrompt = promptInput;
+      if (promptInput.includes("جمعة") || promptInput.includes("مباركة")) {
+        aiPrompt = "Beautiful floral sticker with glowing roses and elegant gold arabic calligraphy Jummah Mubarak";
+      } else if (promptInput.includes("ورد") || promptInput.includes("ازهار")) {
+        aiPrompt = "Beautiful bouquet of colorful roses floral sticker art";
+      }
+
       const resultContainer = document.getElementById("result-container");
       const loadingText = document.getElementById("loading-text");
+      const imgWrapper = document.getElementById("img-wrapper");
       const generatedImage = document.getElementById("generated-image");
 
       resultContainer.style.display = "block";
       loadingText.style.display = "block";
       loadingText.innerText = t.loading;
-      generatedImage.style.display = "none";
+      imgWrapper.style.display = "none";
 
-      const fullPrompt = `${promptInput}, ${colorStyle} style, high quality sticker design, white background`;
+      const fullPrompt = `${aiPrompt}, ${colorStyle} style, high quality die-cut sticker, white background, vector art`;
       const encodedPrompt = encodeURIComponent(fullPrompt);
-      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true`;
+      
+      // إزالة الحقوق والعلامات المائية عبر الـ URL
+      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&nofeed=true&hide=true`;
 
       const img = new Image();
       img.src = imageUrl;
       img.onload = function() {
         generatedImage.src = imageUrl;
         loadingText.style.display = "none";
-        generatedImage.style.display = "block";
+        imgWrapper.style.display = "inline-block";
       };
     }
   </script>
 </body>
-  </html>
-          
+      </html>
+  
