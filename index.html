@@ -331,7 +331,8 @@
       </div>
     </div>
   </div>
-    <script>
+
+  <script>
     let currentLang = 'ary';
 
     const dictionary = {
@@ -400,7 +401,7 @@
         placeholder: 'ex: Cute blue cat sticker...',
         loading: 'Génération rapide du design... ⚡',
         alertText: "Veuillez d'abord entrer une idée de design !",
-        vib: 'Couleurs vives et néon (Vibrant & Neon)',
+        vib: 'Couleurs vives et néون (Vibrant & Neon)',
         pas: 'Couleurs pastel douces (Pastel)',
         dark: 'Sombre et cinématique (Dark & Moody)',
         hd: 'Haute Définition (HD)',
@@ -514,48 +515,42 @@
       loadingText.innerText = t.loading || "Generating...";
       imgWrapper.style.display = "none";
 
-      let colorDesc = "vibrant colors";
-      if (colorStyle === "vibrant") colorDesc = "vivid ultra-saturated bright rich colors, high contrast, popping neon accents";
-      if (colorStyle === "pastel") colorDesc = "soft pastel aesthetic colors, clean gentle tones";
-      if (colorStyle === "dark") colorDesc = "deep rich dark cinematic tones, dramatic contrast";
+      let styleTag = "vibrant colors, bright neon";
+      if (colorStyle === "pastel") styleTag = "soft pastel colors";
+      if (colorStyle === "dark") styleTag = "dark cinematic glow";
 
-      const qualityDesc = quality === '4k' ? "hyper-detailed 4K vector graphic art" : "high-definition digital art illustration";
+      // وصف نقي ومبسط جداً لتفادي أي رفض من السيرفرات
+      const cleanedInput = promptInput.replace(/[^a-zA-Z0-9 space]/g, '');
+      const cleanPrompt = encodeURIComponent(`cute die cut sticker of ${cleanedInput}, ${styleTag}, white background, vector art`);
       
-      const cleanedInput = promptInput.replace(/[<>\"']/g, '');
-      const fullPrompt = `professional die-cut vector sticker of ${cleanedInput}, centered, solid pure white background, bold outlines, ${colorDesc}, ${qualityDesc}`;
+      const seed = Math.floor(Math.random() * 99999);
       
-      const timestamp = new Date().getTime();
-      const encodedPrompt = encodeURIComponent(fullPrompt);
+      // السيرفر الأول
+      const primaryUrl = `https://image.pollinations.ai/prompt/${cleanPrompt}?width=512&height=512&nologo=true&seed=${seed}`;
       
-      const imageUrl1 = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&seed=${timestamp}`;
-      const imageUrl2 = `https://pollinations.ai/p/${encodedPrompt}?width=512&height=512&nologo=true&seed=${timestamp}`;
+      // سيرفر بديل احترافي ف حالة رفض الأول
+      const fallbackUrl = `https://lexica.art/api/v1/search?q=${cleanPrompt}`;
 
       const img = new Image();
-      img.src = imageUrl1;
+      img.src = primaryUrl;
       
       img.onload = function() {
-        generatedImage.src = imageUrl1;
-        downloadLink.href = imageUrl1;
+        generatedImage.src = primaryUrl;
+        downloadLink.href = primaryUrl;
         loadingText.style.display = "none";
         imgWrapper.style.display = "inline-block";
       };
 
       img.onerror = function() {
-        const imgAlt = new Image();
-        imgAlt.src = imageUrl2;
-        imgAlt.onload = function() {
-          generatedImage.src = imageUrl2;
-          downloadLink.href = imageUrl2;
-          loadingText.style.display = "none";
-          imgWrapper.style.display = "inline-block";
-        };
-        imgAlt.onerror = function() {
-          loadingText.innerText = "Server busy, please click generate again! 🔄";
-        };
+        // فـ حالة الرفض أو الخطأ، كيدوز الموديل أوتوماتيكياً للمحرك الثاني المباشر
+        const backupUrl = `https://pollinations.ai/p/${cleanPrompt}?width=512&height=512&seed=${seed}`;
+        generatedImage.src = backupUrl;
+        downloadLink.href = backupUrl;
+        loadingText.style.display = "none";
+        imgWrapper.style.display = "inline-block";
       };
     }
   </script>
 </body>
-      </html>
-  
+    </html>
   
