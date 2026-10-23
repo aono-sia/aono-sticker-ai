@@ -53,6 +53,7 @@
       color: #cbd5e1;
       font-weight: bold;
     }
+    /* قائمة لغات العالم عمودياً */
     .lang-container {
       display: flex;
       flex-direction: column;
@@ -125,20 +126,42 @@
       margin-top: 20px;
       display: none;
     }
-    /* إطار إخفاء الحواف السفلية لضمان إزالة أي علامة مائية */
-    .img-wrapper {
-      overflow: hidden;
+    /* تصميم إطار الستيكر مع النص العربي الفخم فوقه */
+    .sticker-card {
+      position: relative;
       border-radius: 12px;
       border: 2px solid #38bdf8;
+      overflow: hidden;
       margin-top: 15px;
-      display: inline-block;
+      background: #ffffff;
+    }
+    .sticker-text-overlay {
+      position: absolute;
+      bottom: 15px;
+      left: 0;
+      right: 0;
+      background: rgba(15, 23, 42, 0.85);
+      color: #38bdf8;
+      padding: 10px;
+      font-size: 1.3rem;
+      font-weight: bold;
+      text-align: center;
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
+    }
+    .img-wrapper {
+      position: relative;
+      overflow: hidden;
       width: 100%;
+      display: block;
     }
     #generated-image {
       width: 100%;
       height: auto;
       display: block;
-      transform: scale(1.04); /* تكبير بسيط جداً لإخفاء حاشية اللوجو */
+      clip-path: inset(0 0 35px 0);
+      transform: scale(1.05);
     }
     .loading {
       color: #38bdf8;
@@ -201,11 +224,14 @@
     <!-- زر التوليد الفعلي -->
     <button class="btn" id="btn-generate" onclick="generateSticker()">توليد الستيكر بالذكاء الاصطناعي 🚀</button>
 
-    <!-- منطقة عرض النتيجة بـ إطار نقي -->
+    <!-- منطقة عرض النتيجة مع النص المدمج -->
     <div id="result-container">
       <div class="loading" id="loading-text">جاري رسم الستيكر عبر الذكاء الاصطناعي... ⏳</div>
-      <div class="img-wrapper" id="img-wrapper" style="display:none;">
-        <img id="generated-image" src="" alt="AI Generated Sticker" />
+      <div class="sticker-card" id="sticker-card" style="display:none;">
+        <div class="img-wrapper">
+          <img id="generated-image" src="" alt="AI Generated Sticker" />
+        </div>
+        <div class="sticker-text-overlay" id="sticker-text-overlay">جمعة مباركة 🌸</div>
       </div>
     </div>
   </div>
@@ -286,38 +312,42 @@
         return;
       }
 
-      let aiPrompt = promptInput;
+      let aiPrompt = "Beautiful bouquet of colorful roses and floral sticker art";
+      let displayCustomText = promptInput; // عرض النص الذي كتبته المستخدمة مباشرة في البطاقة فوق الستيكر
+
       if (promptInput.includes("جمعة") || promptInput.includes("مباركة")) {
-        aiPrompt = "Beautiful floral sticker with glowing roses and elegant gold arabic calligraphy Jummah Mubarak";
+        aiPrompt = "Sticker art of a gorgeous arrangement of blooming roses, clean white background, vector graphic";
+        displayCustomText = "جمعة مباركة 🌸";
       } else if (promptInput.includes("ورد") || promptInput.includes("ازهار")) {
-        aiPrompt = "Beautiful bouquet of colorful roses floral sticker art";
+        aiPrompt = "Sticker art of a wonderful bouquet of fresh roses, clean white background, vector illustration";
       }
 
       const resultContainer = document.getElementById("result-container");
       const loadingText = document.getElementById("loading-text");
-      const imgWrapper = document.getElementById("img-wrapper");
+      const stickerCard = document.getElementById("sticker-card");
       const generatedImage = document.getElementById("generated-image");
+      const stickerTextOverlay = document.getElementById("sticker-text-overlay");
 
       resultContainer.style.display = "block";
       loadingText.style.display = "block";
       loadingText.innerText = t.loading;
-      imgWrapper.style.display = "none";
+      stickerCard.style.display = "none";
 
-      const fullPrompt = `${aiPrompt}, ${colorStyle} style, high quality die-cut sticker, white background, vector art`;
+      stickerTextOverlay.innerText = displayCustomText;
+
+      const fullPrompt = `${aiPrompt}, ${colorStyle} style, high quality vector sticker design, solid white background`;
       const encodedPrompt = encodeURIComponent(fullPrompt);
-      
-      // إزالة الحقوق والعلامات المائية عبر الـ URL
-      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&nofeed=true&hide=true`;
+      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true`;
 
       const img = new Image();
       img.src = imageUrl;
       img.onload = function() {
         generatedImage.src = imageUrl;
         loadingText.style.display = "none";
-        imgWrapper.style.display = "inline-block";
+        stickerCard.style.display = "block";
       };
     }
   </script>
 </body>
-      </html>
+  </html>
   
