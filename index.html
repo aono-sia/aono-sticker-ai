@@ -7,7 +7,7 @@
   <!-- Google Search Console Verification Tag -->
   <meta name="google-site-verification" content="8WV5Wjm3fhXDhBmSGpMQ2yP7sqhaAjU4ty3CxdbBrqM" />
   
-  <title id="page-title">AONOVERSE AI - Next Gen Studio</title>
+  <title>AONOVERSE AI - Next Gen Studio</title>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -21,15 +21,15 @@
       align-items: center;
       justify-content: center;
       min-height: 100vh;
-      text-align: center;
     }
     .container {
       background: #1e293b;
       padding: 30px;
       border-radius: 16px;
       box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-      max-width: 500px;
+      max-width: 550px;
       width: 100%;
+      text-align: center;
     }
     h1 {
       font-size: 2.2rem;
@@ -45,18 +45,15 @@
       margin-bottom: 18px;
       text-align: right;
     }
-    .ltr .option-group {
-      text-align: left;
-    }
     label {
       display: block;
       font-size: 0.9rem;
       color: #cbd5e1;
       margin-bottom: 6px;
     }
-    select {
+    select, input[type="text"] {
       width: 100%;
-      padding: 10px 14px;
+      padding: 12px 14px;
       border-radius: 8px;
       border: 1px solid #334155;
       background-color: #0f172a;
@@ -64,14 +61,14 @@
       font-size: 0.95rem;
       outline: none;
     }
-    select:focus {
+    select:focus, input[type="text"]:focus {
       border-color: #38bdf8;
     }
     .btn {
       width: 100%;
       background-color: #0284c7;
       color: #ffffff;
-      padding: 12px;
+      padding: 14px;
       border: none;
       border-radius: 8px;
       font-size: 1.05rem;
@@ -83,148 +80,121 @@
     .btn:hover {
       background-color: #0369a1;
     }
+    /* مكان عرض النتيجة والستيكر المتولد */
+    #result-container {
+      margin-top: 20px;
+      display: none;
+    }
+    #generated-image {
+      max-width: 100%;
+      border-radius: 12px;
+      border: 2px solid #38bdf8;
+      margin-top: 15px;
+    }
+    .loading {
+      color: #38bdf8;
+      font-weight: bold;
+      margin-top: 15px;
+    }
+    /* إخفاء شريط قوقل للترجمة في الأعلى */
+    .goog-te-banner-frame { display: none !important; }
+    body { top: 0 !important; }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <h1 id="app-title">AONOVERSE AI</h1>
-    <p id="app-desc">صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!</p>
+    <h1>AONOVERSE AI</h1>
+    <p>صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!</p>
 
-    <!-- اختيار اللغة -->
+    <!-- قائمة جميع لغات العالم عبر Google Translate -->
     <div class="option-group">
-      <label id="lbl-lang" for="language">🌐 اختر اللغة:</label>
-      <select id="language" onchange="changeLanguage()">
-        <option value="ary">الدارجة المغربية 🇲🇦</option>
-        <option value="ar">العربية الفصحى</option>
-        <option value="en">English</option>
-        <option value="fr">Français</option>
-        <option value="de">Deutsch</option>
-      </select>
+      <label>🌐 اختر لغتك (All World Languages):</label>
+      <div id="google_translate_element"></div>
+    </div>
+
+    <!-- كتابة الوصف أو الفكرة -->
+    <div class="option-group">
+      <label for="prompt-input">✍️ شنو بغيتي نصاوب ليك؟ (اكتب الفكرة):</label>
+      <input type="text" id="prompt-input" placeholder="مثال: Cute anime cat sticker, 3d render..." />
     </div>
 
     <!-- نمط الألوان -->
     <div class="option-group">
-      <label id="lbl-color" for="color-style">🎨 نمط الألوان:</label>
+      <label for="color-style">🎨 نمط الألوان (Color Style):</label>
       <select id="color-style">
-        <option value="vibrant" id="opt-vib">ألوان زاهية ونيون (Vibrant & Neon)</option>
-        <option value="pastel" id="opt-pas">ألوان هادئة (Pastel)</option>
-        <option value="dark" id="opt-drk">داكن وغموض (Dark & Moody)</option>
+        <option value="vibrant">ألوان زاهية ونيون (Vibrant & Neon)</option>
+        <option value="pastel">ألوان هادئة (Pastel)</option>
+        <option value="dark">داكن وغموض (Dark & Moody)</option>
       </select>
     </div>
 
     <!-- الجودة -->
     <div class="option-group">
-      <label id="lbl-quality" for="quality">✨ جودة ووضوح الصورة:</label>
+      <label for="quality">✨ الجودة والوضوح (Quality):</label>
       <select id="quality">
-        <option value="hd" id="opt-hd">عالية الوضوح (HD - 1080p)</option>
-        <option value="4k" id="opt-4k">أعلى جودة تفاصيل (4K Ultra HD)</option>
+        <option value="hd">عالية الوضوح (HD)</option>
+        <option value="4k">أعلى جودة تفاصيل (4K Ultra)</option>
       </select>
     </div>
 
-    <!-- الزر -->
-    <button class="btn" id="generate-btn" onclick="alertAction()">صاوب التصميم دابا 🚀</button>
+    <!-- زر التوليد الفعلي -->
+    <button class="btn" onclick="generateSticker()">توليد الستيكر بالذكاء الاصطناعي 🚀</button>
+
+    <!-- منطقة عرض النتيجة -->
+    <div id="result-container">
+      <div class="loading" id="loading-text">جاري رسم الستيكر عبر الذكاء الاصطناعي... ⏳</div>
+      <img id="generated-image" src="" alt="AI Generated Sticker" style="display:none;" />
+    </div>
   </div>
 
-  <script>
-    const translations = {
-      ary: {
-        desc: "صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!",
-        lblLang: "🌐 اختر اللغة:",
-        lblColor: "🎨 نمط الألوان:",
-        lblQuality: "✨ جودة ووضوح الصورة:",
-        optVib: "ألوان زاهية ونيون",
-        optPas: "ألوان هادئة",
-        optDrk: "داكن وغموض",
-        optHd: "عالية الوضوح (HD)",
-        opt4k: "أعلى جودة (4K)",
-        btnText: "صاوب التصميم دابا 🚀",
-        alertMsg: "جاري توليد التصميم بالذكاء الاصطناعي..."
-      },
-      ar: {
-        desc: "قم بتصميم ملصقات، صور شخصية، وخلفيات بالذكاء الاصطناعي في ثوانٍ!",
-        lblLang: "🌐 اختر اللغة:",
-        lblColor: "🎨 نمط الألوان:",
-        lblQuality: "✨ جودة ووضوح الصورة:",
-        optVib: "ألوان زاهية ونيون",
-        optPas: "ألوان هادئة",
-        optDrk: "داكن وغموض",
-        optHd: "عالية الوضوح (HD)",
-        opt4k: "أعلى جودة (4K)",
-        btnText: "توليد التصميم الآن 🚀",
-        alertMsg: "جاري توليد التصميم بالذكاء الاصطناعي..."
-      },
-      en: {
-        desc: "Create AI stickers, profile pictures, and wallpapers in seconds!",
-        lblLang: "🌐 Select Language:",
-        lblColor: "🎨 Color Style:",
-        lblQuality: "✨ Quality / Clarity:",
-        optVib: "Vibrant & Neon",
-        optPas: "Pastel",
-        optDrk: "Dark & Moody",
-        optHd: "High Definition (HD)",
-        opt4k: "Ultra HD (4K)",
-        btnText: "Generate Design Now 🚀",
-        alertMsg: "Generating design with AI..."
-      },
-      fr: {
-        desc: "Créez des stickers, avatars et fonds d'écran IA en quelques secondes !",
-        lblLang: "🌐 Choisir la langue :",
-        lblColor: "🎨 Style de couleur :",
-        lblQuality: "✨ Qualité / Clarté :",
-        optVib: "Vif & Néon",
-        optPas: "Pastel",
-        optDrk: "Sombre & Mystérieux",
-        optHd: "Haute Définition (HD)",
-        opt4k: "Ultra HD (4K)",
-        btnText: "Générer le design 🚀",
-        alertMsg: "Génération du design par l'IA..."
-      },
-      de: {
-        desc: "Erstelle KI-Sticker, Profilbilder und Hintergrundbilder in Sekunden!",
-        lblLang: "🌐 Sprache wählen:",
-        lblColor: "🎨 Farbstil:",
-        lblQuality: "✨ Qualität / Klarheit:",
-        optVib: "Lebendig & Neon",
-        optPas: "Pastell",
-        optDrk: "Dunkel & Stimmungsvoll",
-        optHd: "High Definition (HD)",
-        opt4k: "Ultra HD (4K)",
-        btnText: "Design jetzt generieren 🚀",
-        alertMsg: "Design wird mit KI generiert..."
-      }
-    };
-
-    function changeLanguage() {
-      const lang = document.getElementById("language").value;
-      const t = translations[lang];
-      const htmlRoot = document.getElementById("html-root");
-
-      if (lang === 'en' || lang === 'fr' || lang === 'de') {
-        htmlRoot.setAttribute("dir", "ltr");
-        htmlRoot.setAttribute("class", "ltr");
-      } else {
-        htmlRoot.setAttribute("dir", "rtl");
-        htmlRoot.setAttribute("class", "");
-      }
-
-      document.getElementById("app-desc").innerText = t.desc;
-      document.getElementById("lbl-lang").innerText = t.lblLang;
-      document.getElementById("lbl-color").innerText = t.lblColor;
-      document.getElementById("lbl-quality").innerText = t.lblQuality;
-      document.getElementById("opt-vib").innerText = t.optVib;
-      document.getElementById("opt-pas").innerText = t.optPas;
-      document.getElementById("opt-drk").innerText = t.optDrk;
-      document.getElementById("opt-hd").innerText = t.optHd;
-      document.getElementById("opt-4k").innerText = t.opt4k;
-      document.getElementById("generate-btn").innerText = t.btnText;
+  <!-- سكربت قوقل الشامل للترجمة -->
+  <script type="text/javascript">
+    function googleTranslateElementInit() {
+      new google.translate.TranslateElement({
+        pageLanguage: 'ar',
+        includedLanguages: '', // تشمل جميع لغات العالم بلا استثناء
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
     }
+  </script>
+  <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-    function alertAction() {
-      const lang = document.getElementById("language").value;
-      alert(translations[lang].alertMsg);
+  <!-- سكربت توليد الصور الحقيقي -->
+  <script>
+    function generateSticker() {
+      const promptInput = document.getElementById("prompt-input").value;
+      const colorStyle = document.getElementById("color-style").value;
+      
+      if (!promptInput.trim()) {
+        alert("المرجو كتابة وصف أو فكرة للتصميم أولاً!");
+        return;
+      }
+
+      const resultContainer = document.getElementById("result-container");
+      const loadingText = document.getElementById("loading-text");
+      const generatedImage = document.getElementById("generated-image");
+
+      resultContainer.style.display = "block";
+      loadingText.style.display = "block";
+      generatedImage.style.display = "none";
+
+      // دمج الوصف مع النمط المطلوب لتوليد صورة احترافية عبر Pollinations AI
+      const fullPrompt = `${promptInput}, ${colorStyle} style, high quality sticker design, white background`;
+      const encodedPrompt = encodeURIComponent(fullPrompt);
+      
+      // رابط توليد الصورة التلقائي
+      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true`;
+
+      // تحميل الصورة والتأكد من جهوزيتها
+      const img = new Image();
+      img.src = imageUrl;
+      img.onload = function() {
+        generatedImage.src = imageUrl;
+        loadingText.style.display = "none";
+        generatedImage.style.display = "block";
+      };
     }
   </script>
 </body>
-        </html>
-      
+</html>
