@@ -337,7 +337,8 @@
         btnGen: "توليد التصميم بالذكاء الاصطناعي 🚀",
         placeholder: "مثال: Cute blue cat sticker...",
         loading: "جاري رسم التصميم بسرعة فائقة... ⚡",
-        alertText: "المرجو كتابة وصف أو فكرة للتصميم أولاً!"
+        alertText: "المرجو كتابة وصف أو فكرة للتصميم أولاً!",
+        refusedText: "عذراً، تم رفض إنشاء الصورة. قد يكون السبب ضغط على السيرفر أو كلمات غير مسموح بها."
       },
       ar: {
         desc: "قم بتصميم ملصقات، صور شخصية، وخلفيات بالذكاء الاصطناعي في ثوانٍ!",
@@ -348,29 +349,8 @@
         btnGen: "توليد التصميم الآن 🚀",
         placeholder: "مثال: Cute blue cat sticker...",
         loading: "جاري رسم التصميم بسرعة فائقة... ⚡",
-        alertText: "يرجى كتابة وصف أو فكرة للتصميم أولاً!"
-      },
-      he: {
-        desc: "צור מדבקות, תמונות פרופיל ורקעים באמצעות בינה מלאכותית בשניות!",
-        lblLang: "🌐 בחר שפה:",
-        lblPrompt: "✍️ מה תרצה שנעצב עבורך? (הכנס רעיון):",
-        lblColor: "🎨 סגנון צבע:",
-        lblQuality: "✨ איכות ובהירות:",
-        btnGen: "צור עיצוב עכשיו 🚀",
-        placeholder: "לדוגמה: Cute blue cat sticker...",
-        loading: "יוצר עיצוב במהירות... ⚡",
-        alertText: "אנא הכנס רעיון לעיצוב תחילה!"
-      },
-      fa: {
-        desc: "استیکر، عکس پروفایل و پس‌زمینه با هوش مصنوعی در چند ثانیه بسازید!",
-        lblLang: "🌐 انتخاب زبان:",
-        lblPrompt: "✍️ چه چیزی می‌خواهید طراحی کنیم؟ (ایده را بنویسید):",
-        lblColor: "🎨 سبک رنگ:",
-        lblQuality: "✨ کیفیت و وضوح:",
-        btnGen: "تولید طرح الآن 🚀",
-        placeholder: "مثال: Cute blue cat sticker...",
-        loading: "در حال رسم طرح با سرعت بالا... ⚡",
-        alertText: "لطفاً ابتدا ایده یا توصیفی وارد کنید!"
+        alertText: "يرجى كتابة وصف أو فكرة للتصميم أولاً!",
+        refusedText: "عذراً، تم رفض إنشاء الصورة. قد يكون السبب ضغط على السيرفر أو كلمات غير مسموح بها."
       },
       en: {
         desc: "Create AI stickers, profile pictures, and wallpapers in seconds!",
@@ -381,19 +361,10 @@
         btnGen: "Generate Design Now 🚀",
         placeholder: "e.g., Cute blue cat sticker...",
         loading: "Generating design quickly... ⚡",
-        alertText: "Please enter a prompt or idea first!"
-      },
-      fr: {
-        desc: "Créez des stickers, avatars et fonds d'écran IA en quelques secondes !",
-        lblLang: "🌐 Choisir la langue :",
-        lblPrompt: "✍️ Que voulez-vous créer ? (Entrez l'idée) :",
-        lblColor: "🎨 Style de couleur :",
-        lblQuality: "✨ Qualité / Clarté :",
-        btnGen: "Générer le design 🚀",
-        placeholder: "ex: Cute blue cat sticker...",
-        loading: "Génération rapide du design... ⚡",
-        alertText: "Veuillez d'abord entrer une idée de design !"
+        alertText: "Please enter a prompt or idea first!",
+        refusedText: "Sorry, image generation was refused. This could be due to server load or restricted words."
       }
+      // يمكن إضافة باقي اللغات هنا بنفس الطريقة
     };
 
     function setLanguage(lang, btnElement) {
@@ -434,20 +405,20 @@
       loadingText.innerText = t.loading;
       imgWrapper.style.display = "none";
 
-      // محرك الألوان والرسومات المطور لضمان خروج ستيكر نقي ومحدد بحدود بارزة
       let colorDesc = "vibrant colors";
-      if (colorStyle === "vibrant") colorDesc = "vivid ultra-saturated neon colors, popping bright tones";
-      if (colorStyle === "pastel") colorDesc = "soft pastel aesthetic colors, clean gentle tones";
-      if (colorStyle === "dark") colorDesc = "dark moody cinematic neon glow";
+      if (colorStyle === "vibrant") colorDesc = "vivid ultra-saturated bright rich colors, high contrast, popping neon accents, bright eye-catching color palette, hd";
+      if (colorStyle === "pastel") colorDesc = "soft pastel aesthetic colors, clean gentle tones, hd";
+      if (colorStyle === "dark") colorDesc = "deep rich dark cinematic tones, dramatic contrast, hd";
 
-      const qualityDesc = quality === '4k' ? "hyper-detailed vector graphic art" : "clean high definition digital illustration";
+      const qualityDesc = quality === '4k' ? "hyper-detailed 4K vector graphic art, flawless render, masterwork, clean lines" : "high-definition digital illustration, clean sharp details";
       
-      // تحسين هندسة البرومبت لفرض شكل الستيكر الاحترافي (Die-cut sticker)
-      const fullPrompt = `A professional die-cut vector sticker of ${promptInput}, ${colorDesc}, ${qualityDesc}, bold outlines, minimalist style, centered character on a solid pure white background, sticker art`;
+      // تنظيف المدخلات وتنسيق البرومبت للحصول على صورة واضحة ومحددة
+      const cleanedInput = promptInput.replace(//g, ''); // إزالة الرموز الخاصة
+      const fullPrompt = `professional die-cut vector sticker of ${cleanedInput}, centered, solid pure white background, bold outlines, minimalist style, ${colorDesc}, ${qualityDesc}, studio lighting`;
       
       const timestamp = new Date().getTime();
       const encodedPrompt = encodeURIComponent(fullPrompt);
-      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&seed=${timestamp}`;
+      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true&seed=${timestamp}&enhance=true`; // زيادة الدقة Enhance
 
       const img = new Image();
       img.src = imageUrl;
@@ -458,7 +429,8 @@
         imgWrapper.style.display = "inline-block";
       };
       img.onerror = function() {
-        loadingText.innerText = "حدث ضغط على السيرفر، المرجو المحاولة مجدداً! 🔄";
+        loadingText.innerText = t.refusedText; // عرض رسالة الرفض
+        loadingText.style.color = "red";
       };
     }
   </script>
