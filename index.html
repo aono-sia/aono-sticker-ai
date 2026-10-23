@@ -1,145 +1,135 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- كود تأكيد الملكية الخاص بـ Google Search Console -->
-    <meta name="google-site-verification" content="PP5tG6xFNWaXvPBASqeYr2V3xWkwpwQNzpnBqO6wjXc" />
-
-    <!-- بيانات تحسين محركات البحث SEO للمنصة -->
-    <title>AONO AI - منصة الإبداع والتصميم بالذكاء الاصطناعي</title>
-    <meta name="description" content="منصة AONO AI تتيح لك إنشاء وتوليد تصاميم وصور مذهلة وملونة باستخدام الذكاء الاصطناعي مجاناً وبأي لغة." />
-    <meta name="keywords" content="aono ai, AONO AI studio, aono-sticker-ai, AI art generator, الذكاء الاصطناعي, تصميم بالذكاء الاصطناعي" />
-    <meta name="robots" content="index, follow" />
-
-    <style>
-        body {
-            font-family: Tahoma, sans-serif;
-            background-color: #0f172a;
-            color: #ffffff;
-            text-align: center;
-            padding: 20px;
-            margin: 0;
-        }
-        .container {
-            max-width: 600px;
-            margin: 40px auto;
-            background: #1e293b;
-            padding: 30px;
-            border-radius: 15px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        }
-        h1 {
-            color: #38bdf8;
-            margin-bottom: 10px;
-        }
-        p {
-            color: #94a3b8;
-            margin-bottom: 20px;
-        }
-        input[type="text"] {
-            width: 80%;
-            padding: 12px;
-            font-size: 16px;
-            border: 2px solid #475569;
-            border-radius: 8px;
-            background: #0f172a;
-            color: #fff;
-            margin-bottom: 15px;
-            outline: none;
-        }
-        input[type="text"]:focus {
-            border-color: #38bdf8;
-        }
-        button {
-            background-color: #38bdf8;
-            color: #0f172a;
-            border: none;
-            padding: 12px 25px;
-            font-size: 16px;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-        button:hover {
-            background-color: #0ea5e9;
-        }
-        .result-box {
-            margin-top: 25px;
-        }
-        img {
-            max-width: 100%;
-            border-radius: 10px;
-            border: 3px solid #38bdf8;
-            margin-top: 15px;
-        }
-        .loading {
-            color: #facc15;
-            display: none;
-            margin-top: 15px;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  
+  <!-- Google Search Console Verification Tag -->
+  <meta name="google-site-verification" content="8WV5Wjm3fhXDhBmSGpMQ2yP7sqhaAjU4ty3CxdbBrqM" />
+  
+  <title>AONOVERSE AI - Next Gen Studio</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0f172a;
+      color: #ffffff;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      text-align: center;
+    }
+    .container {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+      max-width: 500px;
+      width: 100%;
+    }
+    h1 {
+      font-size: 2.2rem;
+      color: #38bdf8;
+      margin-bottom: 10px;
+    }
+    p {
+      font-size: 1rem;
+      color: #94a3b8;
+      margin-bottom: 25px;
+    }
+    .option-group {
+      margin-bottom: 18px;
+      text-align: right;
+    }
+    label {
+      display: block;
+      font-size: 0.9rem;
+      color: #cbd5e1;
+      margin-bottom: 6px;
+    }
+    select, input[type="text"] {
+      width: 100%;
+      padding: 10px 14px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      background-color: #0f172a;
+      color: #ffffff;
+      font-size: 0.95rem;
+      outline: none;
+    }
+    select:focus, input[type="text"]:focus {
+      border-color: #38bdf8;
+    }
+    .btn {
+      width: 100%;
+      background-color: #0284c7;
+      color: #ffffff;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      font-size: 1.05rem;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 15px;
+      transition: background-color 0.3s;
+    }
+    .btn:hover {
+      background-color: #0369a1;
+    }
+  </style>
 </head>
 <body>
 
-    <div class="container">
-        <h1>AONO AI Studio</h1>
-        <p>اكتب فكرة التصميم أو الصورة اللي تخيلتي بأي لغة، وسيقوم الذكاء الاصطناعي بتوليدها باحترافية عالية!</p>
-        
-        <input type="text" id="promptInput" placeholder="مثلاً: مناظر طبيعية مستقبلية ملونة...">
-        <br>
-        <button onclick="generateAIArt()">توليد التصميم</button>
+  <div class="container">
+    <h1>AONOVERSE AI</h1>
+    <p>صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!</p>
 
-        <div class="loading" id="loadingText">جاري معالجة وتوليد الصورة بالذكاء الاصطناعي...</div>
-
-        <div class="result-box" id="resultBox"></div>
+    <!-- اختيار كافة اللغات شاملة الدارجة -->
+    <div class="option-group">
+      <label for="language">🌐 اختر اللغة (Select Language):</label>
+      <select id="language">
+        <option value="ary">الدارجة المغربية (Moroccan Darija) 🇲🇦</option>
+        <option value="ar">العربية الفصحى (Standard Arabic)</option>
+        <option value="en">English (الإنجليزية)</option>
+        <option value="fr">Français (الفرنسية)</option>
+        <option value="es">Español (الإسبانية)</option>
+        <option value="de">Deutsch (الألمانية)</option>
+        <option value="ja">日本語 (اليابانية - Anime Style)</option>
+        <option value="ko">한국어 (الكورية)</option>
+      </select>
     </div>
 
-    <script>
-        async function generateAIArt() {
-            const prompt = document.getElementById('promptInput').value;
-            const resultBox = document.getElementById('resultBox');
-            const loadingText = document.getElementById('loadingText');
+    <!-- اختيار نمط الألوان -->
+    <div class="option-group">
+      <label for="color-style">🎨 نمط الألوان (Color Style):</label>
+      <select id="color-style">
+        <option value="vibrant">ألوان زاهية ونيون (Vibrant & Neon)</option>
+        <option value="pastel">ألوان هادئة (Pastel)</option>
+        <option value="dark">داكن وغموض (Dark & Moody)</option>
+        <option value="bw">أبيض وأسود (Black & White)</option>
+      </select>
+    </div>
 
-            if (!prompt) {
-                alert('المرجو كتابة الوصف أولاً!');
-                return;
-            }
+    <!-- اختيار الوضوح والجودة -->
+    <div class="option-group">
+      <label for="quality">✨ جودة ووضوح الصورة (Quality / Clarity):</label>
+      <select id="quality">
+        <option value="hd">عالية الوضوح (HD - 1080p)</option>
+        <option value="2k">وضوح ممتاز (2K Ultra)</option>
+        <option value="4k">أعلى جودة تفاصيل (4K Ultra HD)</option>
+      </select>
+    </div>
 
-            resultBox.innerHTML = '';
-            loadingText.style.display = 'block';
-
-            try {
-                const response = await fetch('/api/make-sticker', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ prompt: prompt })
-                });
-
-                const data = await response.json();
-                loadingText.style.display = 'none';
-
-                if (data.success && data.imageUrl) {
-                    resultBox.innerHTML = `
-                        <h3>ها هو التصميم ديالك واجد:</h3>
-                        <img src="${data.imageUrl}" alt="AI Art">
-                        <br><br>
-                        <a href="${data.imageUrl}" target="_blank" style="color: #38bdf8; text-decoration: underline;">تحميل الصورة بالحجم الكامل</a>
-                    `;
-                } else {
-                    alert('وقع مشكل في التوليد، عاود المحاولة.');
-                }
-            } catch (error) {
-                loadingText.style.display = 'none';
-                alert('خطأ في الاتصال بالسيرفر.');
-            }
-        }
-    </script>
+    <!-- زر التوليد -->
+    <button class="btn">صاوب التصميم دابا 🚀</button>
+  </div>
 
 </body>
     </html>
-                                                           
+            
