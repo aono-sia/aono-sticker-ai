@@ -338,7 +338,7 @@
         placeholder: "مثال: Cute blue cat sticker...",
         loading: "جاري رسم التصميم بسرعة فائقة... ⚡",
         alertText: "المرجو كتابة وصف أو فكرة للتصميم أولاً!",
-        refusedText: "عذراً، تم رفض إنشاء الصورة. قد يكون السبب ضغط على السيرفر أو كلمات غير مسموح بها."
+        errorText: "تعذر توليد الصورة حالياً، ضغط على السيرفر. عاود الضغط على زر التوليد مجدداً! 🔄"
       },
       ar: {
         desc: "قم بتصميم ملصقات، صور شخصية، وخلفيات بالذكاء الاصطناعي في ثوانٍ!",
@@ -350,7 +350,7 @@
         placeholder: "مثال: Cute blue cat sticker...",
         loading: "جاري رسم التصميم بسرعة فائقة... ⚡",
         alertText: "يرجى كتابة وصف أو فكرة للتصميم أولاً!",
-        refusedText: "عذراً، تم رفض إنشاء الصورة. قد يكون السبب ضغط على السيرفر أو كلمات غير مسموح بها."
+        errorText: "تعذر توليد الصورة حالياً، ضغط على السيرفر. عاود الضغط على زر التوليد مجدداً! 🔄"
       },
       en: {
         desc: "Create AI stickers, profile pictures, and wallpapers in seconds!",
@@ -362,9 +362,8 @@
         placeholder: "e.g., Cute blue cat sticker...",
         loading: "Generating design quickly... ⚡",
         alertText: "Please enter a prompt or idea first!",
-        refusedText: "Sorry, image generation was refused. This could be due to server load or restricted words."
+        errorText: "Server busy. Please click generate again! 🔄"
       }
-      // يمكن إضافة باقي اللغات هنا بنفس الطريقة
     };
 
     function setLanguage(lang, btnElement) {
@@ -402,35 +401,37 @@
 
       resultContainer.style.display = "block";
       loadingText.style.display = "block";
+      loadingText.style.color = "#38bdf8";
       loadingText.innerText = t.loading;
       imgWrapper.style.display = "none";
 
       let colorDesc = "vibrant colors";
-      if (colorStyle === "vibrant") colorDesc = "vivid ultra-saturated bright rich colors, high contrast, popping neon accents, bright eye-catching color palette, hd";
-      if (colorStyle === "pastel") colorDesc = "soft pastel aesthetic colors, clean gentle tones, hd";
-      if (colorStyle === "dark") colorDesc = "deep rich dark cinematic tones, dramatic contrast, hd";
+      if (colorStyle === "vibrant") colorDesc = "vivid ultra-saturated bright rich colors, high contrast, popping neon accents";
+      if (colorStyle === "pastel") colorDesc = "soft pastel aesthetic colors, clean gentle tones";
+      if (colorStyle === "dark") colorDesc = "deep rich dark cinematic tones, dramatic contrast";
 
-      const qualityDesc = quality === '4k' ? "hyper-detailed 4K vector graphic art, flawless render, masterwork, clean lines" : "high-definition digital illustration, clean sharp details";
+      const qualityDesc = quality === '4k' ? "hyper-detailed 4K vector graphic art" : "high-definition digital art illustration";
       
-      // تنظيف المدخلات وتنسيق البرومبت للحصول على صورة واضحة ومحددة
-      const cleanedInput = promptInput.replace(//g, ''); // إزالة الرموز الخاصة
-      const fullPrompt = `professional die-cut vector sticker of ${cleanedInput}, centered, solid pure white background, bold outlines, minimalist style, ${colorDesc}, ${qualityDesc}, studio lighting`;
+      const cleanedInput = promptInput.replace(//g, '');
+      const fullPrompt = `professional die-cut vector sticker of ${cleanedInput}, centered, solid pure white background, bold outlines, ${colorDesc}, ${qualityDesc}`;
       
       const timestamp = new Date().getTime();
       const encodedPrompt = encodeURIComponent(fullPrompt);
-      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1024&height=1024&nologo=true&seed=${timestamp}&enhance=true`; // زيادة الدقة Enhance
+      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&seed=${timestamp}`;
 
       const img = new Image();
       img.src = imageUrl;
+      
       img.onload = function() {
         generatedImage.src = imageUrl;
         downloadLink.href = imageUrl;
         loadingText.style.display = "none";
         imgWrapper.style.display = "inline-block";
       };
+
       img.onerror = function() {
-        loadingText.innerText = t.refusedText; // عرض رسالة الرفض
-        loadingText.style.color = "red";
+        loadingText.innerText = t.errorText;
+        loadingText.style.color = "#f472b6";
       };
     }
   </script>
