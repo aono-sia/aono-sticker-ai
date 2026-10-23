@@ -53,7 +53,6 @@
       color: #cbd5e1;
       font-weight: bold;
     }
-    /* أزرار اختيار اللغات بشكل عمودي متناسق */
     .lang-container {
       display: flex;
       flex-direction: column;
@@ -80,7 +79,6 @@
       border-color: #38bdf8;
       font-weight: bold;
     }
-
     select, input[type="text"] {
       width: 100%;
       padding: 14px;
@@ -90,7 +88,6 @@
       color: #ffffff;
       font-size: 1rem;
       outline: none;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
     }
     select:focus, input[type="text"]:focus {
       border-color: #38bdf8;
@@ -127,5 +124,157 @@
       margin-top: 15px;
     }
   </style>
-</
+</head>
+<body>
+
+  <div class="container">
+    <h1 id="app-title">AONOVERSE AI</h1>
+    <p id="app-desc">صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!</p>
+
+    <!-- قائمة اللغات العمودية كأزرار -->
+    <div class="option-group">
+      <label id="lbl-lang">🌐 اختر اللغة (Language):</label>
+      <div class="lang-container">
+        <button class="lang-btn active" onclick="setLanguage('ary', this)">🇲🇦 الدارجة المغربية (Moroccan Darija)</button>
+        <button class="lang-btn" onclick="setLanguage('ar', this)">🇸🇦 العربية الفصحى (Arabic)</button>
+        <button class="lang-btn" onclick="setLanguage('en', this)">🇬🇧 English (الإنجليزية)</button>
+        <button class="lang-btn" onclick="setLanguage('fr', this)">🇫🇷 Français (الفرنسية)</button>
+      </div>
+    </div>
+
+    <!-- كتابة الوصف أو الفكرة -->
+    <div class="option-group">
+      <label id="lbl-prompt">✍️ شنو بغيتي نصاوب ليك؟ (اكتب الفكرة):</label>
+      <input type="text" id="prompt-input" placeholder="مثال: Cute anime cat sticker..." />
+    </div>
+
+    <!-- نمط الألوان -->
+    <div class="option-group">
+      <label id="lbl-color">🎨 نمط الألوان (Color Style):</label>
+      <select id="color-style">
+        <option value="vibrant">ألوان زاهية ونيون (Vibrant & Neon)</option>
+        <option value="pastel">ألوان هادئة (Pastel)</option>
+        <option value="dark">داكن وغموض (Dark & Moody)</option>
+      </select>
+    </div>
+
+    <!-- الجودة -->
+    <div class="option-group">
+      <label id="lbl-quality">✨ الجودة والوضوح (Quality):</label>
+      <select id="quality">
+        <option value="hd">عالية الوضوح (HD)</option>
+        <option value="4k">أعلى جودة تفاصيل (4K Ultra)</option>
+      </select>
+    </div>
+
+    <!-- زر التوليد الفعلي -->
+    <button class="btn" id="btn-generate" onclick="generateSticker()">توليد الستيكر بالذكاء الاصطناعي 🚀</button>
+
+    <!-- منطقة عرض النتيجة -->
+    <div id="result-container">
+      <div class="loading" id="loading-text">جاري رسم الستيكر عبر الذكاء الاصطناعي... ⏳</div>
+      <img id="generated-image" src="" alt="AI Generated Sticker" style="display:none;" />
+    </div>
+  </div>
+
+  <script>
+    let currentLang = 'ary';
+
+    const texts = {
+      ary: {
+        desc: "صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!",
+        lblLang: "🌐 اختر اللغة (Language):",
+        lblPrompt: "✍️ شنو بغيتي نصاوب ليك؟ (اكتب الفكرة):",
+        lblColor: "🎨 نمط الألوان (Color Style):",
+        lblQuality: "✨ الجودة والوضوح (Quality):",
+        btnGen: "توليد الستيكر بالذكاء الاصطناعي 🚀",
+        placeholder: "مثال: Cute anime cat sticker...",
+        loading: "جاري رسم الستيكر عبر الذكاء الاصطناعي... ⏳",
+        alertText: "المرجو كتابة وصف أو فكرة للتصميم أولاً!"
+      },
+      ar: {
+        desc: "قم بتصميم ملصقات، صور شخصية، وخلفيات بالذكاء الاصطناعي في ثوانٍ!",
+        lblLang: "🌐 اختر اللغة (Language):",
+        lblPrompt: "✍️ ماذا تريد أن نصمم لك؟ (اكتب الفكرة):",
+        lblColor: "🎨 نمط الألوان (Color Style):",
+        lblQuality: "✨ الجودة والوضوح (Quality):",
+        btnGen: "توليد التصميم الآن 🚀",
+        placeholder: "مثال: Cute anime cat sticker...",
+        loading: "جاري رسم التصميم عبر الذكاء الاصطناعي... ⏳",
+        alertText: "يرجى كتابة وصف أو فكرة للتصميم أولاً!"
+      },
+      en: {
+        desc: "Create AI stickers, profile pictures, and wallpapers in seconds!",
+        lblLang: "🌐 Select Language:",
+        lblPrompt: "✍️ What do you want to create? (Enter prompt):",
+        lblColor: "🎨 Color Style:",
+        lblQuality: "✨ Quality / Clarity:",
+        btnGen: "Generate Design Now 🚀",
+        placeholder: "e.g., Cute anime cat sticker...",
+        loading: "Generating design with AI... ⏳",
+        alertText: "Please enter a prompt or idea first!"
+      },
+      fr: {
+        desc: "Créez des stickers, avatars et fonds d'écran IA en quelques secondes !",
+        lblLang: "🌐 Choisir la langue :",
+        lblPrompt: "✍️ Que voulez-vous créer ? (Entrez l'idée) :",
+        lblColor: "🎨 Style de couleur :",
+        lblQuality: "✨ Qualité / Clarté :",
+        btnGen: "Générer le design 🚀",
+        placeholder: "ex: Cute anime cat sticker...",
+        loading: "Génération du design par l'IA... ⏳",
+        alertText: "Veuillez d'abord entrer une idée de design !"
+      }
+    };
+
+    function setLanguage(lang, btnElement) {
+      currentLang = lang;
+      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+      btnElement.classList.add('active');
+
+      const t = texts[lang] || texts["en"];
+
+      document.getElementById("app-desc").innerText = t.desc;
+      document.getElementById("lbl-lang").innerText = t.lblLang;
+      document.getElementById("lbl-prompt").innerText = t.lblPrompt;
+      document.getElementById("lbl-color").innerText = t.lblColor;
+      document.getElementById("lbl-quality").innerText = t.lblQuality;
+      document.getElementById("btn-generate").innerText = t.btnGen;
+      document.getElementById("prompt-input").placeholder = t.placeholder;
+    }
+
+    function generateSticker() {
+      const promptInput = document.getElementById("prompt-input").value;
+      const colorStyle = document.getElementById("color-style").value;
+      const t = texts[currentLang] || texts["en"];
+      
+      if (!promptInput.trim()) {
+        alert(t.alertText);
+        return;
+      }
+
+      const resultContainer = document.getElementById("result-container");
+      const loadingText = document.getElementById("loading-text");
+      const generatedImage = document.getElementById("generated-image");
+
+      resultContainer.style.display = "block";
+      loadingText.style.display = "block";
+      loadingText.innerText = t.loading;
+      generatedImage.style.display = "none";
+
+      const fullPrompt = `${promptInput}, ${colorStyle} style, high quality sticker design, white background`;
+      const encodedPrompt = encodeURIComponent(fullPrompt);
+      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true`;
+
+      const img = new Image();
+      img.src = imageUrl;
+      img.onload = function() {
+        generatedImage.src = imageUrl;
+        loadingText.style.display = "none";
+        generatedImage.style.display = "block";
+      };
+    }
+  </script>
+</body>
+  </html>
   
