@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" id="html-root">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -100,6 +100,10 @@
       gap: 8px;
     }
 
+    html[dir="ltr"] .option-group {
+      text-align: left;
+    }
+
     label {
       font-size: 0.95rem;
       color: #e2e8f0;
@@ -142,6 +146,10 @@
       cursor: pointer;
       text-align: right;
       transition: all 0.25s ease;
+    }
+
+    html[dir="ltr"] .lang-btn {
+      text-align: left;
     }
 
     .lang-btn:hover {
@@ -257,14 +265,14 @@
     }
   </style>
 </head>
-<body id="body-dir" dir="rtl">
+<body>
 
   <div class="container">
     <div class="badge">✦ NEXT-GEN AI STUDIO</div>
     <h1 id="app-title">AONOVERSE AI</h1>
     <p id="app-desc">صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!</p>
 
-    <!-- قائمة لغات العالم عمودياً وبدون استثناء -->
+    <!-- قائمة اللغات العمودية -->
     <div class="option-group">
       <label id="lbl-lang">🌐 اختر لغتك (Global Languages):</label>
       <div class="lang-container">
@@ -286,7 +294,7 @@
       </div>
     </div>
 
-    <!-- كتابة الوصف أو الفكرة -->
+    <!-- الوصف -->
     <div class="option-group">
       <label id="lbl-prompt">✍️ شنو بغيتي نصاوب ليك؟ (اكتب الفكرة):</label>
       <input type="text" id="prompt-input" placeholder="مثال: Cute blue cat sticker..." />
@@ -311,10 +319,10 @@
       </select>
     </div>
 
-    <!-- زر التوليد الفعلي -->
+    <!-- زر التوليد -->
     <button class="btn" id="btn-generate" onclick="generateSticker()">توليد التصميم بالذكاء الاصطناعي 🚀</button>
 
-    <!-- منطقة عرض الصورة -->
+    <!-- منطقة عرض النتيجة -->
     <div id="result-container">
       <div class="loading" id="loading-text">جاري رسم التصميم بسرعة فائقة... ⚡</div>
       <div class="img-wrapper" id="img-wrapper" style="display:none;">
@@ -323,173 +331,175 @@
       </div>
     </div>
   </div>
-
-  <script>
+    <script>
     let currentLang = 'ary';
 
-    const texts = {
+    const dictionary = {
       ary: {
-        dir: "rtl",
-        desc: "صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!",
-        lblLang: "🌐 اختر لغتك (Global Languages):",
-        lblPrompt: "✍️ شنو بغيتي نصاوب ليك؟ (اكتب الفكرة):",
-        lblColor: "🎨 نمط الألوان (Color Style):",
-        lblQuality: "✨ الجودة والوضوح (Quality):",
-        btnGen: "توليد التصميم بالذكاء الاصطناعي 🚀",
-        placeholder: "مثال: Cute blue cat sticker...",
-        loading: "جاري رسم التصميم بسرعة فائقة... ⚡",
-        alertText: "المرجو كتابة وصف أو فكرة للتصميم أولاً!",
-        vib: "ألوان زاهية ونيون ساطعة (Vibrant & Neon)",
-        pas: "ألوان هادئة وناعمة (Pastel)",
-        dark: "داكن وغموض سينمائي (Dark & Moody)",
-        hd: "عالية الوضوح (HD)",
-        k4: "أعلى جودة تفاصيل (4K Ultra)",
-        downloadBtn: "📥 تحميل الصورة بالكامل"
+        dir: 'rtl',
+        desc: 'صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!',
+        lblLang: '🌐 اختر لغتك (Global Languages):',
+        lblPrompt: '✍️ شنو بغيتي نصاوب ليك؟ (اكتب الفكرة):',
+        lblColor: '🎨 نمط الألوان (Color Style):',
+        lblQuality: '✨ الجودة والوضوح (Quality):',
+        btnGen: 'توليد التصميم بالذكاء الاصطناعي 🚀',
+        placeholder: 'مثال: Cute blue cat sticker...',
+        loading: 'جاري رسم التصميم بسرعة فائقة... ⚡',
+        alertText: 'المرجو كتابة وصف أو فكرة للتصميم أولاً!',
+        vib: 'ألوان زاهية ونيون ساطعة (Vibrant & Neon)',
+        pas: 'ألوان هادئة وناعمة (Pastel)',
+        dark: 'داكن وغموض سينمائي (Dark & Moody)',
+        hd: 'عالية الوضوح (HD)',
+        k4: 'أعلى جودة تفاصيل (4K Ultra)',
+        downloadBtn: '📥 تحميل الصورة بالكامل'
       },
       ar: {
-        dir: "rtl",
-        desc: "قم بتصميم ملصقات، صور شخصية، وخلفيات بالذكاء الاصطناعي في ثوانٍ!",
-        lblLang: "🌐 اختر لغتك (Global Languages):",
-        lblPrompt: "✍️ ماذا تريد أن نصمم لك؟ (اكتب الفكرة):",
-        lblColor: "🎨 نمط الألوان (Color Style):",
-        lblQuality: "✨ الجودة والوضوح (Quality):",
-        btnGen: "توليد التصميم الآن 🚀",
-        placeholder: "مثال: Cute blue cat sticker...",
-        loading: "جاري رسم التصميم بسرعة فائقة... ⚡",
-        alertText: "يرجى كتابة وصف أو فكرة للتصميم أولاً!",
-        vib: "ألوان زاهية ونيون ساطعة (Vibrant & Neon)",
-        pas: "ألوان هادئة وناعمة (Pastel)",
-        dark: "داكن وغموض سينمائي (Dark & Moody)",
-        hd: "عالية الوضوح (HD)",
-        k4: "أعلى جودة تفاصيل (4K Ultra)",
-        downloadBtn: "📥 تحميل الصورة بالكامل"
-      },
-      he: {
-        dir: "rtl",
-        desc: "צור מדבקות, תמונות פרופיל ורקעים באמצעות בינה מלאכותית בשניות!",
-        lblLang: "🌐 בחר שפה:",
-        lblPrompt: "✍️ מה תרצה שנעצב עבורך? (הכנס רעיון):",
-        lblColor: "🎨 סגנון צבע:",
-        lblQuality: "✨ איכות ובהירות:",
-        btnGen: "צור עיצוב עכשיו 🚀",
-        placeholder: "לדוגמה: Cute blue cat sticker...",
-        loading: "יוצר עיצוב במהירות... ⚡",
-        alertText: "אנא הכנס רעיון לעיצוב תחילה!",
-        vib: "צבעים חיים וניאון (Vibrant & Neon)",
-        pas: "צבעי פסטל רכים (Pastel)",
-        dark: "כהה וקולנועי (Dark & Moody)",
-        hd: "רזולוציה גבוהה (HD)",
-        k4: "איכות גבוהה במיוחד (4K Ultra)",
-        downloadBtn: "📥 הורד תמונה מלאה"
-      },
-      fa: {
-        dir: "rtl",
-        desc: "استیکر، عکس پروفایل و پس‌زمینه با هوش مصنوعی در چند ثانیه بسازید!",
-        lblLang: "🌐 انتخاب زبان:",
-        lblPrompt: "✍️ چه چیزی می‌خواهید طراحی کنیم؟ (ایده را بنویسید):",
-        lblColor: "🎨 سبک رنگ:",
-        lblQuality: "✨ کیفیت و وضوح:",
-        btnGen: "تولید طرح الآن 🚀",
-        placeholder: "مثال: Cute blue cat sticker...",
-        loading: "در حال رسم طرح با سرعت بالا... ⚡",
-        alertText: "لطفاً ابتدا ایده یا توصیفی وارد کنید!",
-        vib: "رنگ‌های زنده و نئون (Vibrant & Neon)",
-        pas: "رنگ‌های پاستلی ملایم (Pastel)",
-        dark: "تاریک و سینمایی (Dark & Moody)",
-        hd: "کیفیت بالا (HD)",
-        k4: "بالاترین کیفیت (4K Ultra)",
-        downloadBtn: "📥 دانلود کامل تصویر"
+        dir: 'rtl',
+        desc: 'قم بتصميم ملصقات، صور شخصية، وخلفيات بالذكاء الاصطناعي في ثوانٍ!',
+        lblLang: '🌐 اختر لغتك (Global Languages):',
+        lblPrompt: '✍️ ماذا تريد أن نصمم لك؟ (اكتب الفكرة):',
+        lblColor: '🎨 نمط الألوان (Color Style):',
+        lblQuality: '✨ الجودة والوضوح (Quality):',
+        btnGen: 'توليد التصميم الآن 🚀',
+        placeholder: 'مثال: Cute blue cat sticker...',
+        loading: 'جاري رسم التصميم بسرعة فائقة... ⚡',
+        alertText: 'يرجى كتابة وصف أو فكرة للتصميم أولاً!',
+        vib: 'ألوان زاهية ونيون ساطعة (Vibrant & Neon)',
+        pas: 'ألوان هادئة وناعمة (Pastel)',
+        dark: 'داكن وغموض سينمائي (Dark & Moody)',
+        hd: 'عالية الوضوح (HD)',
+        k4: 'أعلى جودة تفاصيل (4K Ultra)',
+        downloadBtn: '📥 تحميل الصورة بالكامل'
       },
       en: {
-        dir: "ltr",
-        desc: "Create AI stickers, profile pictures, and wallpapers in seconds!",
-        lblLang: "🌐 Select Language:",
-        lblPrompt: "✍️ What do you want to create? (Enter prompt):",
-        lblColor: "🎨 Color Style:",
-        lblQuality: "✨ Quality / Clarity:",
-        btnGen: "Generate Design Now 🚀",
-        placeholder: "e.g., Cute blue cat sticker...",
-        loading: "Generating design quickly... ⚡",
-        alertText: "Please enter a prompt or idea first!",
-        vib: "Vibrant & Neon Colors",
-        pas: "Soft Pastel Colors",
-        dark: "Dark & Moody Cinematic",
-        hd: "High Definition (HD)",
-        k4: "4K Ultra Detail",
-        downloadBtn: "📥 Download Full Image"
+        dir: 'ltr',
+        desc: 'Create AI stickers, profile pictures, and wallpapers in seconds!',
+        lblLang: '🌐 Select Language:',
+        lblPrompt: '✍️ What do you want to create? (Enter prompt):',
+        lblColor: '🎨 Color Style:',
+        lblQuality: '✨ Quality / Clarity:',
+        btnGen: 'Generate Design Now 🚀',
+        placeholder: 'e.g., Cute blue cat sticker...',
+        loading: 'Generating design quickly... ⚡',
+        alertText: 'Please enter a prompt or idea first!',
+        vib: 'Vibrant & Neon Colors',
+        pas: 'Soft Pastel Colors',
+        dark: 'Dark & Moody Cinematic',
+        hd: 'High Definition (HD)',
+        k4: '4K Ultra Detail',
+        downloadBtn: '📥 Download Full Image'
       },
       fr: {
-        dir: "ltr",
+        dir: 'ltr',
         desc: "Créez des stickers, avatars et fonds d'écran IA en quelques secondes !",
-        lblLang: "🌐 Choisir la langue :",
+        lblLang: '🌐 Choisir la langue :',
         lblPrompt: "✍️ Que voulez-vous créer ? (Entrez l'idée) :",
-        lblColor: "🎨 Style de couleur :",
-        lblQuality: "✨ Qualité / Clarté :",
-        btnGen: "Générer le design 🚀",
-        placeholder: "ex: Cute blue cat sticker...",
-        loading: "Génération rapide du design... ⚡",
+        lblColor: '🎨 Style de couleur :',
+        lblQuality: '✨ Qualité / Clarté :',
+        btnGen: 'Générer le design 🚀',
+        placeholder: 'ex: Cute blue cat sticker...',
+        loading: 'Génération rapide du design... ⚡',
         alertText: "Veuillez d'abord entrer une idée de design !",
-        vib: "Couleurs vives et néون (Vibrant & Neon)",
-        pas: "Couleurs pastel douces (Pastel)",
-        dark: "Sombre et cinématique (Dark & Moody)",
-        hd: "Haute Définition (HD)",
-        k4: "Détail 4K Ultra",
+        vib: 'Couleurs vives et néon (Vibrant & Neon)',
+        pas: 'Couleurs pastel douces (Pastel)',
+        dark: 'Sombre et cinématique (Dark & Moody)',
+        hd: 'Haute Définition (HD)',
+        k4: 'Détail 4K Ultra',
         downloadBtn: "📥 Télécharger l'image"
       },
       es: {
-        dir: "ltr",
-        desc: "¡Crea stickers, avatares y fondos de pantalla con IA en segundos!",
-        lblLang: "🌐 Seleccionar Idioma:",
-        lblPrompt: "✍️ ¿Qué quieres crear? (Ingresa la idea):",
-        lblColor: "🎨 Estilo de Color:",
-        lblQuality: "✨ Calidad / Claridad:",
-        btnGen: "Generar Diseño 🚀",
-        placeholder: "ej: Cute blue cat sticker...",
-        loading: "Generando diseño rápidamente... ⚡",
-        alertText: "¡Por favor ingresa una idea primero!",
-        vib: "Colores vibrantes y neón",
-        pas: "Colores pastel suaves",
-        dark: "Oscuro y cinemático",
-        hd: "Alta Definición (HD)",
-        k4: "4K Ultra Detalle",
-        downloadBtn: "📥 Descargar Imagen"
+        dir: 'ltr',
+        desc: '¡Crea stickers, avatares y fondos de pantalla con IA en segundos!',
+        lblLang: '🌐 Seleccionar Idioma:',
+        lblPrompt: '✍️ ¿Qué quieres crear? (Ingresa la idea):',
+        lblColor: '🎨 Estilo de Color:',
+        lblQuality: '✨ Calidad / Claridad:',
+        btnGen: 'Generar Diseño 🚀',
+        placeholder: 'ej: Cute blue cat sticker...',
+        loading: 'Generando diseño rápidamente... ⚡',
+        alertText: '¡Por favor ingresa una idea primero!',
+        vib: 'Colores vibrantes y neón',
+        pas: 'Colores pastel suaves',
+        dark: 'Oscuro y cinemático',
+        hd: 'Alta Definición (HD)',
+        k4: '4K Ultra Detalle',
+        downloadBtn: '📥 Descargar Imagen'
+      },
+      he: {
+        dir: 'rtl',
+        desc: 'צור מדבקות, תמונות פרופיל ורקעים באמצעות בינה מלאכותית בשניות!',
+        lblLang: '🌐 בחר שפה:',
+        lblPrompt: '✍️ מה תרצה שנעצב עבורך? (הכנס רעיון):',
+        lblColor: '🎨 סגנון צבע:',
+        lblQuality: '✨ איכות ובהירות:',
+        btnGen: 'צור עיצוב עכשיו 🚀',
+        placeholder: 'לדוגמה: Cute blue cat sticker...',
+        loading: 'יוצר עיצוב במהירות... ⚡',
+        alertText: 'אנא הכנס רעיון לעיצוב תחילה!',
+        vib: 'צבעים חיים וניאון (Vibrant & Neon)',
+        pas: 'צבעי פסטל רכים (Pastel)',
+        dark: 'כהה וקולנועי (Dark & Moody)',
+        hd: 'רזולוציה גבוהה (HD)',
+        k4: 'איכות גבוהה במיוחד (4K Ultra)',
+        downloadBtn: '📥 הורד תמונה מלאה'
+      },
+      fa: {
+        dir: 'rtl',
+        desc: 'استیکر، عکس پروفایل و پس‌زمینه با هوش مصنوعی در چند ثانیه بسازید!',
+        lblLang: '🌐 انتخاب زبان:',
+        lblPrompt: '✍️ چه چیزی می‌خواهید طراحی کنیم؟ (ایده را بنویسید):',
+        lblColor: '🎨 سبک رنگ:',
+        lblQuality: '✨ کیفیت و وضوح:',
+        btnGen: 'تولید طرح الآن 🚀',
+        placeholder: 'مثال: Cute blue cat sticker...',
+        loading: 'در حال رسم طرح با سرعت بالا... ⚡',
+        alertText: 'لطفاً ابتدا ایده یا توصیفی وارد کنید!',
+        vib: 'رنگ‌های زنده و نئون (Vibrant & Neon)',
+        pas: 'رنگ‌های پاستلی ملایم (Pastel)',
+        dark: 'تاریک و سینمایی (Dark & Moody)',
+        hd: 'کیفیت بالا (HD)',
+        k4: 'بالاترین کیفیت (4K Ultra)',
+        downloadBtn: '📥 دانلود کامل تصویر'
       }
     };
 
     function setLanguage(lang, btnElement) {
       currentLang = lang;
+      
       document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-      btnElement.classList.add('active');
+      if(btnElement) btnElement.classList.add('active');
 
-      const t = texts[lang] || texts["en"];
-      
-      // تغيير اتجاه الصفحة تلقائياً حسب اللغة (RTL للعربية/العبرية/الفارسية، LTR للإنجليزية/الفرنسية وغيرها)
-      document.getElementById("body-dir").dir = t.dir;
+      const t = dictionary[lang] || dictionary['en'];
+      const defaultEn = dictionary['en'];
 
-      document.getElementById("app-desc").innerText = t.desc;
-      document.getElementById("lbl-lang").innerText = t.lblLang;
-      document.getElementById("lbl-prompt").innerText = t.lblPrompt;
-      document.getElementById("lbl-color").innerText = t.lblColor;
-      document.getElementById("lbl-quality").innerText = t.lblQuality;
-      document.getElementById("btn-generate").innerText = t.btnGen;
-      document.getElementById("prompt-input").placeholder = t.placeholder;
-      
-      document.getElementById("opt-vib").innerText = t.vib;
-      document.getElementById("opt-pas").innerText = t.pas;
-      document.getElementById("opt-dark").innerText = t.dark;
-      document.getElementById("opt-hd").innerText = t.hd;
-      document.getElementById("opt-4k").innerText = t.k4;
-      document.getElementById("download-link").innerText = t.downloadBtn;
+      const val = (key) => t[key] || defaultEn[key] || '';
+
+      document.getElementById('html-root').setAttribute('dir', val('dir'));
+
+      document.getElementById('app-desc').innerText = val('desc');
+      document.getElementById('lbl-lang').innerText = val('lblLang');
+      document.getElementById('lbl-prompt').innerText = val('lblPrompt');
+      document.getElementById('lbl-color').innerText = val('lblColor');
+      document.getElementById('lbl-quality').innerText = val('lblQuality');
+      document.getElementById('btn-generate').innerText = val('btnGen');
+      document.getElementById('prompt-input').placeholder = val('placeholder');
+
+      document.getElementById('opt-vib').innerText = val('vib');
+      document.getElementById('opt-pas').innerText = val('pas');
+      document.getElementById('opt-dark').innerText = val('dark');
+      document.getElementById('opt-hd').innerText = val('hd');
+      document.getElementById('opt-4k').innerText = val('k4');
+      document.getElementById('download-link').innerText = val('downloadBtn');
     }
 
     function generateSticker() {
       let promptInput = document.getElementById("prompt-input").value;
       const colorStyle = document.getElementById("color-style").value;
       const quality = document.getElementById("quality").value;
-      const t = texts[currentLang] || texts["en"];
+      const t = dictionary[currentLang] || dictionary["en"];
       
       if (!promptInput.trim()) {
-        alert(t.alertText);
+        alert(t.alertText || "Please enter a prompt!");
         return;
       }
 
@@ -501,7 +511,7 @@
 
       resultContainer.style.display = "block";
       loadingText.style.display = "block";
-      loadingText.innerText = t.loading;
+      loadingText.innerText = t.loading || "Generating...";
       imgWrapper.style.display = "none";
 
       let colorDesc = "vibrant colors";
@@ -511,32 +521,41 @@
 
       const qualityDesc = quality === '4k' ? "hyper-detailed 4K vector graphic art" : "high-definition digital art illustration";
       
-      const cleanedInput = promptInput.replace(//g, '');
+      const cleanedInput = promptInput.replace(/[<>\"']/g, '');
       const fullPrompt = `professional die-cut vector sticker of ${cleanedInput}, centered, solid pure white background, bold outlines, ${colorDesc}, ${qualityDesc}`;
       
       const timestamp = new Date().getTime();
       const encodedPrompt = encodeURIComponent(fullPrompt);
-      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&seed=${timestamp}`;
+      
+      const imageUrl1 = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&seed=${timestamp}`;
+      const imageUrl2 = `https://pollinations.ai/p/${encodedPrompt}?width=512&height=512&nologo=true&seed=${timestamp}`;
 
       const img = new Image();
-      img.src = imageUrl;
+      img.src = imageUrl1;
       
       img.onload = function() {
-        generatedImage.src = imageUrl;
-        downloadLink.href = imageUrl;
+        generatedImage.src = imageUrl1;
+        downloadLink.href = imageUrl1;
         loadingText.style.display = "none";
         imgWrapper.style.display = "inline-block";
       };
 
       img.onerror = function() {
-        const imageUrlAlt = `https://pollinations.ai/p/${encodedPrompt}?width=512&height=512&nologo=true&seed=${timestamp}`;
-        generatedImage.src = imageUrlAlt;
-        downloadLink.href = imageUrlAlt;
-        loadingText.style.display = "none";
-        imgWrapper.style.display = "inline-block";
+        const imgAlt = new Image();
+        imgAlt.src = imageUrl2;
+        imgAlt.onload = function() {
+          generatedImage.src = imageUrl2;
+          downloadLink.href = imageUrl2;
+          loadingText.style.display = "none";
+          imgWrapper.style.display = "inline-block";
+        };
+        imgAlt.onerror = function() {
+          loadingText.innerText = "Server busy, please click generate again! 🔄";
+        };
       };
     }
   </script>
 </body>
-  </html>
+      </html>
+  
   
