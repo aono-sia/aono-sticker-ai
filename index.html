@@ -126,42 +126,21 @@
       margin-top: 20px;
       display: none;
     }
-    /* تصميم إطار الستيكر مع النص العربي الفخم فوقه */
-    .sticker-card {
-      position: relative;
-      border-radius: 12px;
-      border: 2px solid #38bdf8;
-      overflow: hidden;
-      margin-top: 15px;
-      background: #ffffff;
-    }
-    .sticker-text-overlay {
-      position: absolute;
-      bottom: 15px;
-      left: 0;
-      right: 0;
-      background: rgba(15, 23, 42, 0.85);
-      color: #38bdf8;
-      padding: 10px;
-      font-size: 1.3rem;
-      font-weight: bold;
-      text-align: center;
-      border-bottom-left-radius: 10px;
-      border-bottom-right-radius: 10px;
-      box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
-    }
+    /* إطار نقي وواضحة لعرض الصورة المصممة بالذكاء الاصطناعي مباشرة */
     .img-wrapper {
       position: relative;
       overflow: hidden;
+      border-radius: 12px;
+      border: 2px solid #38bdf8;
+      margin-top: 15px;
+      display: inline-block;
       width: 100%;
-      display: block;
+      background: #ffffff;
     }
     #generated-image {
       width: 100%;
       height: auto;
       display: block;
-      clip-path: inset(0 0 35px 0);
-      transform: scale(1.05);
     }
     .loading {
       color: #38bdf8;
@@ -199,7 +178,7 @@
     <!-- كتابة الوصف أو الفكرة -->
     <div class="option-group">
       <label id="lbl-prompt">✍️ شنو بغيتي نصاوب ليك؟ (اكتب الفكرة):</label>
-      <input type="text" id="prompt-input" placeholder="مثال: ستيكر ورود مع جمعة مباركة..." />
+      <input type="text" id="prompt-input" placeholder="مثال: Cute blue cat sticker..." />
     </div>
 
     <!-- نمط الألوان -->
@@ -222,16 +201,13 @@
     </div>
 
     <!-- زر التوليد الفعلي -->
-    <button class="btn" id="btn-generate" onclick="generateSticker()">توليد الستيكر بالذكاء الاصطناعي 🚀</button>
+    <button class="btn" id="btn-generate" onclick="generateSticker()">توليد التصميم بالذكاء الاصطناعي 🚀</button>
 
-    <!-- منطقة عرض النتيجة مع النص المدمج -->
+    <!-- منطقة عرض النتيجة -->
     <div id="result-container">
-      <div class="loading" id="loading-text">جاري رسم الستيكر عبر الذكاء الاصطناعي... ⏳</div>
-      <div class="sticker-card" id="sticker-card" style="display:none;">
-        <div class="img-wrapper">
-          <img id="generated-image" src="" alt="AI Generated Sticker" />
-        </div>
-        <div class="sticker-text-overlay" id="sticker-text-overlay">جمعة مباركة 🌸</div>
+      <div class="loading" id="loading-text">جاري رسم التصميم بدقة عالية... ⏳</div>
+      <div class="img-wrapper" id="img-wrapper" style="display:none;">
+        <img id="generated-image" src="" alt="AI Generated Design" />
       </div>
     </div>
   </div>
@@ -246,9 +222,9 @@
         lblPrompt: "✍️ شنو بغيتي نصاوب ليك؟ (اكتب الفكرة):",
         lblColor: "🎨 نمط الألوان (Color Style):",
         lblQuality: "✨ الجودة والوضوح (Quality):",
-        btnGen: "توليد الستيكر بالذكاء الاصطناعي 🚀",
-        placeholder: "مثال: ستيكر ورود مع جمعة مباركة...",
-        loading: "جاري رسم الستيكر عبر الذكاء الاصطناعي... ⏳",
+        btnGen: "توليد التصميم بالذكاء الاصطناعي 🚀",
+        placeholder: "مثال: Cute blue cat sticker...",
+        loading: "جاري رسم التصميم بدقة عالية... ⏳",
         alertText: "المرجو كتابة وصف أو فكرة للتصميم أولاً!"
       },
       ar: {
@@ -258,8 +234,8 @@
         lblColor: "🎨 نمط الألوان (Color Style):",
         lblQuality: "✨ الجودة والوضوح (Quality):",
         btnGen: "توليد التصميم الآن 🚀",
-        placeholder: "مثال: ستيكر ورود مع جمعة مباركة...",
-        loading: "جاري رسم التصميم عبر الذكاء الاصطناعي... ⏳",
+        placeholder: "مثال: Cute blue cat sticker...",
+        loading: "جاري رسم التصميم بدقة عالية... ⏳",
         alertText: "يرجى كتابة وصف أو فكرة للتصميم أولاً!"
       },
       en: {
@@ -269,85 +245,6 @@
         lblColor: "🎨 Color Style:",
         lblQuality: "✨ Quality / Clarity:",
         btnGen: "Generate Design Now 🚀",
-        placeholder: "e.g., Cute anime cat sticker...",
-        loading: "Generating design with AI... ⏳",
-        alertText: "Please enter a prompt or idea first!"
-      },
-      fr: {
-        desc: "Créez des stickers, avatars et fonds d'écran IA en quelques secondes !",
-        lblLang: "🌐 Choisir la langue :",
-        lblPrompt: "✍️ Que voulez-vous créer ? (Entrez l'idée) :",
-        lblColor: "🎨 Style de couleur :",
-        lblQuality: "✨ Qualité / Clarté :",
-        btnGen: "Générer le design 🚀",
-        placeholder: "ex: Cute anime cat sticker...",
-        loading: "Génération du design par l'IA... ⏳",
-        alertText: "Veuillez d'abord entrer une idée de design !"
-      }
-    };
-
-    function setLanguage(lang, btnElement) {
-      currentLang = lang;
-      document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
-      btnElement.classList.add('active');
-
-      const t = texts[lang] || texts["en"];
-
-      document.getElementById("app-desc").innerText = t.desc;
-      document.getElementById("lbl-lang").innerText = t.lblLang;
-      document.getElementById("lbl-prompt").innerText = t.lblPrompt;
-      document.getElementById("lbl-color").innerText = t.lblColor;
-      document.getElementById("lbl-quality").innerText = t.lblQuality;
-      document.getElementById("btn-generate").innerText = t.btnGen;
-      document.getElementById("prompt-input").placeholder = t.placeholder;
-    }
-
-    function generateSticker() {
-      let promptInput = document.getElementById("prompt-input").value;
-      const colorStyle = document.getElementById("color-style").value;
-      const t = texts[currentLang] || texts["en"];
-      
-      if (!promptInput.trim()) {
-        alert(t.alertText);
-        return;
-      }
-
-      let aiPrompt = "Beautiful bouquet of colorful roses and floral sticker art";
-      let displayCustomText = promptInput; // عرض النص الذي كتبته المستخدمة مباشرة في البطاقة فوق الستيكر
-
-      if (promptInput.includes("جمعة") || promptInput.includes("مباركة")) {
-        aiPrompt = "Sticker art of a gorgeous arrangement of blooming roses, clean white background, vector graphic";
-        displayCustomText = "جمعة مباركة 🌸";
-      } else if (promptInput.includes("ورد") || promptInput.includes("ازهار")) {
-        aiPrompt = "Sticker art of a wonderful bouquet of fresh roses, clean white background, vector illustration";
-      }
-
-      const resultContainer = document.getElementById("result-container");
-      const loadingText = document.getElementById("loading-text");
-      const stickerCard = document.getElementById("sticker-card");
-      const generatedImage = document.getElementById("generated-image");
-      const stickerTextOverlay = document.getElementById("sticker-text-overlay");
-
-      resultContainer.style.display = "block";
-      loadingText.style.display = "block";
-      loadingText.innerText = t.loading;
-      stickerCard.style.display = "none";
-
-      stickerTextOverlay.innerText = displayCustomText;
-
-      const fullPrompt = `${aiPrompt}, ${colorStyle} style, high quality vector sticker design, solid white background`;
-      const encodedPrompt = encodeURIComponent(fullPrompt);
-      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true`;
-
-      const img = new Image();
-      img.src = imageUrl;
-      img.onload = function() {
-        generatedImage.src = imageUrl;
-        loadingText.style.display = "none";
-        stickerCard.style.display = "block";
-      };
-    }
-  </script>
-</body>
-  </html>
-  
+        placeholder: "e.g., Cute blue cat sticker...",
+        loading: "Generating
+        
