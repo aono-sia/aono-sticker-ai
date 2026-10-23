@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="ar" dir="rtl" id="html-root">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -7,11 +7,9 @@
   <!-- Google Search Console Verification Tag -->
   <meta name="google-site-verification" content="8WV5Wjm3fhXDhBmSGpMQ2yP7sqhaAjU4ty3CxdbBrqM" />
   
-  <title>AONOVERSE AI - Next Gen Studio</title>
+  <title id="page-title">AONOVERSE AI - Next Gen Studio</title>
   <style>
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background-color: #0f172a;
@@ -47,13 +45,16 @@
       margin-bottom: 18px;
       text-align: right;
     }
+    .ltr .option-group {
+      text-align: left;
+    }
     label {
       display: block;
       font-size: 0.9rem;
       color: #cbd5e1;
       margin-bottom: 6px;
     }
-    select, input[type="text"] {
+    select {
       width: 100%;
       padding: 10px 14px;
       border-radius: 8px;
@@ -63,7 +64,7 @@
       font-size: 0.95rem;
       outline: none;
     }
-    select:focus, input[type="text"]:focus {
+    select:focus {
       border-color: #38bdf8;
     }
     .btn {
@@ -87,49 +88,143 @@
 <body>
 
   <div class="container">
-    <h1>AONOVERSE AI</h1>
-    <p>صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!</p>
+    <h1 id="app-title">AONOVERSE AI</h1>
+    <p id="app-desc">صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!</p>
 
-    <!-- اختيار كافة اللغات شاملة الدارجة -->
+    <!-- اختيار اللغة -->
     <div class="option-group">
-      <label for="language">🌐 اختر اللغة (Select Language):</label>
-      <select id="language">
-        <option value="ary">الدارجة المغربية (Moroccan Darija) 🇲🇦</option>
-        <option value="ar">العربية الفصحى (Standard Arabic)</option>
-        <option value="en">English (الإنجليزية)</option>
-        <option value="fr">Français (الفرنسية)</option>
-        <option value="es">Español (الإسبانية)</option>
-        <option value="de">Deutsch (الألمانية)</option>
-        <option value="ja">日本語 (اليابانية - Anime Style)</option>
-        <option value="ko">한국어 (الكورية)</option>
+      <label id="lbl-lang" for="language">🌐 اختر اللغة:</label>
+      <select id="language" onchange="changeLanguage()">
+        <option value="ary">الدارجة المغربية 🇲🇦</option>
+        <option value="ar">العربية الفصحى</option>
+        <option value="en">English</option>
+        <option value="fr">Français</option>
+        <option value="de">Deutsch</option>
       </select>
     </div>
 
-    <!-- اختيار نمط الألوان -->
+    <!-- نمط الألوان -->
     <div class="option-group">
-      <label for="color-style">🎨 نمط الألوان (Color Style):</label>
+      <label id="lbl-color" for="color-style">🎨 نمط الألوان:</label>
       <select id="color-style">
-        <option value="vibrant">ألوان زاهية ونيون (Vibrant & Neon)</option>
-        <option value="pastel">ألوان هادئة (Pastel)</option>
-        <option value="dark">داكن وغموض (Dark & Moody)</option>
-        <option value="bw">أبيض وأسود (Black & White)</option>
+        <option value="vibrant" id="opt-vib">ألوان زاهية ونيون (Vibrant & Neon)</option>
+        <option value="pastel" id="opt-pas">ألوان هادئة (Pastel)</option>
+        <option value="dark" id="opt-drk">داكن وغموض (Dark & Moody)</option>
       </select>
     </div>
 
-    <!-- اختيار الوضوح والجودة -->
+    <!-- الجودة -->
     <div class="option-group">
-      <label for="quality">✨ جودة ووضوح الصورة (Quality / Clarity):</label>
+      <label id="lbl-quality" for="quality">✨ جودة ووضوح الصورة:</label>
       <select id="quality">
-        <option value="hd">عالية الوضوح (HD - 1080p)</option>
-        <option value="2k">وضوح ممتاز (2K Ultra)</option>
-        <option value="4k">أعلى جودة تفاصيل (4K Ultra HD)</option>
+        <option value="hd" id="opt-hd">عالية الوضوح (HD - 1080p)</option>
+        <option value="4k" id="opt-4k">أعلى جودة تفاصيل (4K Ultra HD)</option>
       </select>
     </div>
 
-    <!-- زر التوليد -->
-    <button class="btn">صاوب التصميم دابا 🚀</button>
+    <!-- الزر -->
+    <button class="btn" id="generate-btn" onclick="alertAction()">صاوب التصميم دابا 🚀</button>
   </div>
 
+  <script>
+    const translations = {
+      ary: {
+        desc: "صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!",
+        lblLang: "🌐 اختر اللغة:",
+        lblColor: "🎨 نمط الألوان:",
+        lblQuality: "✨ جودة ووضوح الصورة:",
+        optVib: "ألوان زاهية ونيون",
+        optPas: "ألوان هادئة",
+        optDrk: "داكن وغموض",
+        optHd: "عالية الوضوح (HD)",
+        opt4k: "أعلى جودة (4K)",
+        btnText: "صاوب التصميم دابا 🚀",
+        alertMsg: "جاري توليد التصميم بالذكاء الاصطناعي..."
+      },
+      ar: {
+        desc: "قم بتصميم ملصقات، صور شخصية، وخلفيات بالذكاء الاصطناعي في ثوانٍ!",
+        lblLang: "🌐 اختر اللغة:",
+        lblColor: "🎨 نمط الألوان:",
+        lblQuality: "✨ جودة ووضوح الصورة:",
+        optVib: "ألوان زاهية ونيون",
+        optPas: "ألوان هادئة",
+        optDrk: "داكن وغموض",
+        optHd: "عالية الوضوح (HD)",
+        opt4k: "أعلى جودة (4K)",
+        btnText: "توليد التصميم الآن 🚀",
+        alertMsg: "جاري توليد التصميم بالذكاء الاصطناعي..."
+      },
+      en: {
+        desc: "Create AI stickers, profile pictures, and wallpapers in seconds!",
+        lblLang: "🌐 Select Language:",
+        lblColor: "🎨 Color Style:",
+        lblQuality: "✨ Quality / Clarity:",
+        optVib: "Vibrant & Neon",
+        optPas: "Pastel",
+        optDrk: "Dark & Moody",
+        optHd: "High Definition (HD)",
+        opt4k: "Ultra HD (4K)",
+        btnText: "Generate Design Now 🚀",
+        alertMsg: "Generating design with AI..."
+      },
+      fr: {
+        desc: "Créez des stickers, avatars et fonds d'écran IA en quelques secondes !",
+        lblLang: "🌐 Choisir la langue :",
+        lblColor: "🎨 Style de couleur :",
+        lblQuality: "✨ Qualité / Clarté :",
+        optVib: "Vif & Néon",
+        optPas: "Pastel",
+        optDrk: "Sombre & Mystérieux",
+        optHd: "Haute Définition (HD)",
+        opt4k: "Ultra HD (4K)",
+        btnText: "Générer le design 🚀",
+        alertMsg: "Génération du design par l'IA..."
+      },
+      de: {
+        desc: "Erstelle KI-Sticker, Profilbilder und Hintergrundbilder in Sekunden!",
+        lblLang: "🌐 Sprache wählen:",
+        lblColor: "🎨 Farbstil:",
+        lblQuality: "✨ Qualität / Klarheit:",
+        optVib: "Lebendig & Neon",
+        optPas: "Pastell",
+        optDrk: "Dunkel & Stimmungsvoll",
+        optHd: "High Definition (HD)",
+        opt4k: "Ultra HD (4K)",
+        btnText: "Design jetzt generieren 🚀",
+        alertMsg: "Design wird mit KI generiert..."
+      }
+    };
+
+    function changeLanguage() {
+      const lang = document.getElementById("language").value;
+      const t = translations[lang];
+      const htmlRoot = document.getElementById("html-root");
+
+      if (lang === 'en' || lang === 'fr' || lang === 'de') {
+        htmlRoot.setAttribute("dir", "ltr");
+        htmlRoot.setAttribute("class", "ltr");
+      } else {
+        htmlRoot.setAttribute("dir", "rtl");
+        htmlRoot.setAttribute("class", "");
+      }
+
+      document.getElementById("app-desc").innerText = t.desc;
+      document.getElementById("lbl-lang").innerText = t.lblLang;
+      document.getElementById("lbl-color").innerText = t.lblColor;
+      document.getElementById("lbl-quality").innerText = t.lblQuality;
+      document.getElementById("opt-vib").innerText = t.optVib;
+      document.getElementById("opt-pas").innerText = t.optPas;
+      document.getElementById("opt-drk").innerText = t.optDrk;
+      document.getElementById("opt-hd").innerText = t.optHd;
+      document.getElementById("opt-4k").innerText = t.opt4k;
+      document.getElementById("generate-btn").innerText = t.btnText;
+    }
+
+    function alertAction() {
+      const lang = document.getElementById("language").value;
+      alert(translations[lang].alertMsg);
+    }
+  </script>
 </body>
-    </html>
-            
+        </html>
+      
