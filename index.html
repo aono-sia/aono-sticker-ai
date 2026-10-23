@@ -46,7 +46,6 @@
       min-height: 100vh;
     }
 
-    /* البطاقة الزجاجية الرئيسية المضيئة */
     .container {
       background: var(--card-bg);
       backdrop-filter: blur(20px);
@@ -62,7 +61,6 @@
       position: relative;
     }
 
-    /* الشارة العلوية الساطعة */
     .badge {
       display: inline-block;
       padding: 6px 16px;
@@ -111,7 +109,6 @@
       gap: 6px;
     }
 
-    /* قائمة لغات العالم العمودية القابلة للتمرير */
     .lang-container {
       display: flex;
       flex-direction: column;
@@ -180,7 +177,6 @@
       box-shadow: 0 0 20px var(--glow-color);
     }
 
-    /* زر التوليد البراق الرئيسي */
     .btn {
       width: 100%;
       background: linear-gradient(135deg, #0284c7 0%, #9333ea 50%, #ec4899 100%);
@@ -202,11 +198,6 @@
       box-shadow: 0 15px 35px rgba(147, 51, 234, 0.7);
     }
 
-    .btn:active {
-      transform: translateY(0);
-    }
-
-    /* منطقة عرض الصورة والنتيجة */
     #result-container {
       margin-top: 25px;
       display: none;
@@ -410,7 +401,7 @@
         btnGen: "Générer le design 🚀",
         placeholder: "ex: Cute blue cat sticker...",
         loading: "Génération rapide du design... ⚡",
-        alertText: "Veuillez d'abord entrer une إide de design !"
+        alertText: "Veuillez d'abord entrer une idée de design !"
       },
       es: {
         desc: "¡Crea stickers, avatares y fondos de pantalla con IA en segundos!",
@@ -463,23 +454,17 @@
       loadingText.innerText = t.loading;
       imgWrapper.style.display = "none";
 
-      // تعزيز وصف الألوان لضمان تشبع عالي وألوان حية ساطعة
-      let colorModifier = "";
-      if (colorStyle === "vibrant") {
-        colorModifier = "vivid ultra-saturated bright rich colors, high contrast, popping neon accents";
-      } else if (colorStyle === "pastel") {
-        colorModifier = "soft pastel colors, gentle aesthetic tones";
-      } else {
-        colorModifier = "deep rich dark cinematic tones, dramatic contrast";
-      }
+      // تخصيص نمط الألوان والجودة برابط مستقر ونقي يمنع الرفض
+      let colorDesc = "vibrant colors";
+      if (colorStyle === "vibrant") colorDesc = "vibrant neon colorful sticker art";
+      if (colorStyle === "pastel") colorDesc = "soft pastel aesthetic sticker art";
+      if (colorStyle === "dark") colorDesc = "dark moody cinematic sticker art";
 
-      const qualityModifier = quality === '4k' ? "ultra-detailed 4K resolution, sharp vector lines" : "high-definition digital art illustration";
+      const qualityDesc = quality === '4k' ? "4k resolution highly detailed" : "high definition";
+      const fullPrompt = `${promptInput}, ${colorDesc}, ${qualityDesc}, clean white background, vector die-cut sticker`;
       
-      const fullPrompt = `${promptInput}, ${colorModifier}, ${qualityModifier}, clean solid pure white background, die-cut vector sticker`;
-      
-      const timestamp = new Date().getTime();
       const encodedPrompt = encodeURIComponent(fullPrompt);
-      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true&seed=${timestamp}`;
+      const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true`;
 
       const img = new Image();
       img.src = imageUrl;
@@ -489,8 +474,11 @@
         loadingText.style.display = "none";
         imgWrapper.style.display = "inline-block";
       };
+      img.onerror = function() {
+        loadingText.innerText = "حدث ضغط على السيرفر، المرجو المحاولة مجدداً! 🔄";
+      };
     }
   </script>
 </body>
-  </html>
-          
+          </html>
+      
