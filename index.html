@@ -42,24 +42,27 @@
       margin-bottom: 25px;
     }
     .option-group {
-      margin-bottom: 18px;
+      margin-bottom: 20px;
       text-align: right;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
     }
     label {
-      display: block;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       color: #cbd5e1;
-      margin-bottom: 6px;
+      font-weight: bold;
     }
     select, input[type="text"] {
       width: 100%;
-      padding: 12px 14px;
-      border-radius: 8px;
+      padding: 14px;
+      border-radius: 10px;
       border: 1px solid #334155;
       background-color: #0f172a;
       color: #ffffff;
-      font-size: 0.95rem;
+      font-size: 1rem;
       outline: none;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
     }
     select:focus, input[type="text"]:focus {
       border-color: #38bdf8;
@@ -70,17 +73,16 @@
       color: #ffffff;
       padding: 14px;
       border: none;
-      border-radius: 8px;
-      font-size: 1.05rem;
+      border-radius: 10px;
+      font-size: 1.1rem;
       font-weight: bold;
       cursor: pointer;
-      margin-top: 15px;
+      margin-top: 10px;
       transition: background-color 0.3s;
     }
     .btn:hover {
       background-color: #0369a1;
     }
-    /* مكان عرض النتيجة والستيكر المتولد */
     #result-container {
       margin-top: 20px;
       display: none;
@@ -96,7 +98,25 @@
       font-weight: bold;
       margin-top: 15px;
     }
-    /* إخفاء شريط قوقل للترجمة في الأعلى */
+    /* تنسيق أداة قوقل للترجمة لتظهر بشكل عمودي ومتناسق */
+    .goog-te-gadget {
+      font-family: inherit !important;
+    }
+    .goog-te-gadget span {
+      display: none;
+    }
+    .goog-te-combo {
+      width: 100% !important;
+      padding: 14px !important;
+      border-radius: 10px !important;
+      border: 1px solid #334155 !important;
+      background-color: #0f172a !important;
+      color: #ffffff !important;
+      font-size: 1rem !important;
+      outline: none !important;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.3) !important;
+      margin: 0 !important;
+    }
     .goog-te-banner-frame { display: none !important; }
     body { top: 0 !important; }
   </style>
@@ -107,9 +127,9 @@
     <h1>AONOVERSE AI</h1>
     <p>صاوب ستيكرات، صور بروفايل، وخلفيات بـ الذكاء الاصطناعي فـ ثواني!</p>
 
-    <!-- قائمة جميع لغات العالم عبر Google Translate -->
+    <!-- قائمة اللغات العمودية -->
     <div class="option-group">
-      <label>🌐 اختر لغتك (All World Languages):</label>
+      <label>🌐 اختر لغتك (Language):</label>
       <div id="google_translate_element"></div>
     </div>
 
@@ -148,23 +168,22 @@
     </div>
   </div>
 
-  <!-- سكربت قوقل الشامل للترجمة -->
+  <!-- سكربت قوقل للترجمة -->
   <script type="text/javascript">
     function googleTranslateElementInit() {
       new google.translate.TranslateElement({
         pageLanguage: 'ar',
-        includedLanguages: '', // تشمل جميع لغات العالم بلا استثناء
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE
       }, 'google_translate_element');
     }
   </script>
   <script type="text/javascript" src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 
-  <!-- سكربت توليد الصور الحقيقي -->
+  <!-- سكربت توليد الصور -->
   <script>
     function generateSticker() {
       const promptInput = document.getElementById("prompt-input").value;
-      const colorStyle = document.getElementById("color-style").value;
+      const colorStyle = document.getElementById("color-style".value);
       
       if (!promptInput.trim()) {
         alert("المرجو كتابة وصف أو فكرة للتصميم أولاً!");
@@ -179,14 +198,10 @@
       loadingText.style.display = "block";
       generatedImage.style.display = "none";
 
-      // دمج الوصف مع النمط المطلوب لتوليد صورة احترافية عبر Pollinations AI
       const fullPrompt = `${promptInput}, ${colorStyle} style, high quality sticker design, white background`;
       const encodedPrompt = encodeURIComponent(fullPrompt);
-      
-      // رابط توليد الصورة التلقائي
       const imageUrl = `https://image.pollinations.ai/prompt/${encodedPrompt}?width=512&height=512&nologo=true`;
 
-      // تحميل الصورة والتأكد من جهوزيتها
       const img = new Image();
       img.src = imageUrl;
       img.onload = function() {
@@ -197,4 +212,5 @@
     }
   </script>
 </body>
-</html>
+        </html>
+        
