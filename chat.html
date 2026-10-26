@@ -45,7 +45,7 @@
       overflow: hidden;
     }
 
-    /* ---------------- INTRO FLUFFY ANIMATION SCREEN (FLUFFY FALL STYLE) ---------------- */
+    /* ---------------- INTRO FLUFFY ANIMATION SCREEN ---------------- */
     #intro-screen {
       position: fixed;
       top: 0;
@@ -68,7 +68,6 @@
       animation: floatFluffy 2s ease-in-out infinite alternate;
     }
 
-    /* النجمة الكيوت بوجه مبتسم وحركة دائرية وألوان من كاع الجوانب */
     .fluffy-star {
       font-size: 90px;
       display: inline-block;
@@ -76,7 +75,6 @@
       filter: drop-shadow(0 0 25px #06b6d4) drop-shadow(0 0 45px #ec4899);
     }
 
-    /* ألوان دائرية وتوهج متطاير من جميع الجوانب */
     .color-burst {
       position: absolute;
       top: 50%;
@@ -192,19 +190,19 @@
     }
 
     .brand-title {
-      font-size: 1.2rem;
+      font-size: 1.1rem;
       font-weight: 900;
       background: linear-gradient(135deg, #22d3ee 0%, #c084fc 50%, #f472b6 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       display: flex;
       align-items: center;
-      gap: 2px;
+      gap: 4px;
     }
 
     .i-star {
       display: inline-block;
-      font-size: 1rem;
+      font-size: 0.9rem;
       animation: bounceStar 1.5s infinite alternate;
     }
 
@@ -359,13 +357,13 @@
   <div id="intro-screen" onclick="startApp()">
     <div class="fluffy-star-container">
       <div class="color-burst"></div>
-      <span class="fluffy-star">🌟</span>
+      <span class="fluffy-star">⭐</span>
       <span class="sparkle-particle sp1">✨</span>
       <span class="sparkle-particle sp2">💫</span>
       <span class="sparkle-particle sp3">⭐</span>
     </div>
     <div class="intro-title">AONOVERSE AI</div>
-    <div class="intro-sub">Smart Assistant | انقري للدخول</div>
+    <div class="intro-sub">Created by Assia 💖 | انقري للدخول</div>
   </div>
 
   <!-- التطبيق الرئيسي -->
@@ -373,8 +371,9 @@
     <div class="chat-header">
       <div class="header-top">
         <a href="index.html" class="back-link">🎨 Sticker Studio</a>
+        <!-- العنوان مع التوقيع by Assia والنجمة فوق حرف i -->
         <div class="brand-title">
-          AONOVERSE A<span style="position:relative; display:inline-block;">I<span class="i-star" style="position:absolute; top:-10px; left:-2px;">⭐</span></span>
+          AONOVERSE A<span style="position:relative; display:inline-block;">I<span class="i-star" style="position:absolute; top:-10px; left:-2px;">⭐</span></span> by Assia
         </div>
       </div>
 
@@ -511,5 +510,5 @@
   </script>
 
 </body>
-  </html>
+            </html>
   
