@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AONOVERSE AI - Smart Study Assistant</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-dark: #030712;
+      --card-bg: rgba(13, 20, 38, 0.88);
+      --accent-cyan: #06b6d4;
+      --accent-blue: #3b82f6;
+      --accent-purple: #8b5cf6;
+      --accent-pink: #ec4899;
+      --glow-neon: rgba(6, 182, 212, 0.45);
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Tajawal', 'Plus Jakarta Sans', sans-serif;
+      background: #030712;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 50% 50%, rgba(236, 72, 153, 0.1) 0%, transparent 60%);
+      background-attachment: fixed;
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 15px;
+      overflow: hidden;
+    }
+
+    /* ---------------- INTRO ANIMATION SCREEN ---------------- */
+    #intro-screen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #030712;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+      cursor: pointer;
+    }
+
+    .intro-star-wrapper {
+      position: relative;
+      margin-bottom: 25px;
+      animation: floatSpin 2.5s ease-in-out infinite alternate;
+    }
+
+    .cute-star {
+      font-size: 80px;
+      filter: drop-shadow(0 0 25px #f472b6) drop-shadow(0 0 45px #38bdf8);
+      animation: rotateCute 4s linear infinite;
+      display: inline-block;
+    }
+
+    .heart-particle {
+      position: absolute;
+      font-size: 24px;
+      animation: heartFly 1.8s ease-out infinite;
+      opacity: 0;
+    }
+    .hp1 { top: -10px; left: -20px; animation-delay: 0s; }
+    .hp2 { top: -20px; right: -20px; animation-delay: 0.4s; }
+    .hp3 { bottom: 0px; left: 50%; animation-delay: 0.8s; }
+
+    .intro-title {
+      font-size: 2.2rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #38bdf8 0%, #c084fc 50%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      letter-spacing: 1px;
+      text-align: center;
+      opacity: 0;
+      animation: fadeInText 1s ease forwards 0.5s;
+    }
+
+    .intro-sub {
+      color: #94a3b8;
+      font-size: 0.95rem;
+      margin-top: 10px;
+      opacity: 0;
+      animation: fadeInText 1s ease forwards 1s;
+    }
+
+    @keyframes rotateCute {
+      0% { transform: rotate(0deg) scale(1); }
+      50% { transform: rotate(15deg) scale(1.1); }
+      100% { transform: rotate(0deg) scale(1); }
+    }
+
+    @keyframes floatSpin {
+      0% { transform: translateY(0px); }
+      100% { transform: translateY(-15px); }
+    }
+
+    @keyframes heartFly {
+      0% { opacity: 0; transform: translateY(0) scale(0.5); }
+      50% { opacity: 1; }
+      100% { opacity: 0; transform: translateY(-40px) scale(1.3); }
+    }
+
+    @keyframes fadeInText {
+      to { opacity: 1; }
+    }
+
+    /* ---------------- MAIN APP INTERFACE ---------------- */
+    .chat-container {
+      background: var(--card-bg);
+      backdrop-filter: blur(25px);
+      -webkit-backdrop-filter: blur(25px);
+      border: 1.5px solid rgba(6, 182, 212, 0.4);
+      border-radius: 28px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85), 
+                  0 0 40px var(--glow-neon),
+                  inset 0 0 20px rgba(139, 92, 246, 0.12);
+      max-width: 680px;
+      width: 100%;
+      height: 90vh;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      position: relative;
+      opacity: 0;
+      transform: scale(0.95);
+      transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .chat-container.active {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .chat-header {
+      padding: 16px 22px;
+      background: rgba(7, 11, 20, 0.92);
+      border-bottom: 1px solid rgba(6, 182, 212, 0.25);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .header-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 900;
+      background: linear-gradient(135deg, #22d3ee 0%, #c084fc 50%, #f472b6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px rgba(34, 211, 238, 0.4);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* النجمة لي كتدور فوق الـ i فـ اسم أسياء / Aonoverse */
+    .i-star {
+      display: inline-block;
+      font-size: 1.1rem;
+      animation: pulseStar 2s infinite alternate;
+    }
+
+    @keyframes pulseStar {
+      0% { transform: scale(1) rotate(0deg); filter: drop-shadow(0 0 2px #f472b6); }
+      100% { transform: scale(1.3) rotate(20deg); filter: drop-shadow(0 0 8px #38bdf8); }
+    }
+
+    .back-link {
+      color: #22d3ee;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 700;
+      padding: 6px 12px;
+      background: rgba(6, 182, 212, 0.1);
+      border: 1px solid rgba(6, 182, 212, 0.4);
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .back-link:hover {
+      background: rgba(6, 182, 212, 0.25);
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+    }
+
+    .level-selector-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: rgba(3, 7, 18, 0.6);
+      padding: 8px 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(6, 182, 212, 0.2);
+    }
+
+    .level-selector-bar label {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: #38bdf8;
+      white-space: nowrap;
+    }
+
+    .level-selector-bar select {
+      flex: 1;
+      background: rgba(13, 20, 38, 0.9);
+      color: #fff;
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      padding: 6px 10px;
+      border-radius: 8px;
+      font-family: inherit;
+      font-size: 0.85rem;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 22px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .chat-messages::-webkit-scrollbar {
+      width: 6px;
+    }
+    .chat-messages::-webkit-scrollbar-thumb {
+      background: linear-gradient(to bottom, #06b6d4, #8b5cf6);
+      border-radius: 10px;
+    }
+
+    .message {
+      max-width: 85%;
+      padding: 15px 18px;
+      border-radius: 18px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      word-wrap: break-word;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message.user {
+      align-self: flex-end;
+      background: linear-gradient(135deg, #0284c7 0%, #7c3aed 100%);
+      color: #fff;
+      border-bottom-left-radius: 6px;
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.4);
+    }
+
+    .message.bot {
+      align-self: flex-start;
+      background: rgba(15, 23, 42, 0.95);
+      color: var(--text-main);
+      border: 1px solid rgba(6, 182, 212, 0.3);
+      border-bottom-right-radius: 6px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+    }
+
+    .chat-input-area {
+      padding: 16px 22px;
+      background: rgba(7, 11, 20, 0.95);
+      border-top: 1px solid rgba(6, 182, 212, 0.25);
+      display: flex;
+      gap: 12px;
+    }
+
+    .chat-input-area input {
+      flex: 1;
+      padding: 14px 18px;
+      border-radius: 14px;
+      border: 1.5px solid rgba(6, 182, 212, 0.35);
+      background: rgba(3, 7, 18, 0.9);
+      color: #fff;
+      font-size: 0.95rem;
+      font-family: inherit;
+      outline: none;
+      transition: all 0.3s ease;
+    }
+
+    .chat-input-area input:focus {
+      border-color: #22d3ee;
+      box-shadow: 0 0 20px rgba(6, 182, 212, 0.4);
+    }
+
+    .send-btn {
+      padding: 0 22px;
+      background: linear-gradient(135deg, #06b6d4 0%, #8b5cf6 50%, #ec4899 100%);
+      background-size: 200% auto;
+      border: none;
+      border-radius: 14px;
+      color: #fff;
+      font-weight: 800;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      box-shadow: 0 5px 20px rgba(6, 182, 212, 0.4);
+    }
+
+    .send-btn:hover {
+      background-position: right center;
+      transform: scale(1.05);
+      box-shadow: 0 0 25px rgba(139, 92, 246, 0.7);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- شاشة الدخول اللطيفة (Cute Intro) -->
+  <div id="intro-screen" onclick="startApp()">
+    <div class="intro-star-wrapper">
+      <span class="cute-star">⭐</span>
+      <span class="heart-particle hp1">💖</span>
+      <span class="heart-particle hp2">💕</span>
+      <span class="heart-particle hp3">✨</span>
+    </div>
+    <div class="intro-title">AONOVERSE AI</div>
+    <div class="intro-sub">Created by Assia 💖 | انقري للدخول</div>
+  </div>
+
+  <!-- التطبيق الرئيسي -->
+  <div class="chat-container" id="main-app">
+    <div class="chat-header">
+      <div class="header-top">
+        <!-- عنوان الموقع مع اسمك والنجمة الكيوت فوق حرف الـ i -->
+        <div class="brand-title">
+          ⚡ AONOVERSE A<span style="position:relative; display:inline-block;">I<span class="i-star" style="position:absolute; top:-12px; left:-2px;">⭐</span></span> by Assia
+        </div>
+        <a href="index.html" class="back-link">🎨 Sticker Studio</a>
+      </div>
+
+      <!-- قائمة اختيار المستوى الثانوي -->
+      <div class="level-selector-bar">
+        <label for="student-level">📚 المستوى:</label>
+        <select id="student-level">
+          <option value="Tronc Commun (جذع مشترك)">جذع مشترك (Tronc Commun)</option>
+          <option value="1ère Année Baccalauréat (الأولى باكالوريا)">الأولى باكالوريا (1ère Bac)</option>
+          <option value="2ème Année Baccalauréat (الثانية باكالوريا)">الثانية باكالوريا (2ème Bac)</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="chat-messages" id="chat-messages">
+      <div class="message bot">
+        مرحباً بيك أسياء! 👋 أنا المساعد الدراسي الذكي الخاص بالتعليم **الثانوي**. جاهز باش نشرح التمارين، الفيزياء، والرياضيات بجميع اللغات (عربية، دارجة، فرنسية، إنجليزية)! 📚✨
+      </div>
+    </div>
+
+    <div class="chat-input-area">
+      <input type="text" id="user-input" placeholder="اكتب تمرينك أو سؤالك الدراسي هنا..." onkeypress="handleKeyPress(event)" />
+      <button class="send-btn" onclick="sendMessage()">🚀</button>
+    </div>
+  </div>
+
+  <script>
+    // صوت كيوت وسحري ناعم
+    function playCuteSound() {
+      try {
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = 'sine';
+        // تدرج نغمات كيوت ولطيفة
+        osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); // C5
+        osc.frequency.exponentialRampToValueAtTime(1046.50, audioCtx.currentTime + 0.3); // C6
+
+        gain.gain.setValueAtTime(0.15, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        osc.start();
+        osc.stop(audioCtx.currentTime + 0.3);
+      } catch (e) {
+        console.log("Audio not allowed yet");
+      }
+    }
+
+    // الانتقال المباشر للموقع بعد الأنيميشن
+    function startApp() {
+      playCuteSound();
+      const intro = document.getElementById('intro-screen');
+      const app = document.getElementById('main-app');
+
+      intro.style.opacity = '0';
+      intro.style.visibility = 'hidden';
+
+      setTimeout(() => {
+        app.classList.add('active');
+      }, 300);
+    }
+
+    // تشغيل أوتوماتيكي بعد 2.5 ثواني إيلا ما كليكاش المستخدم
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        const intro = document.getElementById('intro-screen');
+        if (intro.style.visibility !== 'hidden') {
+          startApp();
+        }
+      }, 2800);
+    });
+
+    async function sendMessage() {
+      const inputField = document.getElementById("user-input");
+      const levelSelector = document.getElementById("student-level");
+      const messageText = inputField.value.trim();
+      
+      if (!messageText) return;
+
+      const selectedLevel = levelSelector.value;
+      const chatMessages = document.getElementById("chat-messages");
+
+      // رسالة المستخدم
+      const userDiv = document.createElement("div");
+      userDiv.className = "message user";
+      userDiv.innerText = messageText;
+      chatMessages.appendChild(userDiv);
+
+      inputField.value = "";
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      // مؤشر الانتظار
+      const loadingDiv = document.createElement("div");
+      loadingDiv.className = "message bot";
+      loadingDiv.innerText = "جاري التحضير والشرح العلمي... ⏳";
+      chatMessages.appendChild(loadingDiv);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      try {
+        const systemPrompt = `You are an expert high school academic tutor and AI assistant in Morocco. The student is currently in ${selectedLevel}. Always tailor your explanations, formulas, exercise solutions, and scientific rigor strictly to high school level. Answer in the exact language the user writes in (Moroccan Darija, Modern Standard Arabic, French, or English), keeping it clean, rigorous, professional, and directly useful for exams.`;
+        
+        const response = await fetch(`https://text.pollinations.ai/${encodeURIComponent(messageText)}?system=${encodeURIComponent(systemPrompt)}`);
+        const data = await response.text();
+
+        loadingDiv.innerText = data;
+      } catch (error) {
+        loadingDiv.innerText = "عذراً، حدث خطأ في الاتصال بالسيرفر. Please try again! 🔄";
+      }
+
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    function handleKeyPress(event) {
+      if (event.key === "Enter") {
+        sendMessage();
+      }
+    }
+  </script>
+
+</body>
+    </html>
+  
