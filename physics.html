@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AnoPhysics Hub - TCSF 4D</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap');
+        body { font-family: 'Poppins', sans-serif; background-color: #050714; color: #ffffff; overflow-x: hidden; }
+        .cosmic-bg { background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%); position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -2; }
+        .earth-glow { position: absolute; bottom: -350px; left: 50%; transform: translateX(-50%); width: 900px; height: 900px; border-radius: 50%; background: radial-gradient(circle, rgba(16,185,129,0.15) 0%, rgba(59,130,246,0.3) 40%, rgba(147,51,234,0.1) 70%, transparent 100%); box-shadow: 0 0 120px rgba(59, 130, 246, 0.4); pointer-events: none; z-index: -1; }
+        #starfield { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -2; }
+        .glass-card { background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.15); transition: all 0.4s ease; }
+        .glass-card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.1); border-color: rgba(99, 102, 241, 0.5); }
+        #intro-screen { position: fixed; inset: 0; background: #090a0f; z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 1s ease; }
+        .star-body { cursor: pointer; animation: floatStar 3s ease-in-out infinite; }
+        @keyframes floatStar { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+        .paper-note { max-height: 0; overflow: hidden; transition: all 0.8s ease; opacity: 0; transform: translateY(-20px); }
+        .paper-note.open { max-height: 200px; opacity: 1; transform: translateY(0); }
+        .physics-canvas-container { position: relative; width: 100%; height: 320px; background: #020617; border-radius: 1rem; border: 1px solid rgba(99, 102, 241, 0.3); overflow: hidden; }
+        #ai-modal { transition: all 0.3s ease; transform: translateY(20px) scale(0.95); opacity: 0; pointer-events: none; }
+        #ai-modal.active { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between relative">
+    <canvas id="starfield"></canvas>
+    <div class="cosmic-bg"></div>
+    <div class="earth-glow"></div>
+
+    <!-- Intro Screen with Star Pocket Signature -->
+    <div id="intro-screen">
+        <div class="text-center px-4 flex flex-col items-center">
+            <div id="star-interactive" class="star-body mb-6" onclick="openStarPaper()">
+                <svg width="140" height="140" viewBox="0 0 100 100">
+                    <path d="M50 5 L63 35 L95 38 L71 60 L78 92 L50 75 L22 92 L29 60 L5 38 L37 35 Z" fill="#FDE047" stroke="#CA8A04" stroke-width="3"/>
+                    <circle cx="40" cy="45" r="4" fill="#1E293B"/>
+                    <circle cx="60" cy="45" r="4" fill="#1E293B"/>
+                    <path d="M 43 55 Q 50 62 57 55" fill="none" stroke="#1E293B" stroke-width="2.5" stroke-linecap="round"/>
+                    <path d="M 35 68 Q 50 75 65 68 L 60 82 Q 50 86 40 82 Z" fill="#EAB308" stroke="#CA8A04" stroke-width="2"/>
+                </svg>
+                <p class="text-xs text-yellow-300 mt-2 font-mono">(Cliquez sur l'étoile)</p>
+            </div>
+            <div id="paper-signature" class="paper-note bg-amber-50 text-slate-900 px-8 py-4 rounded-lg shadow-2xl border-2 border-amber-200 text-center max-w-xs mb-6">
+                <h4 class="font-extrabold text-lg text-indigo-950">AnoPhysics Hub</h4>
+                <p class="font-bold text-indigo-600 mt-1 text-sm">Made by Assia N</p>
+            </div>
+            <button id="enter-btn" onclick="enterHub()" class="hidden opacity-0 transition-opacity px-8 py-3 bg-indigo-600 hover:bg-indigo-500 text-white font-bold rounded-full shadow-lg">
+                Explorer / Enter <i class="fa-solid fa-rocket ml-2"></i>
+            </button>
+        </div>
+    </div>
+        <header class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center z-10">
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="showHome()">
+            <div class="w-10 h-10 rounded-full bg-indigo-600/30 border border-indigo-400/50 flex items-center justify-center">
+                <i class="fa-solid fa-atom text-indigo-400 animate-spin" style="animation-duration: 12s;"></i>
+            </div>
+            <span class="font-extrabold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-indigo-300 to-teal-200">AnoPhysics Hub</span>
+        </div>
+        <div class="flex items-center bg-slate-900/80 border border-slate-700 rounded-full p-1">
+            <button id="btn-fr" onclick="setLanguage('fr')" class="px-4 py-1.5 rounded-full text-xs font-bold bg-indigo-600 text-white">FR</button>
+            <button id="btn-en" onclick="setLanguage('en')" class="px-4 py-1.5 rounded-full text-xs font-bold text-slate-400 hover:text-white">EN</button>
+        </div>
+    </header>
+
+    <main class="w-full max-w-6xl mx-auto px-6 py-4 flex-grow z-10">
+        <div id="view-home" class="space-y-10">
+            <div class="text-center max-w-2xl mx-auto space-y-4 pt-4">
+                <span class="inline-block px-4 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 border border-indigo-500/30 text-indigo-300">TCSF Physics Framework</span>
+                <h1 class="text-4xl font-extrabold text-white">Explore Physics in <span class="text-indigo-400">4D Time Frame</span></h1>
+                <p id="hero-subtitle" class="text-slate-400 text-sm">Animations interactives de Stickman et explications automatiques des 4 cours.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div onclick="openLesson('dimensions')" class="glass-card p-6 rounded-2xl cursor-pointer">
+                    <h3 class="text-xl font-bold text-white mb-2">1. Dimensions</h3>
+                    <p class="text-xs text-slate-400">Analyse dimensionnelle [L], [M], [T] et espace 4D.</p>
+                </div>
+                <div onclick="openLesson('gravitation')" class="glass-card p-6 rounded-2xl cursor-pointer">
+                    <h3 class="text-xl font-bold text-white mb-2">2. La Gravitation Universelle</h3>
+                    <p class="text-xs text-slate-400">Loi d'attraction de Newton et forces d'interaction.</p>
+                </div>
+                <div onclick="openLesson('inertie')" class="glass-card p-6 rounded-2xl cursor-pointer">
+                    <h3 class="text-xl font-bold text-white mb-2">3. Le Principe d'Inertie</h3>
+                    <p class="text-xs text-slate-400">Première loi de Newton et forces qui se compensent.</p>
+                </div>
+                <div onclick="openLesson('mouvement')" class="glass-card p-6 rounded-2xl cursor-pointer">
+                    <h3 class="text-xl font-bold text-white mb-2">4. Le Mouvement</h3>
+                    <p class="text-xs text-slate-400">Référentiel, trajectoires et vecteur vitesse 4D.</p>
+                </div>
+            </div>
+        </div>
+
+        <div id="view-lesson" class="hidden space-y-6">
+            <button onclick="showHome()" class="px-4 py-2 rounded-lg bg-slate-800 text-slate-300 text-xs font-semibold"><i class="fa-solid fa-chevron-left mr-2"></i> <span id="btn-back">Retour</span></button>
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <div class="lg:col-span-7 space-y-4">
+                    <div class="physics-canvas-container">
+                        <canvas id="physics-canvas" class="w-full h-full"></canvas>
+                        <div class="absolute bottom-3 right-3">
+                            <button onclick="triggerCanvasAction()" class="px-3 py-1.5 bg-indigo-600 text-white rounded-md text-xs font-bold">Action Stickman</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="lg:col-span-5 glass-card p-6 rounded-2xl space-y-4">
+                    <h2 id="lesson-detail-title" class="text-2xl font-bold text-white border-b border-slate-700 pb-3">Title</h2>
+                    <div id="lesson-detail-content" class="text-sm text-slate-300 space-y-3"></div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="fixed bottom-6 right-6 z-50">
+        <button onclick="toggleAIModal()" class="w-14 h-14 rounded-full bg-indigo-600 text-white flex items-center justify-center shadow-lg hover:scale-110 transition-all"><i class="fa-solid fa-robot text-xl"></i></button>
+        <div id="ai-modal" class="absolute bottom-16 right-0 w-80 glass-card bg-slate-900 rounded-2xl shadow-2xl p-4 space-y-3">
+            <div class="flex justify-between items-center border-b border-slate-700 pb-2">
+                <h4 class="font-bold text-sm text-white">Ano AI Assistant</h4>
+                <button onclick="toggleAIModal()" class="text-slate-400"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="ai-chat-body" class="h-48 overflow-y-auto space-y-2 text-xs text-slate-200">
+                <p id="ai-welcome-msg">Bonjour ! Posez vos questions sur les cours de physique TCSF.</p>
+            </div>
+            <div class="flex space-x-2">
+                <input id="ai-input" type="text" placeholder="Message..." class="flex-grow bg-slate-800 border border-slate-700 rounded px-2 py-1 text-xs text-white focus:outline-none">
+                <button onclick="sendAIMessage()" class="px-3 py-1 bg-indigo-600 text-white rounded text-xs font-bold">Envoyer</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="w-full text-center py-4 text-xs text-slate-500 border-t border-slate-800">
+        <p>© 2026 AnoPhysics Hub — Crafted by Assia N</p>
+    </footer>
+
+    <script>
+        let currentLang = 'fr';
+        let currentLesson = null;
+        let animationFrameId = null;
+
+        const lessonsData = {
+            dimensions: {
+                fr: { title: "1. Dimensions & Analyse", content: "<p>Grandeurs de base : [L], [M], [T]. Évolution dynamique en espace-temps 4D.</p>" },
+                en: { title: "1. Dimensions & Analysis", content: "<p>Base quantities: [L], [M], [T]. Dynamic 4D spacetime evolution.</p>" }
+            },
+            gravitation: {
+                fr: { title: "2. La Gravitation Universelle", content: "<p>Loi de Newton : $F = G \\cdot \\frac{m_A m_B}{d^2}$</p>" },
+                en: { title: "2. Universal Gravitation", content: "<p>Newton's Law: $F = G \\cdot \\frac{m_A m_B}{d^2}$</p>" }
+            },
+            inertie: {
+                fr: { title: "3. Le Principe d'Inertie", content: "<p>1ère loi de Newton : $\\sum \\vec{F} = \\vec{0}$</p>" },
+                en: { title: "3. Principle of Inertia", content: "<p>Newton's 1st Law: $\\sum \\vec{F} = \\vec{0}$</p>" }
+            },
+            mouvement: {
+                fr: { title: "4. Le Mouvement", content: "<p>Référentiel, vitesse moyenne $V_m = \\frac{d}{\\Delta t}$ et trajectoires 4D.</p>" },
+                en: { title: "4. Motion", content: "<p>Reference frames, average speed and 4D trajectories.</p>" }
+            }
+        };
+
+        function openStarPaper() {
+            document.getElementById('paper-signature').classList.toggle('open');
+            const btn = document.getElementById('enter-btn');
+            btn.classList.remove('hidden');
+            setTimeout(() => btn.classList.remove('opacity-0'), 100);
+        }
+
+        function enterHub() {
+            document.getElementById('intro-screen').style.opacity = '0';
+            setTimeout(() => document.getElementById('intro-screen').style.visibility = 'hidden', 1000);
+        }
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            if(currentLesson) renderLessonContent(currentLesson);
+        }
+
+        function showHome() {
+            document.getElementById('view-home').classList.remove('hidden');
+            document.getElementById('view-lesson').classList.add('hidden');
+            currentLesson = null;
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+        }
+
+        function openLesson(key) {
+            currentLesson = key;
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-lesson').classList.remove('hidden');
+            renderLessonContent(key);
+            initPhysicsCanvas(key);
+        }
+
+        function renderLessonContent(key) {
+            const data = lessonsData[key][currentLang];
+            document.getElementById('lesson-detail-title').innerText = data.title;
+            document.getElementById('lesson-detail-content').innerHTML = data.content;
+            if (window.MathJax) MathJax.typesetPromise();
+        }
+
+        let stickmanState = { x: 50 };
+        function triggerCanvasAction() { stickmanState.x = 50; }
+
+        function initPhysicsCanvas(key) {
+            const canvas = document.getElementById('physics-canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+            if (animationFrameId) cancelAnimationFrame(animationFrameId);
+            let time = 0;
+
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                time += 0.03;
+                drawStickman(ctx, canvas.width/2, canvas.height/2, time);
+                animationFrameId = requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+        function drawStickman(ctx, x, y, time) {
+            ctx.save(); ctx.strokeStyle = '#ffffff'; ctx.lineWidth = 3;
+            ctx.beginPath(); ctx.arc(x, y - 20, 10, 0, Math.PI * 2); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x, y - 10); ctx.lineTo(x, y + 15); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x, y + 15); ctx.lineTo(x - 8, y + 35); ctx.moveTo(x, y + 15); ctx.lineTo(x + 8, y + 35); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(x, y); ctx.lineTo(x - 12, y + 10); ctx.moveTo(x, y); ctx.lineTo(x + 12, y + 10); ctx.stroke();
+            ctx.restore();
+        }
+
+        function toggleAIModal() { document.getElementById('ai-modal').classList.toggle('active'); }
+        function sendAIMessage() {
+            const input = document.getElementById('ai-input');
+            if(!input.value) return;
+            const chatBody = document.getElementById('ai-chat-body');
+            chatBody.innerHTML += `<div class="bg-indigo-600/60 p-2 rounded text-right">${input.value}</div>`;
+            input.value = '';
+            setTimeout(() => {
+                chatBody.innerHTML += `<div class="bg-slate-800 p-2 rounded">Assistant Ano : Les 4 dimensions et lois de la physique TCSF sont interconnectées !</div>`;
+                chatBody.scrollTop = chatBody.scrollHeight;
+            }, 500);
+        }
+
+        const bgCanvas = document.getElementById('starfield');
+        const bgCtx = bgCanvas.getContext('2d');
+        bgCanvas.width = window.innerWidth; bgCanvas.height = window.innerHeight;
+        for(let i=0; i<100; i++) {
+            bgCtx.fillStyle = 'rgba(255,255,255,0.7)';
+            bgCtx.fillRect(Math.random()*bgCanvas.width, Math.random()*bgCanvas.height, 1.5, 1.5);
+        }
+    </script>
+</body>
+  </html>
+
+  
