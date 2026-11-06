@@ -3,34 +3,81 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnoPhysics Hub - 4D Spacetime & AI</title>
+    <title>AnoPhysics Hub & AONOVERSE AI - Ultimate Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Tajawal:wght@400;700;900&display=swap');
-        body { font-family: 'Poppins', 'Tajawal', sans-serif; background-color: #030712; color: #f8fafc; overflow-x: hidden; }
-        .cosmic-bg { 
-            background: 
+        
+        :root {
+            --bg-dark: #030712;
+            --card-bg: rgba(13, 20, 38, 0.9);
+            --accent-cyan: #06b6d4;
+            --accent-purple: #8b5cf6;
+            --accent-pink: #ec4899;
+            --glow-neon: rgba(6, 182, 212, 0.4);
+            --text-main: #f8fafc;
+            --text-sub: #94a3b8;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body { 
+            font-family: 'Poppins', 'Tajawal', sans-serif; 
+            background-color: var(--bg-dark); 
+            background-image: 
                 radial-gradient(circle at 10% 20%, rgba(6, 182, 212, 0.15) 0%, transparent 40%),
                 radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
-                radial-gradient(ellipse at bottom, #0f172a 0%, #030712 100%); 
-            position: fixed; inset: 0; z-index: -2; 
+                radial-gradient(ellipse at bottom, #0f172a 0%, #030712 100%);
+            background-attachment: fixed;
+            color: var(--text-main); 
+            overflow-x: hidden; 
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
         }
-        .earth-glow { position: absolute; bottom: -400px; left: 50%; transform: translateX(-50%); width: 1000px; height: 1000px; border-radius: 50%; background: radial-gradient(circle, rgba(16,185,129,0.12) 0%, rgba(59,130,246,0.25) 40%, rgba(147,51,234,0.08) 70%, transparent 100%); box-shadow: 0 0 150px rgba(59, 130, 246, 0.3); pointer-events: none; z-index: -1; }
+
+        .earth-glow { 
+            position: absolute; bottom: -400px; left: 50%; transform: translateX(-50%); width: 1000px; height: 1000px; border-radius: 50%; 
+            background: radial-gradient(circle, rgba(16,185,129,0.12) 0%, rgba(59,130,246,0.25) 40%, rgba(147,51,234,0.08) 70%, transparent 100%); 
+            box-shadow: 0 0 150px rgba(59, 130, 246, 0.3); pointer-events: none; z-index: -1; 
+        }
+
         #starfield { position: fixed; inset: 0; z-index: -2; }
-        .glass-card { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .glass-card:hover { transform: translateY(-6px); background: rgba(255, 255, 255, 0.07); border-color: rgba(99, 102, 241, 0.4); box-shadow: 0 10px 30px -10px rgba(99, 102, 241, 0.3); }
-        
-        #intro-screen { position: fixed; inset: 0; background: #030712; z-index: 999; display: flex; flex-direction: column; align-items: center; justify-content: center; transition: opacity 0.8s ease, visibility 0.8s ease; cursor: pointer; }
+
+        .glass-card { 
+            background: rgba(255, 255, 255, 0.03); 
+            backdrop-filter: blur(16px); 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
+        }
+        .glass-card:hover { 
+            transform: translateY(-6px); 
+            background: rgba(255, 255, 255, 0.07); 
+            border-color: rgba(6, 182, 212, 0.4); 
+            box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.3); 
+        }
+
+        /* --- INTRO FLUFFY SCREEN --- */
+        #intro-screen { 
+            position: fixed; inset: 0; background: #030712; z-index: 9999; 
+            display: flex; flex-direction: column; align-items: center; justify-content: center; 
+            transition: opacity 0.8s ease, visibility 0.8s ease; cursor: pointer; 
+        }
         .fluffy-star-container { position: relative; margin-bottom: 20px; animation: floatFluffy 2.5s ease-in-out infinite alternate; }
         .fluffy-star { font-size: 100px; display: inline-block; animation: spinCircular 3.5s linear infinite; filter: drop-shadow(0 0 25px #06b6d4) drop-shadow(0 0 45px #ec4899); }
-        .color-burst { position: absolute; top: 50%; left: 50%; width: 130px; height: 130px; margin: -65px 0 0 -65px; border-radius: 50%; background: conic-gradient(from 0deg, #38bdf8, #c084fc, #f472b6, #fbbf24, #38bdf8); animation: burstSpin 2.5s linear infinite; z-index: -1; opacity: 0.65; filter: blur(12px); }
+        .color-burst { 
+            position: absolute; top: 50%; left: 50%; width: 130px; height: 130px; margin: -65px 0 0 -65px; border-radius: 50%; 
+            background: conic-gradient(from 0deg, #38bdf8, #c084fc, #f472b6, #fbbf24, #38bdf8); 
+            animation: burstSpin 2.5s linear infinite; z-index: -1; opacity: 0.65; filter: blur(12px); 
+        }
         .sparkle-particle { position: absolute; font-size: 24px; animation: floatSparkle 1.5s ease-out infinite; opacity: 0; }
         .sp1 { top: -20px; left: -30px; animation-delay: 0s; }
         .sp2 { top: -25px; right: -30px; animation-delay: 0.3s; }
         .sp3 { bottom: -10px; left: 35%; animation-delay: 0.6s; }
-        
+
         @keyframes spinCircular { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.1); } 100% { transform: rotate(360deg) scale(1); } }
         @keyframes burstSpin { 0% { transform: rotate(360deg) scale(0.9); } 50% { transform: rotate(180deg) scale(1.2); } 100% { transform: rotate(0deg) scale(0.9); } }
         @keyframes floatFluffy { 0% { transform: translateY(0px); } 100% { transform: translateY(-18px); } }
@@ -38,16 +85,19 @@
 
         .paper-note { max-height: 0; overflow: hidden; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; transform: translateY(-20px); }
         .paper-note.open { max-height: 250px; opacity: 1; transform: translateY(0); }
-        .physics-canvas-container { position: relative; width: 100%; height: 420px; background: #020617; border-radius: 1.25rem; border: 1px solid rgba(99, 102, 241, 0.3); overflow: hidden; box-shadow: 0 0 25px rgba(99, 102, 241, 0.15); }
-        
+
+        .physics-canvas-container { 
+            position: relative; width: 100%; height: 420px; background: #020617; 
+            border-radius: 1.25rem; border: 1px solid rgba(6, 182, 212, 0.3); overflow: hidden; box-shadow: 0 0 25px rgba(6, 182, 212, 0.15); 
+        }
+
         #ai-modal { transition: all 0.3s ease; transform: translateY(20px) scale(0.95); opacity: 0; pointer-events: none; }
         #ai-modal.active { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
-        .time-badge { background: linear-gradient(135deg, rgba(99,102,241,0.15), rgba(168,85,247,0.15)); border: 1px solid rgba(168,85,247,0.3); }
+        .time-badge { background: linear-gradient(135deg, rgba(6,182,212,0.15), rgba(139,92,246,0.15)); border: 1px solid rgba(6,182,212,0.3); }
     </style>
 </head>
-<body class="min-h-screen flex flex-col justify-between relative">
+<body>
     <canvas id="starfield"></canvas>
-    <div class="cosmic-bg"></div>
     <div class="earth-glow"></div>
 
     <!-- Intro Fluffy Screen -->
@@ -72,19 +122,20 @@
             Entrer dans l'Espace-Temps <i class="fa-solid fa-rocket ml-2"></i>
         </button>
     </div>
-        <!-- Header -->
+
+    <!-- Header -->
     <header class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center z-10">
         <div class="flex items-center space-x-3 cursor-pointer" onclick="showHome()">
-            <div class="w-11 h-11 rounded-full bg-indigo-600/30 border border-indigo-400/50 flex items-center justify-center">
-                <i class="fa-solid fa-atom text-indigo-400 animate-spin" style="animation-duration: 12s;"></i>
+            <div class="w-11 h-11 rounded-full bg-cyan-600/30 border border-cyan-400/50 flex items-center justify-center">
+                <i class="fa-solid fa-atom text-cyan-400 animate-spin" style="animation-duration: 12s;"></i>
             </div>
             <div>
-                <span class="font-extrabold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-indigo-300">AnoPhysics</span>
+                <span class="font-extrabold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-purple-300">AnoPhysics</span>
                 <span class="text-xs block text-slate-400 font-mono">Hub 4D TCSF by Assia</span>
             </div>
         </div>
         <div class="flex items-center bg-slate-900/90 border border-slate-700/80 rounded-full p-1 shadow-inner">
-            <button id="btn-fr" onclick="setLanguage('fr')" class="px-4 py-1.5 rounded-full text-xs font-bold bg-indigo-600 text-white transition-all">FR</button>
+            <button id="btn-fr" onclick="setLanguage('fr')" class="px-4 py-1.5 rounded-full text-xs font-bold bg-cyan-600 text-white transition-all">FR</button>
             <button id="btn-en" onclick="setLanguage('en')" class="px-4 py-1.5 rounded-full text-xs font-bold text-slate-400 hover:text-white transition-all">EN</button>
         </div>
     </header>
@@ -108,10 +159,10 @@
             <!-- Lessons Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div onclick="openLesson('dimensions')" class="glass-card p-7 rounded-2xl cursor-pointer group">
-                    <div class="w-12 h-12 rounded-xl bg-indigo-500/20 border border-indigo-400/30 flex items-center justify-center mb-4 text-indigo-300 group-hover:scale-110 transition-transform">
+                    <div class="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center mb-4 text-cyan-300 group-hover:scale-110 transition-transform">
                         <i class="fa-solid fa-cube text-xl"></i>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-indigo-300 transition-colors">1. Dimensions & Analyse</h3>
+                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors">1. Dimensions & Analyse</h3>
                     <p class="text-xs text-slate-400 leading-relaxed">Animation interactive des unités [L], [M], [T] et extension vers le Tesseract 4D.</p>
                 </div>
                 <div onclick="openLesson('gravitation')" class="glass-card p-7 rounded-2xl cursor-pointer group">
@@ -175,7 +226,7 @@
                         <h2 id="lesson-detail-title" class="text-2xl font-bold text-white border-b border-slate-700/80 pb-3">Title</h2>
                         <div id="lesson-detail-content" class="text-sm text-slate-300 space-y-4 pt-3 leading-relaxed"></div>
                     </div>
-                    <div class="bg-indigo-950/40 p-4 rounded-xl border border-indigo-500/20 text-xs text-indigo-200">
+                    <div class="bg-indigo-950/40 p-4 rounded-xl border border-cyan-500/20 text-xs text-cyan-200">
                         <i class="fa-solid fa-lightbulb text-yellow-400 mr-2"></i> <strong>Note d'Assia :</strong> Observez l'animation en direct sur le canvas pour lier la théorie du TCSF aux dimensions 4D !
                     </div>
                 </div>
@@ -222,9 +273,18 @@
                 <button onclick="sendAIMessage()" class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:opacity-90 text-white rounded-xl text-xs font-bold transition-all shadow-md">🚀</button>
             </div>
         </div>
-                    </div>
-        <footer class="w-full text-center py-6 text-xs text-slate-500 border-t border-slate-800/60 z-10">
-        <p>© 2026 AnoPhysics Hub — Conçu et développé avec passion par Assia N (TCSF)</p>
+    </div>
+                </div>
+            
+            <div class="flex space-x-2 pt-2">
+                <input id="ai-input" type="text" placeholder="Posez une question à AONOVERSE AI..." class="flex-grow bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500" onkeypress="if(event.key === 'Enter') sendAIMessage();">
+                <button onclick="sendAIMessage()" class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:opacity-90 text-white rounded-xl text-xs font-bold transition-all shadow-md">🚀</button>
+            </div>
+        </div>
+    </div>
+
+    <footer class="w-full text-center py-6 text-xs text-slate-500 border-t border-slate-800/60 z-10">
+        <p>© 2026 AnoPhysics Hub & AONOVERSE AI — Conçu et développé avec passion par Assia N (TCSF)</p>
     </footer>
 
     <script>
@@ -294,8 +354,8 @@
 
         function setLanguage(lang) {
             currentLang = lang;
-            document.getElementById('btn-fr').className = lang === 'fr' ? 'px-4 py-1.5 rounded-full text-xs font-bold bg-indigo-600 text-white transition-all' : 'px-4 py-1.5 rounded-full text-xs font-bold text-slate-400 hover:text-white transition-all';
-            document.getElementById('btn-en').className = lang === 'en' ? 'px-4 py-1.5 rounded-full text-xs font-bold bg-indigo-600 text-white transition-all' : 'px-4 py-1.5 rounded-full text-xs font-bold text-slate-400 hover:text-white transition-all';
+            document.getElementById('btn-fr').className = lang === 'fr' ? 'px-4 py-1.5 rounded-full text-xs font-bold bg-cyan-600 text-white transition-all' : 'px-4 py-1.5 rounded-full text-xs font-bold text-slate-400 hover:text-white transition-all';
+            document.getElementById('btn-en').className = lang === 'en' ? 'px-4 py-1.5 rounded-full text-xs font-bold bg-cyan-600 text-white transition-all' : 'px-4 py-1.5 rounded-full text-xs font-bold text-slate-400 hover:text-white transition-all';
             if(currentLesson) renderLessonContent(currentLesson);
         }
 
@@ -479,4 +539,5 @@
         }
     </script>
 </body>
-</html>
+    </html>
+    
