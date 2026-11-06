@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AnoPhysics Hub & AONOVERSE AI - Ultimate Edition</title>
+    <title>AnoPhysics Hub & AONOVERSE AI - Immersive Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
@@ -16,9 +16,6 @@
             --accent-cyan: #06b6d4;
             --accent-purple: #8b5cf6;
             --accent-pink: #ec4899;
-            --glow-neon: rgba(6, 182, 212, 0.4);
-            --text-main: #f8fafc;
-            --text-sub: #94a3b8;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -31,7 +28,7 @@
                 radial-gradient(circle at 90% 80%, rgba(139, 92, 246, 0.15) 0%, transparent 40%),
                 radial-gradient(ellipse at bottom, #0f172a 0%, #030712 100%);
             background-attachment: fixed;
-            color: var(--text-main); 
+            color: #f8fafc; 
             overflow-x: hidden; 
             min-height: 100vh;
             display: flex;
@@ -54,8 +51,8 @@
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); 
         }
         .glass-card:hover { 
-            transform: translateY(-6px); 
-            background: rgba(255, 255, 255, 0.07); 
+            transform: translateY(-4px); 
+            background: rgba(255, 255, 255, 0.06); 
             border-color: rgba(6, 182, 212, 0.4); 
             box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.3); 
         }
@@ -67,15 +64,10 @@
             transition: opacity 0.8s ease, visibility 0.8s ease; cursor: pointer; 
         }
         .fluffy-star-container { 
-            position: relative; 
-            margin-bottom: 20px; 
-            animation: floatFluffy 2.5s ease-in-out infinite alternate;
-            perspective: 1000px;
+            position: relative; margin-bottom: 20px; animation: floatFluffy 2.5s ease-in-out infinite alternate; perspective: 1000px;
         }
         .fluffy-star { 
-            font-size: 100px; 
-            display: inline-block; 
-            animation: spin4D 4s cubic-bezier(0.4, 0, 0.2, 1) infinite; 
+            font-size: 100px; display: inline-block; animation: spin4D 4s cubic-bezier(0.4, 0, 0.2, 1) infinite; 
             filter: drop-shadow(0 0 30px #06b6d4) drop-shadow(0 0 60px #ec4899); 
         }
         @keyframes spin4D { 
@@ -100,27 +92,21 @@
         .paper-note { max-height: 0; overflow: hidden; transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; transform: translateY(-20px); }
         .paper-note.open { max-height: 250px; opacity: 1; transform: translateY(0); }
 
-        .physics-canvas-container { 
-            position: relative; width: 100%; height: 420px; background: #020617; 
-            border-radius: 1.25rem; border: 1px solid rgba(6, 182, 212, 0.3); overflow: hidden; box-shadow: 0 0 25px rgba(6, 182, 212, 0.15); 
+        /* Immersive Canvas Center */
+        .immersive-canvas-box { 
+            position: relative; width: 100%; max-width: 800px; height: 400px; background: #020617; 
+            border-radius: 1.5rem; border: 2px solid rgba(6, 182, 212, 0.4); overflow: hidden; 
+            box-shadow: 0 0 35px rgba(6, 182, 212, 0.25); cursor: pointer; transition: all 0.3s ease;
+        }
+        .immersive-canvas-box:hover {
+            border-color: #ec4899;
+            box-shadow: 0 0 50px rgba(236, 72, 153, 0.4);
+            transform: scale(1.01);
         }
 
         #ai-modal { transition: all 0.3s ease; transform: translateY(20px) scale(0.95); opacity: 0; pointer-events: none; }
         #ai-modal.active { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
         .time-badge { background: linear-gradient(135deg, rgba(6,182,212,0.15), rgba(139,92,246,0.15)); border: 1px solid rgba(6,182,212,0.3); }
-
-        /* Detail Box Style */
-        .detailed-explanation {
-            display: none;
-            background: rgba(15, 23, 42, 0.95);
-            border: 1px solid rgba(6, 182, 212, 0.4);
-            border-radius: 1rem;
-            padding: 1.2rem;
-            margin-top: 1rem;
-            animation: fadeIn 0.4s ease forwards;
-        }
-        .detailed-explanation.active { display: block; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -148,7 +134,7 @@
         <button id="enter-btn" onclick="enterHub(event)" class="hidden opacity-0 transition-all px-8 py-3 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:scale-105 text-white font-bold rounded-full shadow-lg text-sm tracking-wide">
             Entrer dans l'Espace-Temps <i class="fa-solid fa-rocket ml-2"></i>
         </button>
-        </div>
+    </div>
         <!-- Header -->
     <header class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center z-10">
         <div class="flex items-center space-x-3 cursor-pointer" onclick="showHome()">
@@ -178,95 +164,104 @@
                     Explorez les Lois de la Physique en <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">4 Dimensions</span>
                 </h1>
                 <p id="hero-subtitle" class="text-slate-400 text-sm md:text-base leading-relaxed">
-                    Le temps se dilate et les animations physiques prennent vie. Plongez dans une expérience interactive guidée par l'intelligence artificielle AONOVERSE AI.
+                    Cliquez directement sur n'importe quel portail d'animation ci-dessous pour entrer dans un autre monde physique !
                 </p>
             </div>
 
-            <!-- Lessons Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div onclick="openLesson('dimensions')" class="glass-card p-7 rounded-2xl cursor-pointer group">
-                    <div class="w-12 h-12 rounded-xl bg-cyan-500/20 border border-cyan-400/30 flex items-center justify-center mb-4 text-cyan-300 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-cube text-xl"></i>
+            <!-- 4 Immersive Portals Grid (الدروس الأربعة كأنها بوابات تفاعلية) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Portal 1 -->
+                <div onclick="openLesson('dimensions')" class="glass-card p-6 rounded-3xl cursor-pointer group text-center space-y-4 border border-cyan-500/30 hover:border-cyan-400">
+                    <div class="h-48 bg-slate-950 rounded-2xl overflow-hidden relative border border-cyan-500/20 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-t from-cyan-950/80 to-transparent z-10"></div>
+                        <i class="fa-solid fa-cube text-5xl text-cyan-400 group-hover:scale-125 transition-transform duration-500 z-20"></i>
+                        <p class="absolute bottom-3 z-20 text-xs font-bold text-cyan-200">🌍 بوابة التيسيراك والأبعاد [L], [M], [T]</p>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors">1. Dimensions & Analyse</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">Animation interactive des unités [L], [M], [T] et extension vers le Tesseract 4D.</p>
+                    <h3 class="text-xl font-bold text-white group-hover:text-cyan-300">1. Dimensions & Analyse Dimensionnelle</h3>
                 </div>
-                <div onclick="openLesson('gravitation')" class="glass-card p-7 rounded-2xl cursor-pointer group">
-                    <div class="w-12 h-12 rounded-xl bg-teal-500/20 border border-teal-400/30 flex items-center justify-center mb-4 text-teal-300 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-globe text-xl"></i>
+
+                <!-- Portal 2 -->
+                <div onclick="openLesson('gravitation')" class="glass-card p-6 rounded-3xl cursor-pointer group text-center space-y-4 border border-teal-500/30 hover:border-teal-400">
+                    <div class="h-48 bg-slate-950 rounded-2xl overflow-hidden relative border border-teal-500/20 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-t from-teal-950/80 to-transparent z-10"></div>
+                        <i class="fa-solid fa-globe text-5xl text-teal-400 group-hover:scale-125 transition-transform duration-500 z-20"></i>
+                        <p class="absolute bottom-3 z-20 text-xs font-bold text-teal-200">🌍 بوابة الجاذبية و قانون نيوتن</p>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-teal-300 transition-colors">2. La Gravitation Universelle</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">Simulation animée de l'attraction de Newton et de la courbure des masses.</p>
+                    <h3 class="text-xl font-bold text-white group-hover:text-teal-300">2. La Gravitation Universelle</h3>
                 </div>
-                <div onclick="openLesson('inertie')" class="glass-card p-7 rounded-2xl cursor-pointer group">
-                    <div class="w-12 h-12 rounded-xl bg-purple-500/20 border border-purple-400/30 flex items-center justify-center mb-4 text-purple-300 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-scale-balanced text-xl"></i>
+
+                <!-- Portal 3 -->
+                <div onclick="openLesson('inertie')" class="glass-card p-6 rounded-3xl cursor-pointer group text-center space-y-4 border border-purple-500/30 hover:border-purple-400">
+                    <div class="h-48 bg-slate-950 rounded-2xl overflow-hidden relative border border-purple-500/20 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-t from-purple-950/80 to-transparent z-10"></div>
+                        <i class="fa-solid fa-scale-balanced text-5xl text-purple-400 group-hover:scale-110 transition-transform duration-500 z-20"></i>
+                        <p class="absolute bottom-3 z-20 text-xs font-bold text-purple-200">🌍 بوابة مبدأ القصور (Inertie)</p>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-purple-300 transition-colors">3. Le Principe d'Inertie</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">Visualisation dynamique des forces qui se compensent ($\sum \vec{F} = \vec{0}$).</p>
+                    <h3 class="text-xl font-bold text-white group-hover:text-purple-300">3. Le Principe d'Inertie</h3>
                 </div>
-                <div onclick="openLesson('mouvement')" class="glass-card p-7 rounded-2xl cursor-pointer group">
-                    <div class="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-400/30 flex items-center justify-center mb-4 text-amber-300 group-hover:scale-110 transition-transform">
-                        <i class="fa-solid fa-gauge-high text-xl"></i>
+
+                <!-- Portal 4 -->
+                <div onclick="openLesson('mouvement')" class="glass-card p-6 rounded-3xl cursor-pointer group text-center space-y-4 border border-amber-500/30 hover:border-amber-400">
+                    <div class="h-48 bg-slate-950 rounded-2xl overflow-hidden relative border border-amber-500/20 flex items-center justify-center">
+                        <div class="absolute inset-0 bg-gradient-to-t from-amber-950/80 to-transparent z-10"></div>
+                        <i class="fa-solid fa-gauge-high text-5xl text-amber-400 group-hover:scale-125 transition-transform duration-500 z-20"></i>
+                        <p class="absolute bottom-3 z-20 text-xs font-bold text-amber-200">🌍 بوابة الحركة والسرعة اللحظية</p>
                     </div>
-                    <h3 class="text-xl font-bold text-white mb-2 group-hover:text-amber-300 transition-colors">4. Le Mouvement</h3>
-                    <p class="text-xs text-slate-400 leading-relaxed">Animation en direct des trajectoires et calcul vectoriel de la vitesse.</p>
+                    <h3 class="text-xl font-bold text-white group-hover:text-amber-300">4. Le Mouvement & Vitesse</h3>
                 </div>
             </div>
         </div>
 
-        <!-- Lesson View -->
-        <div id="view-lesson" class="hidden space-y-6">
-            <div class="flex flex-col sm:flex-row justify-between items-center gap-4 bg-slate-900/60 p-4 rounded-2xl border border-slate-800">
+        <!-- Lesson Immersive World View (عالم الدخول الفضائي: الشكل في الوسط والشرح بالحسابات والمعادلات في الأسفل) -->
+        <div id="view-lesson" class="hidden space-y-8">
+            <div class="flex justify-between items-center bg-slate-900/80 p-4 rounded-2xl border border-slate-800">
                 <button onclick="showHome()" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all flex items-center space-x-2">
-                    <i class="fa-solid fa-chevron-left"></i>
-                    <span id="btn-back">Retour au Hub</span>
+                    <i class="fa-solid fa-arrow-right-arrow-left"></i>
+                    <span>العودة إلى الأكوان (Retour au Hub)</span>
                 </button>
                 
-                <!-- Time Dilation Widget -->
                 <div class="time-badge px-5 py-2.5 rounded-xl text-xs flex items-center space-x-3 shadow-lg">
                     <i class="fa-solid fa-hourglass-half text-purple-400 animate-spin" style="animation-duration: 6s;"></i>
                     <div>
                         <span class="text-slate-400">Temps Cosmique 4D : </span>
                         <span id="cosmic-time" class="font-bold text-purple-300 font-mono text-sm">04h 30min</span>
-                        <span class="text-slate-500 text-[10px] ml-2">(Réel: <span id="real-time" class="text-slate-300 font-mono">0s</span>)</span>
                     </div>
                 </div>
             </div>
 
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
-                <!-- Canvas Animation Simulation -->
-                <div class="lg:col-span-7 space-y-4">
-                    <div class="physics-canvas-container">
-                        <canvas id="physics-canvas" class="w-full h-full"></canvas>
-                        <div class="absolute bottom-3 left-3 bg-slate-900/90 px-3 py-1.5 rounded-lg border border-slate-700/80 text-[11px] text-cyan-300 font-mono flex items-center space-x-2">
-                            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                            <span id="canvas-status">Simulation Animée Active</span>
-                        </div>
+            <!-- شكل العرض المركزي (Canvas في المنتصف بحجم كبير وكأنه عالم مستقل) -->
+            <div class="w-full flex flex-col items-center space-y-6">
+                <div class="immersive-canvas-box">
+                    <canvas id="physics-canvas" class="w-full h-full"></canvas>
+                    <div class="absolute bottom-3 left-3 bg-slate-950/90 px-4 py-2 rounded-xl border border-cyan-500/40 text-xs text-cyan-300 font-mono flex items-center space-x-2 shadow-2xl">
+                        <span class="w-2.5 h-2.5 rounded-full bg-pink-500 animate-ping"></span>
+                        <span id="canvas-status">عالم الأبعاد التفاعلي نشط</span>
                     </div>
                 </div>
 
-                <!-- Lesson Content Box with Toggle Detailed Explanation -->
-                <div class="lg:col-span-5 glass-card p-7 rounded-2xl space-y-5 flex flex-col justify-between">
-                    <div>
-                        <h2 id="lesson-detail-title" class="text-2xl font-bold text-white border-b border-slate-700/80 pb-3">Title</h2>
-                        <div id="lesson-detail-content" class="text-sm text-slate-300 space-y-4 pt-3 leading-relaxed"></div>
-                        
-                        <!-- زر الشرح المفصل المتعمق -->
-                        <button onclick="toggleDetailedExplanation()" class="mt-4 w-full py-2.5 px-4 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-cyan-300 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-2 shadow-md">
-                            <i class="fa-solid fa-book-open-reader"></i>
-                            <span id="btn-detailed-text">🔍 الشرح المفصل والعميق (Détails & Approfondissement)</span>
-                        </button>
-
-                        <!-- صندوق الشرح المفصل الذي يظهر عند النقر -->
-                        <div id="detailed-box" class="detailed-explanation text-xs text-slate-200 leading-relaxed space-y-3">
-                            <h5 class="font-bold text-cyan-300 text-sm border-b border-cyan-500/30 pb-1">📖 الشرح بالتفصيل الممل :</h5>
-                            <p id="detailed-text-content">جاري تحميل الشرح المفصل...</p>
-                        </div>
+                <!-- الشرح العلمي والرياضي التفصيلي المدمج مع الحسابات والمحاور لكل درس -->
+                <div class="w-full max-w-4xl glass-card p-8 rounded-3xl space-y-6 border border-cyan-500/30 shadow-2xl">
+                    <div class="border-b border-slate-700/80 pb-4 flex justify-between items-center">
+                        <h2 id="lesson-detail-title" class="text-2xl md:text-3xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-pink-500">Title</h2>
+                        <span class="px-3 py-1 bg-cyan-500/10 border border-cyan-400/30 rounded-full text-xs font-mono text-cyan-300">TCSF Physics</span>
                     </div>
 
-                    <div class="bg-indigo-950/40 p-4 rounded-xl border border-cyan-500/20 text-xs text-cyan-200">
-                        <i class="fa-solid fa-lightbulb text-yellow-400 mr-2"></i> <strong>Note d'Assia :</strong> Observez l'animation en direct sur le canvas pour lier la théorie du TCSF aux dimensions 4D !
+                    <!-- محتوى الشرح الرياضي والحسابي المفصل -->
+                    <div id="lesson-detail-content" class="text-sm md:text-base text-slate-200 space-y-4 leading-relaxed"></div>
+
+                    <!-- صندوق المعادلات والمحاور الحسابية الخاصة بالمنهج -->
+                    <div class="bg-slate-950/80 p-5 rounded-2xl border border-purple-500/30 space-y-3">
+                        <h4 class="font-bold text-purple-300 text-sm flex items-center space-x-2">
+                            <i class="fa-solid fa-calculator mr-2"></i> المحاور والحسابات الرياضية الأساسية (Calculs & Axes) :
+                        </h4>
+                        <div id="lesson-math-equations" class="text-xs md:text-sm text-slate-300 font-mono space-y-2"></div>
+                    </div>
+
+                    <div class="bg-indigo-950/30 p-4 rounded-xl border border-cyan-500/20 text-xs text-cyan-200 flex items-center space-x-3">
+                        <i class="fa-solid fa-lightbulb text-yellow-400 text-lg"></i>
+                        <div>
+                            <strong>ملاحظة أسرية (Assia N) :</strong> هذا العالم الافتراضي يدمج بين الرؤية البصرية 4D والمعادلات الحقيقية للبرنامج التعليمي الجذع المشترك العلمي.
+                        </div>
                     </div>
                 </div>
             </div>
@@ -287,7 +282,6 @@
                 <button onclick="toggleAIModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
             </div>
 
-            <!-- Control Selectors for AI -->
             <div class="grid grid-cols-2 gap-2 text-[11px]">
                 <select id="ai-mode" class="bg-slate-800 text-slate-200 p-1.5 rounded-lg border border-slate-700 outline-none">
                     <option value="General AI assistant">مساعد عام (للكل)</option>
@@ -304,7 +298,7 @@
             </div>
 
             <div id="ai-chat-body" class="h-60 overflow-y-auto space-y-3 text-xs text-slate-200 pr-1">
-                <p id="ai-welcome-msg" class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50 leading-relaxed">Bonjour ! 👋 Je suis <b>AONOVERSE AI</b>. Posez-moi vos questions sur les leçons, les équations, ou la programmation ! 🚀✨</p>
+                <p id="ai-welcome-msg" class="bg-slate-800/80 p-3 rounded-xl border border-slate-700/50 leading-relaxed">Bonjour ! 👋 Je suis <b>AONOVERSE AI</b>. Posez-moi vos questions sur les dimensions, les formules ou le calcul vectoriel ! 🚀✨</p>
             </div>
             
             <div class="flex space-x-2 pt-2">
@@ -313,7 +307,7 @@
             </div>
         </div>
                 </div>
-                       <footer class="w-full text-center py-6 text-xs text-slate-500 border-t border-slate-800/60 z-10">
+                <footer class="w-full text-center py-6 text-xs text-slate-500 border-t border-slate-800/60 z-10">
         <p>© 2026 AnoPhysics Hub & AONOVERSE AI — Conçu et développé avec passion par Assia N (TCSF)</p>
     </footer>
 
@@ -324,23 +318,18 @@
         let timerInterval = null;
         let realSeconds = 0;
 
-        // Sound Effect from AONOVERSE AI
         function playCuteSound() {
             try {
                 const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
-
                 osc.type = 'sine';
                 osc.frequency.setValueAtTime(587.33, audioCtx.currentTime);
                 osc.frequency.exponentialRampToValueAtTime(1174.66, audioCtx.currentTime + 0.25);
-
                 gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
                 gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.25);
-
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
-
                 osc.start();
                 osc.stop(audioCtx.currentTime + 0.25);
             } catch (e) {
@@ -363,53 +352,34 @@
             setTimeout(() => intro.style.visibility = 'hidden', 800);
         }
 
+        // قاعدة البيانات الشاملة للدروس الأربعة مع الشرح والحسابات والمعادلات الدقيقة
         const lessonsData = {
             dimensions: {
                 fr: { 
-                    title: "1. Dimensions & Tesseract 4D", 
-                    content: "<p>L'analyse dimensionnelle vérifie l'homogénéité des formules physiques via les unités fondamentales : <b>[L]</b>, <b>[M]</b>, <b>[T]</b>.</p><p><b>Animation active :</b> Le Tesseract 4D tourne et projette ses 16 sommets vers l'espace multidimensionnel.</p>",
-                    detailed: "<b>🔍 Analyse Approfondie (TCSF) :</b> En physique, toute équation doit être homogène. L'analyse dimensionnelle permet de l'identifier en utilisant les dimensions de base : Longueur [L], Masse [M], et Temps [T]. Le Tesseract 4D (ou hypercube) représente l'extension géométrique de notre espace 3D vers une 4ème dimension spatiale w, projetée ici dynamiquement sur un écran 2D."
-                },
-                en: { 
-                    title: "1. Dimensions & 4D Tesseract", 
-                    content: "<p>Dimensional analysis checks physical formula consistency using base units: <b>[L]</b>, <b>[M]</b>, <b>[T]</b>.</p><p><b>Active Animation :</b> Watch the 4D Tesseract rotate and project its vertices.</p>",
-                    detailed: "<b>🔍 Detailed Analysis :</b> Dimensional analysis ensures equation consistency using base units [L], [M], [T]. The 4D Tesseract extends 3D space into a 4th spatial dimension w, dynamically projected here."
+                    title: "1. Dimensions & Analyse Dimensionnelle", 
+                    content: "L'analyse dimensionnelle est un outil mathématique et physique fondamental en TCSF. Elle permet de vérifier l'homogénéité d'une formule en utilisant les dimensions fondamentales : <b>[L]</b> pour la longueur, <b>[M]</b> pour la masse, et <b>[T]</b> pour le temps.",
+                    math: "• Dimension de la vitesse $[v] = \\frac{[L]}{[T]} = L \\cdot T^{-1}$<br>• Dimension de l'accélération $[a] = \\frac{[L]}{[T^2]} = L \\cdot T^{-2}$<br>• Homogénéité : Une formule physique est correcte si chaque terme possède la même dimension."
                 }
             },
             gravitation: {
                 fr: { 
                     title: "2. La Gravitation Universelle", 
-                    content: "<p>Loi de Newton :</p><p class='text-center my-2 font-mono text-cyan-300'>$$F = G \\cdot \\frac{m_A \\cdot m_B}{d^2}$$</p><p><b>Animation active :</b> Deux corps célestes s'attirent mutuellement en orbite, courbant l'espace-temps.</p>",
-                    detailed: "<b>🔍 Analyse Approfondie (TCSF) :</b> La loi de la gravitation universelle de Newton exprime la force d'attraction attractive entre deux corps de masses $m_A$ et $m_B$ séparés par une distance $d$. Plus la masse est grande, plus l'attraction est forte ; plus la distance augmente, plus la force diminue selon l'inverse du carré de la distance ($1/d^2$)."
-                },
-                en: { 
-                    title: "2. Universal Gravitation", 
-                    content: "<p>Newton's Law :</p><p class='text-center my-2 font-mono text-cyan-300'>$$F = G \\cdot \\frac{m_A \\cdot m_B}{d^2}$$</p><p><b>Active Animation :</b> Two celestial bodies attract each other in orbit.</p>",
-                    detailed: "<b>🔍 Detailed Analysis :</b> Newton's law states that gravitational force is proportional to the product of masses and inversely proportional to the squared distance between them."
+                    content: "Exprimée par Isaac Newton, cette loi régit l'attraction entre tous les corps massifs de l'univers. La force exercée par un corps A sur un corps B est proportionnelle au produit de leurs masses et inversement proportionnelle au carré de la distance qui les sépare.",
+                    math: "• Formule : $$\\vec{F}_{A/B} = -G \\cdot \\frac{m_A \\cdot m_B}{d^2} \\cdot \\vec{u}_{AB}$$<br>• Constante de gravitation : $G = 6.67 \\times 10^{-11} \\text{ N}\\cdot\\text{m}^2\\cdot\\text{kg}^{-2}$<br>• Unité de la force $F$ : Newton (N) ou $[M]\\cdot[L]\\cdot[T]^{-2}$"
                 }
             },
             inertie: {
                 fr: { 
                     title: "3. Le Principe d'Inertie", 
-                    content: "<p>Première loi de Newton : si les forces se compensent :</p><p class='text-center my-2 font-mono text-cyan-300'>$$\\sum \\vec{F} = \\vec{0}$$</p><p><b>Animation active :</b> Un objet glisse en ligne droite à vitesse constante sans frottement.</p>",
-                    detailed: "<b>🔍 Analyse Approfondie (TCSF) :</b> Le principe d'inertie (1ère loi de Newton) énonce que dans un référentiel galiléen, si la somme vectorielle des forces extérieures s'exerçant sur un système est nulle ($\sum \\vec{F} = \\vec{0}$), alors le centre d'inertie du système est soit au repos, soit en mouvement rectiligne uniforme."
-                },
-                en: { 
-                    title: "3. Principle of Inertia", 
-                    content: "<p>Newton's 1st Law : when forces balance out :</p><p class='text-center my-2 font-mono text-cyan-300'>$$\\sum \\vec{F} = \\vec{0}$$</p><p><b>Active Animation :</b> An object glides smoothly at constant velocity.</p>",
-                    detailed: "<b>🔍 Detailed Analysis :</b> Newton's first law states that an object at rest stays at rest and an object in motion stays in motion with the same speed and in the same direction unless acted upon by an unbalanced force."
+                    content: "Le principe d'inertie (première loi de Newton) établit que dans un référentiel galiléen, si les forces extérieures qui s'exercent sur un système se compensent, alors le système est soit immobile, soit en mouvement rectiligne uniforme.",
+                    math: "• Condition d'équilibre : $$\\sum \\vec{F}_{ext} = \\vec{0}$$<br>• Conséquence cinématique : $\\vec{v} = \\text{constante}$<br>• Application : Étude des solides sur plans inclinés ou tables à coussin d'air."
                 }
             },
             mouvement: {
                 fr: { 
-                    title: "4. Le Mouvement & Vitesse", 
-                    content: "<p>La vitesse moyenne d'un point est :</p><p class='text-center my-2 font-mono text-cyan-300'>$$V_m = \\frac{d}{\\Delta t}$$</p><p><b>Animation active :</b> Un point trace sa trajectoire cinématique en temps réel.</p>",
-                    detailed: "<b>🔍 Analyse Approfondie (TCSF) :</b> L'étude du mouvement se base sur la notion de trajectoire (ensemble des positions successives) et de vecteur vitesse. La vitesse moyenne $V_m$ se calcule en divisant la distance parcourue $d$ par la durée $\\Delta t$ correspondante."
-                },
-                en: { 
-                    title: "4. Motion & Speed", 
-                    content: "<p>Average speed is distance over time :</p><p class='text-center my-2 font-mono text-cyan-300'>$$V_m = \\frac{d}{\\Delta t}$$</p><p><b>Active Animation :</b> A point traces its kinematic trajectory in real-time.</p>",
-                    detailed: "<b>🔍 Detailed Analysis :</b> Motion kinematics involves studying trajectories and velocity vectors. Average speed is calculated as distance divided by time interval."
+                    title: "4. Le Mouvement & Vitesse Instantanée", 
+                    content: "L'étude cinématique du mouvement d'un point matériel nécessite un repère d'espace et une origine des temps. La vitesse instantanée représente la vitesse du point à un instant précis le long de sa trajectoire.",
+                    math: "• Vitesse moyenne : $$V_m = \\frac{d}{\\Delta t}$$<br>• Vitesse instantanée : $$\\vec{v}(t) = \\frac{d\\vec{OM}}{dt}$$<br>• Coordonnées cartésiennes : $v_x = \\frac{dx}{dt}, v_y = \\frac{dy}{dt}$"
                 }
             }
         };
@@ -433,7 +403,6 @@
             currentLesson = key;
             document.getElementById('view-home').classList.add('hidden');
             document.getElementById('view-lesson').classList.remove('hidden');
-            document.getElementById('detailed-box').classList.remove('active');
             renderLessonContent(key);
             startLessonAnimation(key);
             startDilationClock();
@@ -444,7 +413,6 @@
             if (timerInterval) clearInterval(timerInterval);
             timerInterval = setInterval(() => {
                 realSeconds++;
-                document.getElementById('real-time').innerText = realSeconds + 's';
                 let totalCosmicMins = realSeconds * 60;
                 let hrs = Math.floor(totalCosmicMins / 60);
                 let mins = totalCosmicMins % 60;
@@ -456,13 +424,8 @@
             const data = lessonsData[key][currentLang];
             document.getElementById('lesson-detail-title').innerText = data.title;
             document.getElementById('lesson-detail-content').innerHTML = data.content;
-            document.getElementById('detailed-text-content').innerHTML = data.detailed;
+            document.getElementById('lesson-math-equations').innerHTML = data.math;
             if (window.MathJax) MathJax.typesetPromise();
-        }
-
-        function toggleDetailedExplanation() {
-            const box = document.getElementById('detailed-box');
-            box.classList.toggle('active');
         }
 
         // --- ANIMATIONS ENGINE ---
@@ -486,7 +449,7 @@
                         if (sum === 1) edges.push([i, j]);
                     }
                 }
-                document.getElementById('canvas-status').innerText = "Animation : Tesseract 4D & Dimensions";
+                document.getElementById('canvas-status').innerText = "عالم الأبعاد 4D وتطوير التيسيراك";
                 function animateTess() {
                     ctx.clearRect(0, 0, canvas.width, canvas.height); t += 0.02;
                     let projected = [], cx = canvas.width / 2, cy = canvas.height / 2;
@@ -495,7 +458,7 @@
                         let x = v[0], y = v[1], z = v[2] * cos - v[3] * sin, w = v[2] * sin + v[3] * cos;
                         let x1 = x * cos - w * sin, w1 = x * sin + w * cos, y1 = y * cos - z * sin;
                         let persp = 1 / (2.2 - w1);
-                        projected.push({ x: x1 * persp * 150 + cx, y: y1 * persp * 150 + cy });
+                        projected.push({ x: x1 * persp * 140 + cx, y: y1 * persp * 140 + cy });
                     }
                     ctx.lineWidth = 2;
                     for (let e of edges) {
@@ -510,45 +473,45 @@
                 animateTess();
 
             } else if (key === 'gravitation') {
-                document.getElementById('canvas-status').innerText = "Animation : Gravitation Universelle & Orbites";
+                document.getElementById('canvas-status').innerText = "عالم الجاذبية الفضائية والمدارات";
                 function animateGrav() {
                     ctx.clearRect(0, 0, canvas.width, canvas.height); t += 0.03;
                     let cx = canvas.width / 2, cy = canvas.height / 2;
-                    ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(cx, cy, 25, 0, Math.PI * 2); ctx.fill();
-                    let px = cx + Math.cos(t) * 140, py = cy + Math.sin(t) * 100;
-                    ctx.fillStyle = '#38bdf8'; ctx.beginPath(); ctx.arc(px, py, 10, 0, Math.PI * 2); ctx.fill();
-                    ctx.strokeStyle = 'rgba(56, 189, 248, 0.2)'; ctx.beginPath(); ctx.arc(cx, cy, 120, 0, Math.PI * 2); ctx.stroke();
+                    ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(cx, cy, 30, 0, Math.PI * 2); ctx.fill();
+                    let px = cx + Math.cos(t) * 150, py = cy + Math.sin(t) * 110;
+                    ctx.fillStyle = '#38bdf8'; ctx.beginPath(); ctx.arc(px, py, 12, 0, Math.PI * 2); ctx.fill();
+                    ctx.strokeStyle = 'rgba(56, 189, 248, 0.3)'; ctx.beginPath(); ctx.arc(cx, cy, 130, 0, Math.PI * 2); ctx.stroke();
                     animationFrameId = requestAnimationFrame(animateGrav);
                 }
                 animateGrav();
 
             } else if (key === 'inertie') {
-                document.getElementById('canvas-status').innerText = "Animation : Principe d'Inertie (Forces compensées)";
+                document.getElementById('canvas-status').innerText = "عالم مبدأ القصور وتوازن القوى";
                 function animateInertia() {
                     ctx.clearRect(0, 0, canvas.width, canvas.height); t += 0.02;
-                    let cy = canvas.height / 2, objX = (t * 50) % (canvas.width + 100) - 50;
-                    ctx.strokeStyle = '#475569'; ctx.lineWidth = 3; ctx.beginPath(); ctx.moveTo(0, cy + 30); ctx.lineTo(canvas.width, cy + 30); ctx.stroke();
-                    ctx.fillStyle = '#10b981'; ctx.fillRect(objX - 20, cy - 10, 40, 40);
-                    ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 2;
-                    ctx.beginPath(); ctx.moveTo(objX, cy + 10); ctx.lineTo(objX, cy + 50); ctx.stroke();
-                    ctx.beginPath(); ctx.moveTo(objX, cy + 10); ctx.lineTo(objX, cy - 30); ctx.stroke();
+                    let cy = canvas.height / 2, objX = (t * 60) % (canvas.width + 120) - 60;
+                    ctx.strokeStyle = '#64748b'; ctx.lineWidth = 4; ctx.beginPath(); ctx.moveTo(0, cy + 40); ctx.lineTo(canvas.width, cy + 40); ctx.stroke();
+                    ctx.fillStyle = '#10b981'; ctx.fillRect(objX - 25, cy - 10, 50, 50);
+                    ctx.strokeStyle = '#ef4444'; ctx.lineWidth = 3;
+                    ctx.beginPath(); ctx.moveTo(objX, cy + 15); ctx.lineTo(objX, cy + 65); ctx.stroke();
+                    ctx.beginPath(); ctx.moveTo(objX, cy + 15); ctx.lineTo(objX, cy - 35); ctx.stroke();
                     animationFrameId = requestAnimationFrame(animateInertia);
                 }
                 animateInertia();
 
             } else if (key === 'mouvement') {
-                document.getElementById('canvas-status').innerText = "Animation : Trajectoire & Vitesse Instantanée";
+                document.getElementById('canvas-status').innerText = "عالم الحركة والتطبيقات الحركية";
                 function animateMotion() {
                     ctx.clearRect(0, 0, canvas.width, canvas.height); t += 0.04;
                     let cx = canvas.width / 2, cy = canvas.height / 2;
-                    let px = cx + Math.sin(t) * 160, py = cy + Math.cos(t * 0.7) * 80;
-                    ctx.strokeStyle = 'rgba(168, 85, 247, 0.4)'; ctx.lineWidth = 2; ctx.beginPath();
+                    let px = cx + Math.sin(t) * 180, py = cy + Math.cos(t * 0.7) * 90;
+                    ctx.strokeStyle = 'rgba(168, 85, 247, 0.5)'; ctx.lineWidth = 2.5; ctx.beginPath();
                     for(let i=0; i<Math.PI*2; i+=0.1) {
-                        let tx = cx + Math.sin(i) * 160, ty = cy + Math.cos(i * 0.7) * 80;
+                        let tx = cx + Math.sin(i) * 180, ty = cy + Math.cos(i * 0.7) * 90;
                         if(i === 0) ctx.moveTo(tx, ty); else ctx.lineTo(tx, ty);
                     }
                     ctx.stroke();
-                    ctx.fillStyle = '#ec4899'; ctx.beginPath(); ctx.arc(px, py, 8, 0, Math.PI * 2); ctx.fill();
+                    ctx.fillStyle = '#ec4899'; ctx.beginPath(); ctx.arc(px, py, 10, 0, Math.PI * 2); ctx.fill();
                     animationFrameId = requestAnimationFrame(animateMotion);
                 }
                 animateMotion();
