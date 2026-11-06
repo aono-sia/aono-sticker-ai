@@ -60,14 +60,29 @@
             box-shadow: 0 10px 30px -10px rgba(6, 182, 212, 0.3); 
         }
 
-        /* --- INTRO FLUFFY SCREEN --- */
+        /* --- INTRO FLUFFY 4D STAR SCREEN --- */
         #intro-screen { 
             position: fixed; inset: 0; background: #030712; z-index: 9999; 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             transition: opacity 0.8s ease, visibility 0.8s ease; cursor: pointer; 
         }
-        .fluffy-star-container { position: relative; margin-bottom: 20px; animation: floatFluffy 2.5s ease-in-out infinite alternate; }
-        .fluffy-star { font-size: 100px; display: inline-block; animation: spinCircular 3.5s linear infinite; filter: drop-shadow(0 0 25px #06b6d4) drop-shadow(0 0 45px #ec4899); }
+        .fluffy-star-container { 
+            position: relative; 
+            margin-bottom: 20px; 
+            animation: floatFluffy 2.5s ease-in-out infinite alternate;
+            perspective: 1000px;
+        }
+        .fluffy-star { 
+            font-size: 100px; 
+            display: inline-block; 
+            animation: spin4D 4s cubic-bezier(0.4, 0, 0.2, 1) infinite; 
+            filter: drop-shadow(0 0 30px #06b6d4) drop-shadow(0 0 60px #ec4899); 
+        }
+        @keyframes spin4D { 
+            0% { transform: rotate3d(1, 1, 1, 0deg) scale(1); filter: hue-rotate(0deg); }
+            50% { transform: rotate3d(1, 1, 1, 180deg) scale(1.15); filter: hue-rotate(180deg); }
+            100% { transform: rotate3d(1, 1, 1, 360deg) scale(1); filter: hue-rotate(360deg); }
+        }
         .color-burst { 
             position: absolute; top: 50%; left: 50%; width: 130px; height: 130px; margin: -65px 0 0 -65px; border-radius: 50%; 
             background: conic-gradient(from 0deg, #38bdf8, #c084fc, #f472b6, #fbbf24, #38bdf8); 
@@ -78,7 +93,6 @@
         .sp2 { top: -25px; right: -30px; animation-delay: 0.3s; }
         .sp3 { bottom: -10px; left: 35%; animation-delay: 0.6s; }
 
-        @keyframes spinCircular { 0% { transform: rotate(0deg) scale(1); } 50% { transform: rotate(180deg) scale(1.1); } 100% { transform: rotate(360deg) scale(1); } }
         @keyframes burstSpin { 0% { transform: rotate(360deg) scale(0.9); } 50% { transform: rotate(180deg) scale(1.2); } 100% { transform: rotate(0deg) scale(0.9); } }
         @keyframes floatFluffy { 0% { transform: translateY(0px); } 100% { transform: translateY(-18px); } }
         @keyframes floatSparkle { 0% { opacity: 0; transform: translateY(0) scale(0.4); } 50% { opacity: 1; transform: translateY(-25px) scale(1.2); } 100% { opacity: 0; transform: translateY(-50px) scale(0.8); } }
@@ -94,13 +108,26 @@
         #ai-modal { transition: all 0.3s ease; transform: translateY(20px) scale(0.95); opacity: 0; pointer-events: none; }
         #ai-modal.active { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
         .time-badge { background: linear-gradient(135deg, rgba(6,182,212,0.15), rgba(139,92,246,0.15)); border: 1px solid rgba(6,182,212,0.3); }
+
+        /* Detail Box Style */
+        .detailed-explanation {
+            display: none;
+            background: rgba(15, 23, 42, 0.95);
+            border: 1px solid rgba(6, 182, 212, 0.4);
+            border-radius: 1rem;
+            padding: 1.2rem;
+            margin-top: 1rem;
+            animation: fadeIn 0.4s ease forwards;
+        }
+        .detailed-explanation.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
     <canvas id="starfield"></canvas>
     <div class="earth-glow"></div>
 
-    <!-- Intro Fluffy Screen -->
+    <!-- Intro Fluffy 4D Star Screen -->
     <div id="intro-screen" onclick="openStarPaper()">
         <div class="fluffy-star-container">
             <div class="color-burst"></div>
@@ -110,7 +137,7 @@
             <span class="sparkle-particle sp3">⭐</span>
         </div>
         <h2 class="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 mb-2">AnoPhysics Hub</h2>
-        <p class="text-xs text-yellow-300 font-mono tracking-wider mb-4">(Cliquez sur l'étoile cosmique)</p>
+        <p class="text-xs text-yellow-300 font-mono tracking-wider mb-4">(Cliquez sur l'étoile cosmique 4D)</p>
 
         <div id="paper-signature" class="paper-note bg-amber-50 text-slate-900 px-8 py-5 rounded-xl shadow-2xl border-2 border-amber-200 text-center max-w-sm mb-6">
             <h4 class="font-extrabold text-xl text-indigo-950">AONOVERSE AI & 4D</h4>
@@ -121,9 +148,8 @@
         <button id="enter-btn" onclick="enterHub(event)" class="hidden opacity-0 transition-all px-8 py-3 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:scale-105 text-white font-bold rounded-full shadow-lg text-sm tracking-wide">
             Entrer dans l'Espace-Temps <i class="fa-solid fa-rocket ml-2"></i>
         </button>
-    </div>
-
-    <!-- Header -->
+        </div>
+        <!-- Header -->
     <header class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center z-10">
         <div class="flex items-center space-x-3 cursor-pointer" onclick="showHome()">
             <div class="w-11 h-11 rounded-full bg-cyan-600/30 border border-cyan-400/50 flex items-center justify-center">
@@ -220,12 +246,25 @@
                     </div>
                 </div>
 
-                <!-- Lesson Content Box -->
+                <!-- Lesson Content Box with Toggle Detailed Explanation -->
                 <div class="lg:col-span-5 glass-card p-7 rounded-2xl space-y-5 flex flex-col justify-between">
                     <div>
                         <h2 id="lesson-detail-title" class="text-2xl font-bold text-white border-b border-slate-700/80 pb-3">Title</h2>
                         <div id="lesson-detail-content" class="text-sm text-slate-300 space-y-4 pt-3 leading-relaxed"></div>
+                        
+                        <!-- زر الشرح المفصل المتعمق -->
+                        <button onclick="toggleDetailedExplanation()" class="mt-4 w-full py-2.5 px-4 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-cyan-300 rounded-xl text-xs font-bold transition-all flex items-center justify-center space-x-2 shadow-md">
+                            <i class="fa-solid fa-book-open-reader"></i>
+                            <span id="btn-detailed-text">🔍 الشرح المفصل والعميق (Détails & Approfondissement)</span>
+                        </button>
+
+                        <!-- صندوق الشرح المفصل الذي يظهر عند النقر -->
+                        <div id="detailed-box" class="detailed-explanation text-xs text-slate-200 leading-relaxed space-y-3">
+                            <h5 class="font-bold text-cyan-300 text-sm border-b border-cyan-500/30 pb-1">📖 الشرح بالتفصيل الممل :</h5>
+                            <p id="detailed-text-content">جاري تحميل الشرح المفصل...</p>
+                        </div>
                     </div>
+
                     <div class="bg-indigo-950/40 p-4 rounded-xl border border-cyan-500/20 text-xs text-cyan-200">
                         <i class="fa-solid fa-lightbulb text-yellow-400 mr-2"></i> <strong>Note d'Assia :</strong> Observez l'animation en direct sur le canvas pour lier la théorie du TCSF aux dimensions 4D !
                     </div>
@@ -273,17 +312,8 @@
                 <button onclick="sendAIMessage()" class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:opacity-90 text-white rounded-xl text-xs font-bold transition-all shadow-md">🚀</button>
             </div>
         </div>
-    </div>
                 </div>
-            
-            <div class="flex space-x-2 pt-2">
-                <input id="ai-input" type="text" placeholder="Posez une question à AONOVERSE AI..." class="flex-grow bg-slate-800/90 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-cyan-500" onkeypress="if(event.key === 'Enter') sendAIMessage();">
-                <button onclick="sendAIMessage()" class="px-4 py-2 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:opacity-90 text-white rounded-xl text-xs font-bold transition-all shadow-md">🚀</button>
-            </div>
-        </div>
-    </div>
-
-    <footer class="w-full text-center py-6 text-xs text-slate-500 border-t border-slate-800/60 z-10">
+                       <footer class="w-full text-center py-6 text-xs text-slate-500 border-t border-slate-800/60 z-10">
         <p>© 2026 AnoPhysics Hub & AONOVERSE AI — Conçu et développé avec passion par Assia N (TCSF)</p>
     </footer>
 
@@ -335,20 +365,52 @@
 
         const lessonsData = {
             dimensions: {
-                fr: { title: "1. Dimensions & Tesseract 4D", content: "<p>L'analyse dimensionnelle vérifie l'homogénéité des formules physiques via les unités fondamentales : <b>[L]</b>, <b>[M]</b>, <b>[T]</b>.</p><p><b>Animation active :</b> Le Tesseract 4D tourne et projette ses 16 sommets vers l'espace multidimensionnel.</p>" },
-                en: { title: "1. Dimensions & 4D Tesseract", content: "<p>Dimensional analysis checks physical formula consistency using base units: <b>[L]</b>, <b>[M]</b>, <b>[T]</b>.</p><p><b>Active Animation :</b> Watch the 4D Tesseract rotate and project its vertices.</p>" }
+                fr: { 
+                    title: "1. Dimensions & Tesseract 4D", 
+                    content: "<p>L'analyse dimensionnelle vérifie l'homogénéité des formules physiques via les unités fondamentales : <b>[L]</b>, <b>[M]</b>, <b>[T]</b>.</p><p><b>Animation active :</b> Le Tesseract 4D tourne et projette ses 16 sommets vers l'espace multidimensionnel.</p>",
+                    detailed: "<b>🔍 Analyse Approfondie (TCSF) :</b> En physique, toute équation doit être homogène. L'analyse dimensionnelle permet de l'identifier en utilisant les dimensions de base : Longueur [L], Masse [M], et Temps [T]. Le Tesseract 4D (ou hypercube) représente l'extension géométrique de notre espace 3D vers une 4ème dimension spatiale w, projetée ici dynamiquement sur un écran 2D."
+                },
+                en: { 
+                    title: "1. Dimensions & 4D Tesseract", 
+                    content: "<p>Dimensional analysis checks physical formula consistency using base units: <b>[L]</b>, <b>[M]</b>, <b>[T]</b>.</p><p><b>Active Animation :</b> Watch the 4D Tesseract rotate and project its vertices.</p>",
+                    detailed: "<b>🔍 Detailed Analysis :</b> Dimensional analysis ensures equation consistency using base units [L], [M], [T]. The 4D Tesseract extends 3D space into a 4th spatial dimension w, dynamically projected here."
+                }
             },
             gravitation: {
-                fr: { title: "2. La Gravitation Universelle", content: "<p>Loi de Newton :</p><p class='text-center my-2 font-mono text-cyan-300'>$$F = G \\cdot \\frac{m_A \\cdot m_B}{d^2}$$</p><p><b>Animation active :</b> Deux corps célestes s'attirent mutuellement en orbite, courbant l'espace-temps.</p>" },
-                en: { title: "2. Universal Gravitation", content: "<p>Newton's Law :</p><p class='text-center my-2 font-mono text-cyan-300'>$$F = G \\cdot \\frac{m_A \\cdot m_B}{d^2}$$</p><p><b>Active Animation :</b> Two celestial bodies attract each other in orbit.</p>" }
+                fr: { 
+                    title: "2. La Gravitation Universelle", 
+                    content: "<p>Loi de Newton :</p><p class='text-center my-2 font-mono text-cyan-300'>$$F = G \\cdot \\frac{m_A \\cdot m_B}{d^2}$$</p><p><b>Animation active :</b> Deux corps célestes s'attirent mutuellement en orbite, courbant l'espace-temps.</p>",
+                    detailed: "<b>🔍 Analyse Approfondie (TCSF) :</b> La loi de la gravitation universelle de Newton exprime la force d'attraction attractive entre deux corps de masses $m_A$ et $m_B$ séparés par une distance $d$. Plus la masse est grande, plus l'attraction est forte ; plus la distance augmente, plus la force diminue selon l'inverse du carré de la distance ($1/d^2$)."
+                },
+                en: { 
+                    title: "2. Universal Gravitation", 
+                    content: "<p>Newton's Law :</p><p class='text-center my-2 font-mono text-cyan-300'>$$F = G \\cdot \\frac{m_A \\cdot m_B}{d^2}$$</p><p><b>Active Animation :</b> Two celestial bodies attract each other in orbit.</p>",
+                    detailed: "<b>🔍 Detailed Analysis :</b> Newton's law states that gravitational force is proportional to the product of masses and inversely proportional to the squared distance between them."
+                }
             },
             inertie: {
-                fr: { title: "3. Le Principe d'Inertie", content: "<p>Première loi de Newton : si les forces se compensent :</p><p class='text-center my-2 font-mono text-cyan-300'>$$\\sum \\vec{F} = \\vec{0}$$</p><p><b>Animation active :</b> Un objet glisse en ligne droite à vitesse constante sans frottement.</p>" },
-                en: { title: "3. Principle of Inertia", content: "<p>Newton's 1st Law : when forces balance out :</p><p class='text-center my-2 font-mono text-cyan-300'>$$\\sum \\vec{F} = \\vec{0}$$</p><p><b>Active Animation :</b> An object glides smoothly at constant velocity.</p>" }
+                fr: { 
+                    title: "3. Le Principe d'Inertie", 
+                    content: "<p>Première loi de Newton : si les forces se compensent :</p><p class='text-center my-2 font-mono text-cyan-300'>$$\\sum \\vec{F} = \\vec{0}$$</p><p><b>Animation active :</b> Un objet glisse en ligne droite à vitesse constante sans frottement.</p>",
+                    detailed: "<b>🔍 Analyse Approfondie (TCSF) :</b> Le principe d'inertie (1ère loi de Newton) énonce que dans un référentiel galiléen, si la somme vectorielle des forces extérieures s'exerçant sur un système est nulle ($\sum \\vec{F} = \\vec{0}$), alors le centre d'inertie du système est soit au repos, soit en mouvement rectiligne uniforme."
+                },
+                en: { 
+                    title: "3. Principle of Inertia", 
+                    content: "<p>Newton's 1st Law : when forces balance out :</p><p class='text-center my-2 font-mono text-cyan-300'>$$\\sum \\vec{F} = \\vec{0}$$</p><p><b>Active Animation :</b> An object glides smoothly at constant velocity.</p>",
+                    detailed: "<b>🔍 Detailed Analysis :</b> Newton's first law states that an object at rest stays at rest and an object in motion stays in motion with the same speed and in the same direction unless acted upon by an unbalanced force."
+                }
             },
             mouvement: {
-                fr: { title: "4. Le Mouvement & Vitesse", content: "<p>La vitesse moyenne d'un point est :</p><p class='text-center my-2 font-mono text-cyan-300'>$$V_m = \\frac{d}{\\Delta t}$$</p><p><b>Animation active :</b> Un point trace sa trajectoire cinématique en temps réel.</p>" },
-                en: { title: "4. Motion & Speed", content: "<p>Average speed is distance over time :</p><p class='text-center my-2 font-mono text-cyan-300'>$$V_m = \\frac{d}{\\Delta t}$$</p><p><b>Active Animation :</b> A point traces its kinematic trajectory in real-time.</p>" }
+                fr: { 
+                    title: "4. Le Mouvement & Vitesse", 
+                    content: "<p>La vitesse moyenne d'un point est :</p><p class='text-center my-2 font-mono text-cyan-300'>$$V_m = \\frac{d}{\\Delta t}$$</p><p><b>Animation active :</b> Un point trace sa trajectoire cinématique en temps réel.</p>",
+                    detailed: "<b>🔍 Analyse Approfondie (TCSF) :</b> L'étude du mouvement se base sur la notion de trajectoire (ensemble des positions successives) et de vecteur vitesse. La vitesse moyenne $V_m$ se calcule en divisant la distance parcourue $d$ par la durée $\\Delta t$ correspondante."
+                },
+                en: { 
+                    title: "4. Motion & Speed", 
+                    content: "<p>Average speed is distance over time :</p><p class='text-center my-2 font-mono text-cyan-300'>$$V_m = \\frac{d}{\\Delta t}$$</p><p><b>Active Animation :</b> A point traces its kinematic trajectory in real-time.</p>",
+                    detailed: "<b>🔍 Detailed Analysis :</b> Motion kinematics involves studying trajectories and velocity vectors. Average speed is calculated as distance divided by time interval."
+                }
             }
         };
 
@@ -371,6 +433,7 @@
             currentLesson = key;
             document.getElementById('view-home').classList.add('hidden');
             document.getElementById('view-lesson').classList.remove('hidden');
+            document.getElementById('detailed-box').classList.remove('active');
             renderLessonContent(key);
             startLessonAnimation(key);
             startDilationClock();
@@ -393,7 +456,13 @@
             const data = lessonsData[key][currentLang];
             document.getElementById('lesson-detail-title').innerText = data.title;
             document.getElementById('lesson-detail-content').innerHTML = data.content;
+            document.getElementById('detailed-text-content').innerHTML = data.detailed;
             if (window.MathJax) MathJax.typesetPromise();
+        }
+
+        function toggleDetailedExplanation() {
+            const box = document.getElementById('detailed-box');
+            box.classList.toggle('active');
         }
 
         // --- ANIMATIONS ENGINE ---
@@ -488,7 +557,6 @@
 
         function toggleAIModal() { document.getElementById('ai-modal').classList.toggle('active'); }
 
-        // --- POWERFUL INTEGRATION WITH POLLINATIONS AI FROM AONOVERSE AI ---
         async function sendAIMessage() {
             const input = document.getElementById('ai-input');
             const text = input.value.trim();
@@ -498,12 +566,10 @@
             const lang = document.getElementById('ai-lang').value;
             const chatBody = document.getElementById('ai-chat-body');
 
-            // Append User Message
             chatBody.innerHTML += `<div class="bg-gradient-to-r from-cyan-600 to-indigo-600 p-2.5 rounded-xl text-right text-white ml-6 shadow-sm">${text}</div>`;
             input.value = '';
             chatBody.scrollTop = chatBody.scrollHeight;
 
-            // Append Loading Indicator
             const loadingDiv = document.createElement('div');
             loadingDiv.className = "bg-slate-800/90 p-3 rounded-xl border border-slate-700/60 text-slate-200 mr-6 shadow-sm leading-relaxed";
             loadingDiv.innerText = "AONOVERSE AI réfléchit... ⏳";
@@ -528,7 +594,6 @@
             chatBody.scrollTop = chatBody.scrollHeight;
         }
 
-        // Starfield background
         const bgCanvas = document.getElementById('starfield');
         const bgCtx = bgCanvas.getContext('2d');
         bgCanvas.width = window.innerWidth; 
