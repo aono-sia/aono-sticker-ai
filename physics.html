@@ -50,11 +50,10 @@
             transform: translateY(-4px);
         }
 
-        /* INTRO FLUFFY 4D STAR SCREEN */
         #intro-screen { 
             position: fixed; inset: 0; background: #030712; z-index: 9999; 
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
-            transition: opacity 0.8s ease, visibility 0.8s ease; cursor: pointer; 
+            transition: opacity 0.8s ease, visibility 0.8s ease; 
         }
         .fluffy-star-container { 
             position: relative; margin-bottom: 25px; perspective: 1000px;
@@ -78,9 +77,6 @@
         }
         @keyframes burstSpin { 0% { transform: rotate(360deg) scale(0.9); } 50% { transform: rotate(180deg) scale(1.2); } 100% { transform: rotate(0deg) scale(0.9); } }
 
-        .paper-note { max-height: 0; overflow: hidden; transition: all 0.8s ease; opacity: 0; transform: translateY(-20px); }
-        .paper-note.open { max-height: 250px; opacity: 1; transform: translateY(0); margin-bottom: 20px; }
-
         .anim-screen-container {
             position: relative;
             width: 100%;
@@ -101,22 +97,22 @@
 <body>
     <div class="cosmic-bg"></div>
 
-    <!-- Intro Screen -->
-    <div id="intro-screen" onclick="openStarPaper()">
+    <!-- Intro Screen (زر الدخول والتوقيع ظاهرين مباشرة) -->
+    <div id="intro-screen">
         <div class="fluffy-star-container">
             <div class="color-burst"></div>
             <span class="fluffy-star">⭐</span>
         </div>
         <h2 class="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 mb-2">AnoPhysics Hub</h2>
-        <p class="text-xs text-yellow-300 font-mono tracking-wider mb-4">(Cliquez sur l'étoile cosmique 4D)</p>
+        <p class="text-xs text-yellow-300 font-mono tracking-wider mb-4">(Espace-Temps 4D Edition)</p>
 
-        <div id="paper-signature" class="paper-note bg-amber-50 text-slate-900 px-8 py-5 rounded-2xl shadow-2xl border-2 border-amber-200 text-center max-w-sm">
-            <h4 class="font-extrabold text-xl text-indigo-950">AONOVERSE AI & 4D Spacetime</h4>
+        <div class="bg-amber-50 text-slate-900 px-8 py-4 rounded-2xl shadow-2xl border-2 border-amber-200 text-center max-w-sm mb-4">
+            <h4 class="font-extrabold text-lg text-indigo-950">AONOVERSE AI & 4D Spacetime</h4>
             <p class="font-bold text-indigo-600 mt-1 text-sm">Made by Assia N 💖</p>
-            <p class="text-[11px] text-slate-600 mt-2">Animation vs. Physics Edition - TCSF</p>
+            <p class="text-[11px] text-slate-600 mt-1">Animation vs. Physics Edition - TCSF</p>
         </div>
 
-        <button id="enter-btn" onclick="enterHub(event)" class="hidden opacity-0 transition-all px-8 py-3.5 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:scale-105 text-white font-bold rounded-full shadow-lg text-sm tracking-wide">
+        <button id="enter-btn" onclick="enterHub(event)" class="px-8 py-3.5 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:scale-105 text-white font-bold rounded-full shadow-lg text-sm tracking-wide cursor-pointer z-50">
             Entrer dans l'Espace-Temps 4D <i class="fa-solid fa-rocket ml-2"></i>
         </button>
     </div>
@@ -257,41 +253,22 @@
             </div>
         </div>
             </div>
-                <!-- Floating AI Widget -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <button onclick="toggleAI()" class="w-14 h-14 rounded-full bg-gradient-to-r from-cyan-500 to-pink-500 text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all">
-            <i class="fa-solid fa-robot text-xl"></i>
-        </button>
-        <div id="ai-modal" class="absolute bottom-16 right-0 w-80 md:w-96 glass-panel p-5 space-y-4 shadow-2xl border border-cyan-500/40">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-3">
-                <span class="text-xs font-bold text-cyan-400">AONOVERSE AI by Assia N</span>
-                <button onclick="toggleAI()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div id="chat-box" class="h-52 overflow-y-auto space-y-3 text-xs text-slate-200 pr-1">
-                <p class="bg-slate-900 p-2.5 rounded-xl border border-slate-800">Bonjour ! Posez vos questions sur la physique 4D et les calculs du TCSF ! 🚀✨</p>
-            </div>
-            <div class="flex space-x-2 pt-1">
-                <input id="ai-in" type="text" placeholder="Écrire votre question..." class="flex-grow bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white outline-none focus:border-cyan-500" onkeypress="if(event.key==='Enter')sendAI()">
-                <button onclick="sendAI()" class="px-4 bg-gradient-to-r from-cyan-500 to-indigo-600 rounded-xl text-xs font-bold text-white shadow-md">🚀</button>
-            </div>
-        </div>
-                                                     </div>
         <footer class="w-full text-center py-6 text-xs text-slate-500 border-t border-slate-800/60 z-10">
         <p>© 2026 AnoPhysics Hub — Conçu et développé avec passion par Assia N (TCSF)</p>
     </footer>
 
     <script>
+        // --- 1. إعدادات النظام العام وحركة الواجهات ---
         let animFrame = null;
-
-        function openStarPaper() {
-            document.getElementById('paper-signature').classList.toggle('open');
-            document.getElementById('enter-btn').classList.remove('hidden');
-        }
 
         function enterHub(e) {
             e.stopPropagation();
-            document.getElementById('intro-screen').style.opacity = '0';
-            setTimeout(() => document.getElementById('intro-screen').style.visibility = 'hidden', 800);
+            const intro = document.getElementById('intro-screen');
+            intro.style.opacity = '0';
+            setTimeout(() => {
+                intro.style.visibility = 'hidden';
+                intro.style.display = 'none';
+            }, 800);
         }
 
         function showHome() {
@@ -300,26 +277,27 @@
             if(animFrame) cancelAnimationFrame(animFrame);
         }
 
+        // --- 2. قاعدة البيانات الشاملة للدروس الأربعة مع المعادلات والتحليلات 4D ---
         const dataWorlds = {
             dimensions: {
-                title: "1. Dimensions & Analyse Dimensionnelle (Tesseract 4D)",
-                desc: "L'analyse dimensionnelle en TCSF s'étend ici dans un espace téressractique 4D, où chaque variable physique est validée par ses dimensions fondamentales : Longueur [L], Masse [M], et Temps [T].",
-                equations: "• [Longueur] = L <br>• [Masse] = M <br>• [Temps] = T <br>• [Vitesse v] = [L]·[T]⁻¹ <br>• Homogénéité 4D : Vérification rigoureuse de chaque terme de l'équation."
+                title: "1. Dimensions & Analyse Dimensionnelle (Tesseract 4D Matrix)",
+                desc: "L'analyse dimensionnelle en TCSF s'étend ici dans un espace téressractique 4D, où chaque grandeur physique est validée et vérifiée par ses dimensions fondamentales : Longueur [L], Masse [M], et Temps [T]. C'est l'outil suprême pour tester l'homogénéité des équations.",
+                equations: "• [Longueur] = L <br>• [Masse] = M <br>• [Temps] = T <br>• [Vitesse v] = [L]·[T]⁻¹ <br>• [Accélération a] = [L]·[T]⁻² <br>• [Force F] = [M]·[L]·[T]⁻² <br>• Homogénéité 4D : Chaque terme d'une relation physique doit posséder la même dimension."
             },
             gravitation: {
-                title: "2. La Gravitation Universelle & Courbure 4D",
-                desc: "Étude de l'attraction universelle entre deux corps de masses m₁ et m₂ dans un espace-temps quadridimensionnel, modélisant la force agissant le long de la droite centripète.",
-                equations: "• Formule vectorielle : \\(\\vec{F}_{1/2} = -G \\cdot \\frac{m_1 \\cdot m_2}{d^2} \\cdot \\vec{u}_{12}\\)<br>• Constante : \\(G = 6.67 \\times 10^{-11} \\text{ N}\\cdot\\text{m}^2\\cdot\\text{kg}^{-2}\\)<br>• Projection 4D de la force."
+                title: "2. La Gravitation Universelle & Courbure Spatio-Temporelle 4D",
+                desc: "Étude approfondie de l'attraction universelle entre deux corps de masses m₁ et m₂ dans un espace-temps quadridimensionnel. La force s'exerce le long de la droite reliant leurs centres de gravité avec une intensité proportionnelle au produit des masses et inversement proportionnelle au carré de la distance.",
+                equations: "• Formule vectorielle : \\(\\vec{F}_{1/2} = -G \\cdot \\frac{m_1 \\cdot m_2}{d^2} \\cdot \\vec{u}_{12}\\)<br>• Constante de gravitation universelle : \\(G = 6.67 \\times 10^{-11} \\text{ N}\\cdot\\text{m}^2\\cdot\\text{kg}^{-2}\\)<br>• Poids d'un corps : \\(P = m \\cdot g\\) (avec \\(g = G \\cdot \\frac{M_T}{R_T^2}\\))<br>• Projection vectorielle 4D."
             },
             inertie: {
-                title: "3. Le Principe d'Inertie (1ère Loi de Newton en 4D)",
-                desc: "Dans un référentiel galiléen, l'annulation de la somme vectorielle des forces extérieures garantit l'état de repos ou de mouvement rectiligne uniforme du système.",
-                equations: "• Condition d'équilibre : \\(\\sum \\vec{F}_{ext} = \\vec{0}\\)<br>• Vitesse constante : \\(\\vec{v} = \\text{constante}\\)<br>• Accélération nulle : \\(\\vec{a} = \\vec{0}\\)"
+                title: "3. Le Principe d'Inertie (1ère Loi de Newton en Espace 4D)",
+                desc: "Dans un référentiel galiléen, si la somme vectorielle des forces extérieures s'exerçant sur un système mécanique est nulle, alors le vecteur vitesse de son centre d'inertie est constant (système au repos ou en mouvement rectiligne uniforme).",
+                equations: "• Condition d'équilibre dynamique : \\(\\sum \\vec{F}_{ext} = \\vec{0}\\)<br>• Conséquence cinématique : \\(\\vec{v}_{G} = \\text{constante}\\)<br>• Accélération du centre d'inertie : \\(\\vec{a}_{G} = \\frac{d\\vec{v}}{dt} = \\vec{0}\\)<br>• Référentiels galiléens : Terrestre, de Copernic, de Galilée."
             },
             mouvement: {
                 title: "4. Le Mouvement & Vitesse Instantanée (Cinématique 4D)",
-                desc: "Description précise de la trajectoire d'un point mobile au cours du temps. La vitesse instantanée représente la variation temporelle du vecteur position OM.",
-                equations: "• Vitesse moyenne : \\(V_m = \\frac{d}{\\Delta t}\\)<br>• Vitesse instantanée : \\(\\vec{v}(t) = \\frac{d\\vec{OM}}{dt}\\)<br>• Composantes cartésiennes : \\(v_x = \\frac{dx}{dt}, v_y = \\frac{dy}{dt}\\)"
+                desc: "Description mathématique et cinématique de la position d'un point mobile au cours du temps dans un repère cartésien. La vitesse instantanée est définie rigoureusement comme la dérivée temporelle du vecteur position OM.",
+                equations: "• Vecteur position : \\(/\\vec{OM}(t) = x(t)\\vec{i} + y(t)\\vec{j} + z(t)\\vec{k}\\)<br>• Vitesse instantanée : \\(\\vec{v}(t) = \\frac{d\\vec{OM}}{dt}\\)<br>• Composantes cartésiennes de la vitesse : \\(v_x = \\frac{dx}{dt}, v_y = \\frac{dy}{dt}, v_z = \\frac{dz}{dt}\\)<br>• Norme de la vitesse : \\(v = \\sqrt{v_x^2 + v_y^2 + v_z^2}\\)"
             }
         };
 
@@ -336,6 +314,7 @@
             if (window.MathJax) MathJax.typesetPromise();
         }
 
+        // --- 3. محرك الرسومات الحية والـ Tesseract 4D الخارق والمتقدم ---
         function start4DPhysicsAnimation(key) {
             const canvas = document.getElementById('physics-canvas');
             const ctx = canvas.getContext('2d');
@@ -345,6 +324,7 @@
             let angle = 0;
 
             function drawTesseract4D(cx, cy, scale, color) {
+                // رؤوس المكعب رباعي الأبعاد (Tesseract 4D 16 Vertices Hypercube projection)
                 let vertices = [
                     [-1,-1,-1], [1,-1,-1], [1,1,-1], [-1,1,-1],
                     [-1,-1,1], [1,-1,1], [1,1,1], [-1,1,1]
@@ -358,13 +338,13 @@
                     let z = p[0] * Math.sin(rad) + p[2] * Math.cos(rad);
                     let y = p[1] * Math.cos(rad*0.7) - z * Math.sin(rad*0.7);
                     
-                    let fov = 350;
-                    let dist = fov / (fov + z + 120);
+                    let fov = 380;
+                    let dist = fov / (fov + z + 140);
                     projected.push([cx + x * dist, cy + y * dist]);
                 }
 
                 ctx.strokeStyle = color;
-                ctx.lineWidth = 1.8;
+                ctx.lineWidth = 2;
                 let edges = [
                     [0,1],[1,2],[2,3],[3,0], [4,5],[5,6],[6,7],[7,4],
                     [0,4],[1,5],[2,6],[3,7]
@@ -379,56 +359,56 @@
 
             function draw() {
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                angle += 0.025;
+                angle += 0.022;
                 let cx = canvas.width / 2, cy = canvas.height / 2;
 
                 if(key === 'dimensions') {
-                    drawTesseract4D(cx, cy, 90, '#06b6d4');
-                    drawTesseract4D(cx, cy, 45, '#ec4899');
+                    drawTesseract4D(cx, cy, 100, '#06b6d4');
+                    drawTesseract4D(cx, cy, 50, '#ec4899');
                     
                     ctx.fillStyle = '#38bdf8'; ctx.font = '15px monospace';
-                    ctx.fillText("Tesseract 4D Matrix — Dimensions [L], [M], [T]", 30, 40);
+                    ctx.fillText("Tesseract 4D Matrix — Dimensions [L], [M], [T] Analysis", 25, 35);
                 } 
                 else if(key === 'gravitation') {
-                    ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(cx, cy, 24, 0, Math.PI*2); ctx.fill();
-                    let px = cx + Math.cos(angle)*150, py = cy + Math.sin(angle)*90;
-                    ctx.fillStyle = '#38bdf8'; ctx.beginPath(); ctx.arc(px, py, 10, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(cx, cy, 26, 0, Math.PI*2); ctx.fill();
+                    let px = cx + Math.cos(angle)*160, py = cy + Math.sin(angle)*95;
+                    ctx.fillStyle = '#38bdf8'; ctx.beginPath(); ctx.arc(px, py, 11, 0, Math.PI*2); ctx.fill();
                     
-                    drawTesseract4D(cx + 120 * Math.cos(angle*0.5), cy, 40, '#a855f7');
+                    drawTesseract4D(cx + 130 * Math.cos(angle*0.5), cy, 45, '#a855f7');
 
-                    ctx.strokeStyle = 'rgba(236, 72, 153, 0.5)'; ctx.lineWidth = 2; ctx.setLineDash([5, 5]);
+                    ctx.strokeStyle = 'rgba(236, 72, 153, 0.6)'; ctx.lineWidth = 2; ctx.setLineDash([6, 6]);
                     ctx.beginPath(); ctx.moveTo(cx, cy); ctx.lineTo(px, py); ctx.stroke(); ctx.setLineDash([]);
                     
                     ctx.fillStyle = '#fde047'; ctx.font = '14px monospace';
-                    ctx.fillText("F = G · (m₁ · m₂) / d² (Gravitational Vector 4D)", 30, 40);
+                    ctx.fillText("F = G · (m₁ · m₂) / d² (Universal Gravitation 4D)", 25, 35);
                 }
                 else if(key === 'inertie') {
-                    let groundY = cy + 50;
-                    let objX = (angle * 45) % (canvas.width + 100) - 50;
+                    let groundY = cy + 55;
+                    let objX = (angle * 50) % (canvas.width + 120) - 60;
                     
-                    ctx.strokeStyle = '#64748b'; ctx.lineWidth = 3;
+                    ctx.strokeStyle = '#64748b'; ctx.lineWidth = 3.5;
                     ctx.beginPath(); ctx.moveTo(0, groundY); ctx.lineTo(canvas.width, groundY); ctx.stroke();
                     
-                    ctx.fillStyle = '#10b981'; ctx.fillRect(objX - 25, groundY - 45, 50, 45);
-                    drawTesseract4D(objX, groundY - 22, 25, '#38bdf8');
+                    ctx.fillStyle = '#10b981'; ctx.fillRect(objX - 28, groundY - 48, 56, 48);
+                    drawTesseract4D(objX, groundY - 24, 28, '#38bdf8');
 
                     ctx.fillStyle = '#38bdf8'; ctx.font = '14px monospace';
-                    ctx.fillText("Σ F_ext = 0 (Inertial Reference Frame)", 30, 40);
+                    ctx.fillText("Σ F_ext = 0 (Inertial Reference Frame 4D)", 25, 35);
                 }
                 else if(key === 'mouvement') {
-                    let px = cx + Math.sin(angle)*160, py = cy + Math.cos(angle*0.8)*75;
-                    ctx.strokeStyle = 'rgba(168, 85, 247, 0.6)'; ctx.lineWidth = 2; ctx.beginPath();
-                    for(let i=0; i<Math.PI*2; i+=0.05) {
-                        let tx = cx + Math.sin(i)*160, ty = cy + Math.cos(i*0.8)*75;
+                    let px = cx + Math.sin(angle)*175, py = cy + Math.cos(angle*0.75)*80;
+                    ctx.strokeStyle = 'rgba(168, 85, 247, 0.7)'; ctx.lineWidth = 2.5; ctx.beginPath();
+                    for(let i=0; i<Math.PI*2; i+=0.04) {
+                        let tx = cx + Math.sin(i)*175, ty = cy + Math.cos(i*0.75)*80;
                         if(i===0) ctx.moveTo(tx, ty); else ctx.lineTo(tx, ty);
                     }
                     ctx.stroke();
                     
-                    ctx.fillStyle = '#ec4899'; ctx.beginPath(); ctx.arc(px, py, 8, 0, Math.PI*2); ctx.fill();
-                    drawTesseract4D(px, py, 20, '#06b6d4');
+                    ctx.fillStyle = '#ec4899'; ctx.beginPath(); ctx.arc(px, py, 9, 0, Math.PI*2); ctx.fill();
+                    drawTesseract4D(px, py, 22, '#06b6d4');
 
                     ctx.fillStyle = '#fde047'; ctx.font = '14px monospace';
-                    ctx.fillText("v(t) = dOM / dt (Instantaneous Velocity 4D)", 30, 40);
+                    ctx.fillText("v(t) = dOM / dt (Instantaneous Velocity Vector 4D)", 25, 35);
                 }
 
                 animFrame = requestAnimationFrame(draw);
@@ -436,6 +416,7 @@
             draw();
         }
 
+        // --- 4. تشغيل المساعد الذكي AONOVERSE AI ---
         function toggleAI() {
             const m = document.getElementById('ai-modal');
             m.classList.toggle('active');
@@ -451,16 +432,16 @@
             
             const loadDiv = document.createElement('div');
             loadDiv.className = "bg-slate-900 p-2.5 rounded-xl text-slate-300 mr-4 border border-slate-800";
-            loadDiv.innerText = "AONOVERSE AI réfléchit en 4D... ⏳";
+            loadDiv.innerText = "AONOVERSE AI analyse l'espace 4D... ⏳";
             box.appendChild(loadDiv);
             box.scrollTop = box.scrollHeight;
 
             try {
-                const res = await fetch(`https://text.pollinations.ai/${encodeURIComponent(txt)}?system=You are an expert TCSF physics AI assistant specialized in 4D spacetime, created by Assia N.`);
+                const res = await fetch(`https://text.pollinations.ai/${encodeURIComponent(txt)}?system=You are an expert TCSF physics AI assistant specialized in 4D spacetime, equations, and mechanics, created by Assia N.`);
                 const reply = await res.text();
                 loadDiv.innerText = reply;
             } catch(e) {
-                loadDiv.innerText = "Erreur de connexion au serveur AI.";
+                loadDiv.innerText = "Erreur de connexion au serveur AI. Vérifiez votre réseau.";
             }
             box.scrollTop = box.scrollHeight;
         }
