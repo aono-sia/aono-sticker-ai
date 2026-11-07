@@ -597,4 +597,60 @@
         }
     </script>
 </body>
+        // --- 8. MODULE DE GESTION MULTI-LANGUE (FR / EN) ---
+        const translations = {
+            fr: {
+                title: "Explorez les Univers en 4 Dimensions",
+                subtitle: "Tronc Commun Scientifique (TCSF) - Immersive Worlds 4D",
+                backBtn: "Quitter le Monde (Retour au Menu 4D)",
+                aiWelcome: "Bonjour ! Je suis votre IA spécialisée en physique TCSF et en géométrie quadridimensionnelle. Posez vos questions sur les formules, les vecteurs ou le Tesseract ! 🚀✨"
+            },
+            en: {
+                title: "Explore Universes in 4 Dimensions",
+                subtitle: "Scientific Common Core (TCSF) - Immersive 4D Spacetime",
+                backBtn: "Exit World (Back to 4D Menu)",
+                aiWelcome: "Hello! I am your AI assistant specialized in TCSF physics and 4D geometry. Ask your questions about formulas, vectors, or the Tesseract! 🚀✨"
+            }
+        };
+
+        function setLanguage(lang) {
+            const btnFr = document.getElementById('btn-fr');
+            const btnEn = document.getElementById('btn-en');
+            if(lang === 'en') {
+                if(btnEn) btnEn.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-cyan-600 text-white transition-all";
+                if(btnFr) btnFr.className = "px-4 py-1.5 rounded-full text-xs font-bold text-slate-400 hover:text-white transition-all";
+            } else {
+                if(btnFr) btnFr.className = "px-4 py-1.5 rounded-full text-xs font-bold bg-cyan-600 text-white transition-all";
+                if(btnEn) btnEn.className = "px-4 py-1.5 rounded-full text-xs font-bold text-slate-400 hover:text-white transition-all";
+            }
+        }
+
+        // --- 9. MODULE DE GESTION DES INTERACTIONS TACTILES ET SOURIS (3D/4D ROTATION) ---
+        let isDragging = false;
+        let lastMouseX = 0;
+        let lastMouseY = 0;
+
+        window.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            let deltaX = e.clientX - lastMouseX;
+            lastMouseX = e.clientX;
+            lastMouseY = e.clientY;
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+        });
+
+        // --- 10. SYSTEME DE CHARGEMENT ASYNCHRONE ET INITIALISATION DES MATHS ---
+        window.addEventListener('DOMContentLoaded', () => {
+            console.log("AnoPhysics Hub 4D Engine Initialized successfully by Assia N.");
+        });
+    </script>
+</body>
 </html>
