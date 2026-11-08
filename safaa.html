@@ -77,7 +77,7 @@
             justify-content: center;
         }
 
-        /* White Card Box Style from your screenshot */
+        /* White Card Box Style matching Safaa's branding */
         .star-box {
             background: #fffdf5;
             border-radius: 1.5rem;
@@ -101,27 +101,27 @@
 </head>
 <body>
 
-    <!-- Intro Screen (مطابق للديزاين ديالك: النجمة الذهبية الفخمة والمربع الأبيض) -->
+    <!-- Intro Screen (النجمة الذهبية والمربع الأبيض الخاص بـ Safaa) -->
     <div id="intro-screen">
         <div class="intro-canvas-container star-pulse-anim">
             <canvas id="intro-canvas" width="320" height="320"></canvas>
         </div>
 
         <div class="space-y-2 z-10 mb-6">
-            <h1 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-teal-300 to-purple-400">
-                AnoPhysics Hub
+            <h1 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
+                Safaa L Orbit
             </h1>
             <p class="text-xs text-yellow-300 font-mono tracking-wider">(Cliquez sur l'étoile cosmique)</p>
         </div>
 
-        <!-- البوكس الأبيض المطابق تماماً لصورتك -->
+        <!-- البوكس الأبيض الخاص بصفاء -->
         <div class="star-box space-y-2 mb-8">
-            <h2 class="text-slate-900 font-extrabold text-xl tracking-tight">AONOVERSE AI & 4D</h2>
-            <p class="text-purple-600 font-bold text-base">Made by Assia N 💖</p>
-            <p class="text-slate-500 text-xs font-medium">Portail Interactif de Physique - TCSF 4D Spacetime</p>
+            <h2 class="text-slate-900 font-extrabold text-xl tracking-tight">Orbital Mechanics & 4D</h2>
+            <p class="text-emerald-600 font-bold text-base">Made by Safaa 🪐✨</p>
+            <p class="text-slate-500 text-xs font-medium">Portail Interactif de Physique - TCSF Spacetime</p>
         </div>
 
-        <button onclick="enterOrbit()" class="w-full max-w-xs py-4 bg-gradient-to-r from-cyan-400 via-teal-400 to-purple-500 hover:scale-105 text-slate-950 font-extrabold rounded-full shadow-xl shadow-cyan-500/25 text-sm tracking-wide transition-all cursor-pointer">
+        <button onclick="enterOrbit()" class="w-full max-w-xs py-4 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-500 hover:scale-105 text-slate-950 font-extrabold rounded-full shadow-xl shadow-emerald-500/25 text-sm tracking-wide transition-all cursor-pointer">
             Entrer dans l'Espace-Temps 🚀
         </button>
     </div>
@@ -134,15 +134,15 @@
             </div>
             <div>
                 <span class="font-extrabold text-2xl text-white">Safaa L Orbit</span>
-                <span class="text-[10px] block text-purple-400 font-mono font-bold">Made by Assia N 💖</span>
+                <span class="text-[10px] block text-emerald-400 font-mono font-bold">Made by Safaa 🪐✨</span>
             </div>
         </div>
         <div class="px-4 py-2 rounded-full text-xs font-bold bg-emerald-950/80 border border-emerald-500/30 text-emerald-300">
             TCSF Physics Hub 🌌
         </div>
-    </header>
-           <!-- ========================================================================= -->
-    <!-- DEBUT DE LA SECTION PRINCIPALE & SIMULATION ORBITALE (PARTIE 2 - VERSION LONGUE) -->
+                </header>
+                    <!-- ========================================================================= -->
+    <!-- DEBUT DE LA SECTION PRINCIPALE & SIMULATION ORBITALE (PARTIE 2 - SAFAA) -->
     <!-- ========================================================================= -->
     
     <main class="w-full max-w-5xl px-6 py-4 flex-grow z-10 space-y-8">
@@ -161,7 +161,7 @@
         </div>
 
         <!-- Physics Lessons Grid Sections -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             
             <!-- Lesson 1 Details -->
             <div class="glass-panel-custom p-6 space-y-3">
@@ -185,40 +185,29 @@
                 </div>
             </div>
 
-            <!-- Lesson 3 Details -->
-            <div class="glass-panel-custom p-6 space-y-3">
-                <h3 class="font-bold text-emerald-300 text-base flex items-center gap-2">
-                    <i class="fa-solid fa-microchip text-xs"></i> 3. Partenariat AONOVERSE
-                </h3>
-                <p class="text-slate-300 text-xs leading-relaxed">Cette plateforme utilise le moteur scientifique d'Assia N pour fournir des explications interactives et précises.</p>
-                <div class="p-2.5 rounded-xl bg-slate-950/80 text-[11px] font-mono text-cyan-400 border border-cyan-500/20">
-                    Engine by AONOVERSE AI ⚡
-                </div>
-            </div>
-
         </div>
     </main>
 
-    <!-- Floating Interactive Assistant Widget -->
+    <!-- Floating Interactive AI Assistant (Hidden by default, pops up on click) -->
     <div class="fixed bottom-6 right-6 z-50">
-        <button onclick="toggleSafaaAI()" class="w-14 h-14 rounded-full bg-gradient-to-r from-cyan-400 to-purple-500 text-slate-950 flex items-center justify-center shadow-2xl hover:scale-110 transition-all cursor-pointer font-bold border border-cyan-200/50">
-            <i class="fa-solid fa-robot text-xl"></i>
+        <button onclick="toggleSafaaAI()" class="w-14 h-14 rounded-full bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-500 text-slate-950 flex items-center justify-center shadow-2xl hover:scale-110 transition-all cursor-pointer font-bold border border-emerald-300/50">
+            <i class="fa-solid fa-robot text-2xl text-slate-950"></i>
         </button>
-        <div id="safaa-ai-modal" class="hidden absolute bottom-16 right-0 w-80 glass-panel-custom p-4 space-y-3 shadow-2xl border border-cyan-500/50 bg-slate-950/95 rounded-2xl">
-            <div class="flex justify-between items-center border-b border-slate-800 pb-2">
-                <span class="text-xs font-bold text-cyan-400">AnoPhysics Hub Assistant</span>
+        <div id="safaa-ai-modal" class="hidden absolute bottom-16 right-0 w-80 glass-panel-custom p-4 space-y-3 shadow-2xl border border-emerald-500/50 bg-slate-950/95 rounded-2xl">
+            <div class="flex justify-between items-center border-b border-emerald-900 pb-2">
+                <span class="text-xs font-bold text-emerald-400">Safaa Orbit AI Assistant 🪐</span>
                 <button onclick="toggleSafaaAI()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <p class="text-xs text-slate-300 bg-slate-900/80 p-2.5 rounded-xl border border-slate-800 leading-relaxed">
-                Bonjour Safaa ! Bienvenue dans ton laboratoire spatial. Propulsé par la technologie d'Assia N 💖.
+            <p class="text-xs text-slate-300 bg-emerald-950/40 p-3 rounded-xl border border-emerald-500/20 leading-relaxed">
+                Bonjour Safaa ! Bienvenue dans ton laboratoire spatial. Je suis ton assistant dédié à l'étude des orbites et de la mécanique céleste 🚀✨.
             </p>
         </div>
     </div>
 
-    <!-- Footer Section -->
+    <!-- Footer Section (Fully branded for Safaa) -->
     <footer class="w-full text-center py-6 text-xs text-slate-500 border-t border-slate-900 z-10 space-y-1">
         <p>© 2026 Safaa L Orbit — Tous droits réservés</p>
-        <p class="text-purple-400 font-mono text-[11px] font-bold">Made by Assia N 💖 (AnoPhysics Hub)</p>
+        <p class="text-emerald-400 font-mono text-[11px] font-bold">Made by Safaa 🪐✨</p>
     </footer>
 
     <!-- ========================================================================= -->
@@ -227,7 +216,6 @@
     <script>
         /**
          * Module 1: Intro Cosmic Star Animation Controller
-         * Handles dynamic rendering of the rotating cosmic star and radial background gradients.
          */
         const introCanvas = document.getElementById('intro-canvas');
         const ctxI = introCanvas ? introCanvas.getContext('2d') : null;
@@ -270,14 +258,12 @@
             requestAnimationFrame(animateIntro);
         }
         
-        // Initialize Intro Loop Execution
         if (introCanvas) {
             animateIntro();
         }
 
         /**
          * Module 2: Screen Transition Handler
-         * Fades out the intro screen overlay and initializes the main orbital mechanics canvas.
          */
         function enterOrbit() {
             const intro = document.getElementById('intro-screen');
@@ -291,7 +277,7 @@
         }
 
         /**
-         * Module 3: Floating Assistant Modal Toggle Utility
+         * Module 3: Floating AI Assistant Popup Controller
          */
         function toggleSafaaAI() {
             const modal = document.getElementById('safaa-ai-modal');
@@ -301,8 +287,7 @@
         }
 
         /**
-         * Module 4: Main Orbit Simulation Engine (HTML5 Canvas Realtime Loop)
-         * Computes elliptical trajectory parameters, velocity vectors, and celestial positions.
+         * Module 4: Main Orbit Simulation Engine
          */
         function initMainCanvas() {
             const mc = document.getElementById('main-orbit-canvas');
@@ -317,31 +302,26 @@
                 let centerX = mc.width / 2;
                 let centerY = mc.height / 2;
 
-                // Draw Elliptic Orbit Reference Path
                 mctx.strokeStyle = 'rgba(16, 185, 129, 0.4)';
                 mctx.lineWidth = 2;
                 mctx.beginPath();
                 mctx.ellipse(centerX, centerY, 200, 120, 0, 0, Math.PI * 2);
                 mctx.stroke();
 
-                // Draw Central Focus Body (Sun / Primary Attractor)
                 mctx.fillStyle = '#10b981';
                 mctx.beginPath();
                 mctx.arc(centerX - 50, centerY, 22, 0, Math.PI * 2);
                 mctx.fill();
 
-                // Increment Angle for Continuous Orbital Motion
                 orbitalAngleTheta += 0.02;
                 let planetX = centerX + Math.cos(orbitalAngleTheta) * 200;
                 let planetY = centerY + Math.sin(orbitalAngleTheta) * 120;
 
-                // Draw Orbiting Planet / Satellite Body
                 mctx.fillStyle = '#38bdf8';
                 mctx.beginPath();
                 mctx.arc(planetX, planetY, 10, 0, Math.PI * 2);
                 mctx.fill();
 
-                // Draw Instantaneous Velocity Vector Indicator Line
                 mctx.strokeStyle = '#f59e0b';
                 mctx.lineWidth = 2;
                 mctx.beginPath();
@@ -355,4 +335,5 @@
         }
     </script>
 </body>
-</html>
+    </html>
+    
