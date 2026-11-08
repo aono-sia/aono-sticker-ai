@@ -3,19 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Safaa L Orbit - Orbital Mechanics & Space Physics</title>
+    <title>Safaa L Orbit - Orbital Mechanics & Space Physics | TCSF</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&family=Amiri:wght@700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Amiri:wght@700&display=swap');
 
         :root {
             --bg-space: #020617;
             --emerald-neon: #10b981;
+            --emerald-glow: rgba(16, 185, 129, 0.4);
             --cyan-glow: #06b6d4;
+            --space-blue: #0f172a;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--emerald-neon) var(--bg-space);
+        }
 
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
@@ -28,25 +36,43 @@
             justify-content: space-between;
         }
 
+        /* Glassmorphism Emerald & Space Blue Theme */
         .glass-panel-emerald {
-            background: rgba(6, 78, 59, 0.25);
+            background: rgba(6, 78, 59, 0.2);
             backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(16, 185, 129, 0.3);
             border-radius: 1.75rem;
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
+        .glass-panel-emerald:hover {
+            border-color: rgba(16, 185, 129, 0.6);
+            box-shadow: 0 12px 40px 0 rgba(16, 185, 129, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        /* Intro Screen Overlay */
         #intro-screen {
-            position: fixed; inset: 0; background: #020617; z-index: 9999;
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: fixed;
+            inset: 0;
+            background: radial-gradient(circle at center, #090d1f 0%, #020617 100%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             transition: opacity 1s ease, visibility 1s ease;
         }
 
         .intro-canvas-container {
             position: relative;
-            width: 340px;
-            height: 340px;
-            margin-bottom: 20px;
+            width: 360px;
+            height: 360px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .partnership-badge {
@@ -54,21 +80,31 @@
             font-size: 0.75rem;
             font-weight: 600;
             letter-spacing: 0.05em;
-            text-shadow: 0 0 10px rgba(56, 189, 248, 0.5);
+            text-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+        }
+
+        /* Custom Glow Animations */
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.8; filter: drop-shadow(0 0 15px rgba(16, 185, 129, 0.5)); }
+            50% { opacity: 1; filter: drop-shadow(0 0 25px rgba(6, 182, 212, 0.8)); }
+        }
+
+        .animated-logo-glow {
+            animation: pulseGlow 3s infinite ease-in-out;
         }
     </style>
 </head>
 <body>
 
-    <!-- Intro Screen -->
+    <!-- Intro Screen (حركة الاصطفاف والتجميع نحو الأرض ثم الانفجار والمجرة) -->
     <div id="intro-screen">
         <div class="intro-canvas-container">
-            <canvas id="intro-canvas" width="340" height="340"></canvas>
+            <canvas id="intro-canvas" width="360" height="360"></canvas>
         </div>
 
-        <div class="text-center space-y-2 z-10">
-            <span class="text-xs font-bold text-emerald-400 font-serif tracking-widest block">العالم أوضح</span>
-            <h1 class="text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
+        <div class="text-center space-y-2 z-10 px-4">
+            <span class="text-xs font-bold text-emerald-400 font-serif tracking-widest block uppercase">العالم أوضح</span>
+            <h1 class="text-4xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400 animated-logo-glow">
                 Safaa L Orbit
             </h1>
             <p class="partnership-badge mt-3">
@@ -76,7 +112,7 @@
             </p>
         </div>
 
-        <button onclick="enterOrbit()" class="mt-8 px-8 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:scale-105 text-white font-bold rounded-full shadow-lg shadow-emerald-900/50 text-sm tracking-wide transition-all cursor-pointer">
+        <button onclick="enterOrbit()" class="mt-6 px-9 py-3.5 bg-gradient-to-r from-emerald-500 to-teal-600 hover:scale-105 text-white font-bold rounded-full shadow-lg shadow-emerald-900/60 text-sm tracking-wide transition-all cursor-pointer border border-emerald-400/40">
             Explorer le Laboratoire Orbital 🪐🚀
         </button>
     </div>
@@ -84,30 +120,22 @@
     <!-- Header SL Orbit -->
     <header class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center z-10">
         <div class="flex items-center space-x-3">
-            <div class="w-11 h-11 rounded-full bg-emerald-950 border border-emerald-500/40 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                <i class="fa-solid fa-planet-ringed text-emerald-400 text-xl"></i>
+            <div class="w-12 h-12 rounded-2xl bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center shadow-lg shadow-emerald-500/20">
+                <i class="fa-solid fa-planet-ringed text-emerald-400 text-2xl"></i>
             </div>
             <div>
                 <span class="font-extrabold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 to-teal-300">Safaa L Orbit</span>
                 <span class="text-[10px] block text-cyan-400 font-mono tracking-wider">Powered by AONOVERSE AI 🤖</span>
             </div>
         </div>
-        <div class="px-4 py-1.5 rounded-full text-xs font-bold bg-emerald-950/80 border border-emerald-500/30 text-emerald-300">
-            TCSF Space Mechanics
+        <div class="px-4 py-2 rounded-full text-xs font-bold bg-emerald-950/80 border border-emerald-500/30 text-emerald-300 shadow-inner">
+            TCSF Space Mechanics 🌌
         </div>
     </header>
-
-    <!-- Main Section -->
-    <main class="w-full max-w-6xl mx-auto px-6 py-4 flex-grow z-10 space-y-8">
-        <div class="text-center max-w-2xl mx-auto space-y-2">
-            <h2 class="text-3xl font-extrabold text-white">Laboratoire de Mécanique Céleste</h2>
-            <p class="text-slate-400 text-xs md:text-sm">Simulation des orbites elliptiques, mouvements et lois physiques pour le Tronc Commun Scientifique.</p>
-        </div>
-
-        <!-- Realtime Orbit Simulation Screen -->
+            <!-- Realtime Orbit Simulation Screen -->
         <div class="w-full max-w-4xl mx-auto h-[450px] glass-panel-emerald p-4 relative overflow-hidden flex items-center justify-center">
             <canvas id="main-orbit-canvas" class="w-full h-full rounded-2xl"></canvas>
-            <div class="absolute top-6 left-6 text-xs font-mono text-emerald-300 bg-slate-950/80 p-3 rounded-xl border border-emerald-500/30">
+            <div class="absolute top-6 left-6 text-xs font-mono text-emerald-300 bg-slate-950/80 p-3 rounded-xl border border-emerald-500/30 shadow-lg">
                 <p>🪐 Mouvement Elliptique v(t)</p>
                 <p class="text-slate-400 text-[10px] mt-1">Loi des Aires & Trajectoire</p>
             </div>
@@ -116,7 +144,9 @@
         <!-- Physics Lessons Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div class="glass-panel-emerald p-6 space-y-3">
-                <h3 class="font-bold text-emerald-300 text-base">1. La Gravitation Universelle</h3>
+                <h3 class="font-bold text-emerald-300 text-base flex items-center gap-2">
+                    <i class="fa-solid fa-atom text-xs"></i> 1. La Gravitation Universelle
+                </h3>
                 <p class="text-slate-300 text-xs leading-relaxed">Attraction mutuelle des corps célestes selon la loi de Newton inversement proportionnelle au carré de la distance.</p>
                 <div class="p-2.5 rounded-xl bg-slate-950/80 text-[11px] font-mono text-emerald-400 border border-emerald-500/20">
                     F = G · (m₁ · m₂) / d²
@@ -124,7 +154,9 @@
             </div>
 
             <div class="glass-panel-emerald p-6 space-y-3">
-                <h3 class="font-bold text-emerald-300 text-base">2. Le Mouvement & Vitesse</h3>
+                <h3 class="font-bold text-emerald-300 text-base flex items-center gap-2">
+                    <i class="fa-solid fa-gauge-high text-xs"></i> 2. Le Mouvement & Vitesse
+                </h3>
                 <p class="text-slate-300 text-xs leading-relaxed">Étude du vecteur vitesse instantanée v(t) et de la nature du mouvement dans le référentiel héliocentrique.</p>
                 <div class="p-2.5 rounded-xl bg-slate-950/80 text-[11px] font-mono text-emerald-400 border border-emerald-500/20">
                     v = dL / dt | a_n = v² / r
@@ -132,7 +164,9 @@
             </div>
 
             <div class="glass-panel-emerald p-6 space-y-3">
-                <h3 class="font-bold text-emerald-300 text-base">3. Partenariat AONOVERSE</h3>
+                <h3 class="font-bold text-emerald-300 text-base flex items-center gap-2">
+                    <i class="fa-solid fa-microchip text-xs"></i> 3. Partenariat AONOVERSE
+                </h3>
                 <p class="text-slate-300 text-xs leading-relaxed">Cette plateforme utilise le moteur scientifique d'Assia N pour fournir des explications interactives et précises.</p>
                 <div class="p-2.5 rounded-xl bg-slate-950/80 text-[11px] font-mono text-cyan-400 border border-cyan-500/20">
                     Engine by AONOVERSE AI ⚡
@@ -143,47 +177,50 @@
 
     <!-- Floating Assistant for Safaa -->
     <div class="fixed bottom-6 right-6 z-50">
-        <button onclick="toggleSafaaAI()" class="w-14 h-14 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all cursor-pointer">
+        <button onclick="toggleSafaaAI()" class="w-14 h-14 rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all cursor-pointer border border-emerald-300/40">
             <i class="fa-solid fa-robot text-xl"></i>
         </button>
-        <div id="safaa-ai-modal" class="hidden absolute bottom-16 right-0 w-80 glass-panel-emerald p-4 space-y-3 shadow-2xl border border-emerald-500/50 bg-slate-950/95">
+        <div id="safaa-ai-modal" class="hidden absolute bottom-16 right-0 w-80 glass-panel-emerald p-4 space-y-3 shadow-2xl border border-emerald-500/50 bg-slate-950/95 rounded-2xl">
             <div class="flex justify-between items-center border-b border-emerald-900 pb-2">
                 <span class="text-xs font-bold text-emerald-400">SL-Assistant (AONOVERSE Engine)</span>
-                <button onclick="toggleSafaaAI()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark"></i></button>
+                <button onclick="toggleSafaaAI()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <p class="text-xs text-slate-300 bg-emerald-950/50 p-2.5 rounded-xl border border-emerald-500/20">
+            <p class="text-xs text-slate-300 bg-emerald-950/50 p-2.5 rounded-xl border border-emerald-500/20 leading-relaxed">
                 Bonjour Safaa ! Je suis ton assistant physique alimenté par la technologie AONOVERSE AI d'Assia. 🚀
             </p>
         </div>
     </div>
 
-    <footer class="w-full text-center py-6 text-xs text-slate-500 border-t border-slate-900 z-10">
-        <p>© 2026 Safaa L Orbit — Conçu pour Safaa Lebsi | En partenariat officiel avec Assia N (AnoPhysics Hub)</p>
+    <!-- Footer -->
+    <footer class="w-full text-center py-6 text-xs text-slate-500 border-t border-slate-900 z-10 space-y-1">
+        <p>© 2026 Safaa L Orbit — Conçu pour Safaa Lebsi</p>
+        <p class="text-cyan-400 font-mono text-[11px]">En partenariat officiel avec Assia N (AnoPhysics Hub)</p>
     </footer>
 
+    <!-- Scripts Engine -->
     <script>
         const introCanvas = document.getElementById('intro-canvas');
         const ctxI = introCanvas.getContext('2d');
-        const cx = 170, cy = 170;
+        const cx = 180, cy = 180;
 
         let phase = 1; 
         let progress = 0;
         let orbitAngle = 0;
 
         const planets = [
-            { r: 13, color: '#f59e0b', initialY: -130 }, 
-            { r: 4,  color: '#b45309', initialY: -100 }, 
-            { r: 7,  color: '#ea580c', initialY: -70 },  
-            { r: 8,  color: '#38bdf8', initialY: 0, isEarth: true }, 
-            { r: 4,  color: '#94a3b8', initialY: 30 },   
-            { r: 6,  color: '#dc2626', initialY: 55 },   
-            { r: 11, color: '#d97706', initialY: 90 },   
-            { r: 9,  color: '#facc15', initialY: 120 }, 
-            { r: 7,  color: '#67e8f9', initialY: 140 }   
+            { r: 14, color: '#f59e0b', initialY: -140 }, 
+            { r: 4,  color: '#b45309', initialY: -110 }, 
+            { r: 7,  color: '#ea580c', initialY: -75 },  
+            { r: 9,  color: '#38bdf8', initialY: 0, isEarth: true }, 
+            { r: 4,  color: '#94a3b8', initialY: 35 },   
+            { r: 6,  color: '#dc2626', initialY: 65 },   
+            { r: 12, color: '#d97706', initialY: 100 },  
+            { r: 10, color: '#facc15', initialY: 135 },  
+            { r: 7,  color: '#67e8f9', initialY: 155 }   
         ];
 
         function animateIntro() {
-            ctxI.clearRect(0, 0, 340, 340);
+            ctxI.clearRect(0, 0, 360, 360);
 
             if (phase === 1) { 
                 progress += 0.015;
@@ -202,12 +239,12 @@
                 ctxI.strokeStyle = `rgba(16, 185, 129, ${1 - progress})`;
                 ctxI.lineWidth = 4;
                 ctxI.beginPath();
-                ctxI.arc(cx, cy, progress * 120, 0, Math.PI * 2);
+                ctxI.arc(cx, cy, progress * 130, 0, Math.PI * 2);
                 ctxI.stroke();
 
                 ctxI.fillStyle = '#38bdf8';
                 ctxI.beginPath();
-                ctxI.arc(cx, cy, 12, 0, Math.PI * 2);
+                ctxI.arc(cx, cy, 14, 0, Math.PI * 2);
                 ctxI.fill();
 
                 if (progress >= 1) { phase = 3; }
@@ -216,14 +253,14 @@
                 orbitAngle += 0.02;
                 ctxI.fillStyle = '#f59e0b';
                 ctxI.beginPath();
-                ctxI.arc(cx, cy, 16, 0, Math.PI * 2);
+                ctxI.arc(cx, cy, 18, 0, Math.PI * 2);
                 ctxI.fill();
 
-                const orbitR = [35, 58, 82, 110, 135];
+                const orbitR = [40, 65, 90, 120, 145];
                 const orbitColors = ['#b45309', '#ea580c', '#38bdf8', '#dc2626', '#d97706'];
 
                 orbitR.forEach((dist, idx) => {
-                    ctxI.strokeStyle = 'rgba(255, 255, 255, 0.1)';
+                    ctxI.strokeStyle = 'rgba(255, 255, 255, 0.08)';
                     ctxI.beginPath();
                     ctxI.arc(cx, cy, dist, 0, Math.PI * 2);
                     ctxI.stroke();
@@ -270,28 +307,28 @@
                 mctx.strokeStyle = 'rgba(16, 185, 129, 0.4)';
                 mctx.lineWidth = 2;
                 mctx.beginPath();
-                mctx.ellipse(centerX, centerY, 180, 110, 0, 0, Math.PI * 2);
+                mctx.ellipse(centerX, centerY, 190, 120, 0, 0, Math.PI * 2);
                 mctx.stroke();
 
                 mctx.fillStyle = '#10b981';
                 mctx.beginPath();
-                mctx.arc(centerX - 40, centerY, 18, 0, Math.PI * 2);
+                mctx.arc(centerX - 45, centerY, 20, 0, Math.PI * 2);
                 mctx.fill();
 
                 a += 0.02;
-                let px = centerX + Math.cos(a) * 180;
-                let py = centerY + Math.sin(a) * 110;
+                let px = centerX + Math.cos(a) * 190;
+                let py = centerY + Math.sin(a) * 120;
 
                 mctx.fillStyle = '#38bdf8';
                 mctx.beginPath();
-                mctx.arc(px, py, 9, 0, Math.PI * 2);
+                mctx.arc(px, py, 10, 0, Math.PI * 2);
                 mctx.fill();
 
                 mctx.strokeStyle = '#f59e0b';
-                mctx.lineWidth, mctx.lineWidth = 2;
+                mctx.lineWidth = 2;
                 mctx.beginPath();
                 mctx.moveTo(px, py);
-                mctx.lineTo(px - Math.sin(a) * 35, py + Math.cos(a) * 35);
+                mctx.lineTo(px - Math.sin(a) * 40, py + Math.cos(a) * 40);
                 mctx.stroke();
 
                 requestAnimationFrame(drawMainOrbit);
@@ -300,5 +337,5 @@
         }
     </script>
 </body>
-    </html>
-                    
+                    </html>
+    
