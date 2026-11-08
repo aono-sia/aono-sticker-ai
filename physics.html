@@ -1,12 +1,6 @@
 <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
-    <!-- =========================================================================
-      * PROJECT : AnoPhysics Hub & AONOVERSE AI (Animation vs. Physics Edition)
-      * AUTHOR  : Assia N (Tronc Commun Scientifique - TCSF)
-      * TARGET  : Hosted on Vercel (aono-sticker-ai.vercel.app/physics.html)
-      * VERSION : Ultimate Spacetime 4D Edition - Part 1 (Core Layout & Styles)
-      ========================================================================= -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AnoPhysics Hub - Ultimate Spacetime 4D Edition</title>
@@ -21,8 +15,6 @@
             --accent-cyan: #06b6d4;
             --accent-purple: #8b5cf6;
             --accent-pink: #ec4899;
-            --accent-emerald: #10b981;
-            --accent-amber: #f59e0b;
         }
 
         * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -43,26 +35,14 @@
             justify-content: space-between;
         }
 
-        .cosmic-bg { 
-            position: fixed; inset: 0; z-index: -2; background: #030712; 
-            background-image: radial-gradient(white 1.2px, transparent 0);
-            background-size: 45px 45px; opacity: 0.35;
-        }
+        .cosmic-bg { position: fixed; inset: 0; z-index: -2; background: #030712; }
 
         .glass-panel {
             background: rgba(15, 23, 42, 0.88);
-            backdrop-filter: blur(24px);
-            -webkit-backdrop-filter: blur(24px);
-            border: 1px solid rgba(6, 182, 212, 0.3);
-            border-radius: 2.25rem;
+            backdrop-filter: blur(18px);
+            border: 1px solid rgba(6, 182, 212, 0.25);
+            border-radius: 1.75rem;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
-        }
-        
-        .glass-panel:hover {
-            border-color: rgba(6, 182, 212, 0.7);
-            box-shadow: 0 20px 45px -10px rgba(6, 182, 212, 0.4);
-            transform: translateY(-4px);
         }
 
         #intro-screen { 
@@ -70,134 +50,113 @@
             display: flex; flex-direction: column; align-items: center; justify-content: center; 
             transition: opacity 0.8s ease, visibility 0.8s ease; 
         }
-
         .fluffy-star-container { 
-            position: relative; margin-bottom: 35px; perspective: 1000px;
-            animation: floatFluffy 2.8s ease-in-out infinite alternate;
+            position: relative; margin-bottom: 25px; perspective: 1000px;
+            animation: floatFluffy 2.5s ease-in-out infinite alternate;
         }
-
         .fluffy-star { 
-            font-size: 130px; display: inline-block; animation: spin4D 4s cubic-bezier(0.4, 0, 0.2, 1) infinite; 
-            filter: drop-shadow(0 0 45px #06b6d4) drop-shadow(0 0 85px #ec4899); 
+            font-size: 110px; display: inline-block; animation: spin4D 4s cubic-bezier(0.4, 0, 0.2, 1) infinite; 
+            filter: drop-shadow(0 0 35px #06b6d4) drop-shadow(0 0 65px #ec4899); 
         }
-
         @keyframes spin4D { 
             0% { transform: rotate3d(1, 1, 1, 0deg) scale(1); filter: hue-rotate(0deg); }
-            50% { transform: rotate3d(1, 1, 1, 180deg) scale(1.2); filter: hue-rotate(180deg); }
+            50% { transform: rotate3d(1, 1, 1, 180deg) scale(1.15); filter: hue-rotate(180deg); }
             100% { transform: rotate3d(1, 1, 1, 360deg) scale(1); filter: hue-rotate(360deg); }
         }
-
-        @keyframes floatFluffy { 
-            0% { transform: translateY(0px) rotate(0deg); } 
-            100% { transform: translateY(-20px) rotate(4deg); } 
-        }
+        @keyframes floatFluffy { 0% { transform: translateY(0px); } 100% { transform: translateY(-15px); } }
         
         .color-burst { 
-            position: absolute; top: 50%; left: 50%; width: 180px; height: 180px; margin: -90px 0 0 -90px; border-radius: 50%; 
+            position: absolute; top: 50%; left: 50%; width: 140px; height: 140px; margin: -70px 0 0 -70px; border-radius: 50%; 
             background: conic-gradient(from 0deg, #38bdf8, #c084fc, #f472b6, #fbbf24, #38bdf8); 
-            animation: burstSpin 2.5s linear infinite; z-index: -1; opacity: 0.8; filter: blur(20px); 
+            animation: burstSpin 2.5s linear infinite; z-index: -1; opacity: 0.7; filter: blur(14px); 
         }
-
-        @keyframes burstSpin { 
-            0% { transform: rotate(360deg) scale(0.9); } 
-            50% { transform: rotate(180deg) scale(1.3); } 
-            100% { transform: rotate(0deg) scale(0.9); } 
-        }
+        @keyframes burstSpin { 0% { transform: rotate(360deg) scale(0.9); } 50% { transform: rotate(180deg) scale(1.2); } 100% { transform: rotate(0deg) scale(0.9); } }
 
         .anim-screen-container {
             position: relative;
             width: 100%;
             max-width: 900px;
-            height: 500px;
-            background: var(--bg-deep-space);
+            height: 520px;
+            background: #020617;
             border-radius: 2rem;
             border: 2px solid rgba(6, 182, 212, 0.5);
-            box-shadow: 0 0 60px rgba(6, 182, 212, 0.3);
+            box-shadow: 0 0 60px rgba(6, 182, 212, 0.35);
             overflow: hidden;
             margin: 0 auto;
         }
 
-        #ai-modal { 
-            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1); 
-            transform: translateY(25px) scale(0.93); 
-            opacity: 0; pointer-events: none; 
-        }
-
-        #ai-modal.active { 
-            transform: translateY(0) scale(1); 
-            opacity: 1; pointer-events: auto; 
-        }
-
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #030712; }
-        ::-webkit-scrollbar-thumb { background: #06b6d4; border-radius: 4px; }
+        #ai-modal { transition: all 0.3s ease; transform: translateY(20px) scale(0.95); opacity: 0; pointer-events: none; }
+        #ai-modal.active { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
     </style>
 </head>
 <body>
     <div class="cosmic-bg"></div>
 
-    <!-- INTRO SCREEN -->
+    <!-- Intro Screen -->
     <div id="intro-screen">
         <div class="fluffy-star-container">
             <div class="color-burst"></div>
             <span class="fluffy-star">⭐</span>
         </div>
-        <h1 class="text-4xl md:text-6xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 mb-3 tracking-tight">AnoPhysics Hub</h1>
-        <p class="text-xs md:text-sm text-cyan-300 font-mono tracking-widest mb-6 uppercase">AONOVERSE AI • Ultimate Spacetime 4D Edition</p>
+        <h2 class="text-3xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500 mb-2">AnoPhysics Hub</h2>
+        <p class="text-xs text-yellow-300 font-mono tracking-wider mb-4">(Immersive 4D Spacetime Edition)</p>
 
-        <div class="glass-panel px-12 py-7 rounded-3xl shadow-2xl border-cyan-500/40 text-center max-w-lg mb-6 relative overflow-hidden">
-            <h4 class="font-extrabold text-2xl text-white">Tronc Commun Scientifique (TCSF)</h4>
-            <p class="font-bold text-pink-400 mt-2 text-lg">Made by Assia N 💖</p>
-            <p class="text-xs text-slate-400 mt-2 font-mono">Animation vs. Physics • Tesseract 4D Matrix</p>
+        <div class="bg-amber-50 text-slate-900 px-8 py-4 rounded-2xl shadow-2xl border-2 border-amber-200 text-center max-w-sm mb-4">
+            <h4 class="font-extrabold text-lg text-indigo-950">AONOVERSE AI & 4D Spacetime</h4>
+            <p class="font-bold text-indigo-600 mt-1 text-sm">Made by Assia N 💖</p>
+            <p class="text-[11px] text-slate-600 mt-1">Animation vs. Physics Edition - TCSF</p>
         </div>
 
-        <button id="enter-btn" onclick="enterHub(event)" class="px-12 py-4 bg-gradient-to-r from-cyan-500 via-purple-600 to-pink-500 hover:scale-105 text-white font-extrabold rounded-full shadow-2xl text-base tracking-wider cursor-pointer z-50 border border-white/20 transition-all duration-300">
+        <button id="enter-btn" onclick="enterHub(event)" class="px-8 py-3.5 bg-gradient-to-r from-cyan-500 to-indigo-600 hover:scale-105 text-white font-bold rounded-full shadow-lg text-sm tracking-wide cursor-pointer z-50">
             Entrer dans l'Espace-Temps 4D <i class="fa-solid fa-rocket ml-2"></i>
         </button>
     </div>
 
-    <!-- HEADER -->
+    <!-- Header -->
     <header class="w-full max-w-6xl mx-auto px-6 py-6 flex justify-between items-center z-10">
-        <div class="flex items-center space-x-4 cursor-pointer group" onclick="showHome()">
-            <div class="w-11 h-11 rounded-2xl bg-cyan-600/20 border border-cyan-400/50 flex items-center justify-center shadow-lg group-hover:border-cyan-400 transition-colors">
-                <i class="fa-solid fa-atom text-cyan-400 text-xl animate-spin" style="animation-duration: 14s;"></i>
+        <div class="flex items-center space-x-3 cursor-pointer" onclick="showHome()">
+            <div class="w-11 h-11 rounded-full bg-cyan-600/30 border border-cyan-400/50 flex items-center justify-center">
+                <i class="fa-solid fa-atom text-cyan-400 animate-spin" style="animation-duration: 12s;"></i>
             </div>
             <div>
                 <span class="font-extrabold text-2xl bg-clip-text text-transparent bg-gradient-to-r from-cyan-300 to-purple-300">AnoPhysics</span>
-                <span class="text-xs block text-slate-400 font-mono">Hub 4D TCSF by Assia N</span>
+                <span class="text-xs block text-slate-400 font-mono">Hub 4D TCSF by Assia</span>
             </div>
         </div>
-        <div class="flex items-center bg-slate-900/90 border border-slate-700/80 rounded-full p-1.5 shadow-inner space-x-1">
-            <button class="px-5 py-2 rounded-full text-xs font-bold bg-cyan-600 text-white shadow-md">FR</button>
-            <button class="px-5 py-2 rounded-full text-xs font-bold text-slate-400">EN</button>
+        <div class="flex items-center bg-slate-900/90 border border-slate-700/80 rounded-full p-1 shadow-inner">
+            <button class="px-4 py-1.5 rounded-full text-xs font-bold bg-cyan-600 text-white">FR</button>
+            <button class="px-4 py-1.5 rounded-full text-xs font-bold text-slate-400">EN</button>
         </div>
     </header>
 
-    <!-- MAIN PORTALS GRID -->
+    <!-- Main Content -->
     <main class="w-full max-w-6xl mx-auto px-6 py-6 flex-grow z-10">
+        <!-- Home View -->
         <div id="view-home" class="space-y-12">
-            <div class="text-center max-w-3xl mx-auto space-y-5 pt-4">
-                <span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold bg-cyan-500/10 border border-cyan-500/30 text-cyan-300">✨ Tronc Commun Scientifique (TCSF) - Immersive Worlds 4D</span>
+            <div class="text-center max-w-3xl mx-auto space-y-4 pt-4">
+                <span class="inline-block px-4 py-1.5 rounded-full text-xs font-semibold bg-cyan-500/10 border border-cyan-500/30 text-cyan-300 tracking-wide">
+                    ✨ Tronc Commun Scientifique (TCSF) - Immersive Worlds 4D
+                </span>
                 <h1 class="text-4xl md:text-5xl font-extrabold text-white tracking-tight">
-                    Explorez les Univers en <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-purple-400 to-pink-500">4 Dimensions</span>
+                    Plongez dans les Univers en <span class="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">4 Dimensions</span>
                 </h1>
                 <p class="text-slate-400 text-sm md:text-base leading-relaxed">
-                    Cliquez sur un portail pour lancer l'immersion avec le Tesseract 4D en grand format et les explications scientifiques détaillées en dessous.
+                    Cliquez sur un portail pour être transporté instantanément dans l'espace interactif où le Tesseract 4D s'affiche en grand format avec les explications en dessous.
                 </p>
             </div>
 
             <!-- Grille des 4 Mondes -->
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 pb-10">
-                <div onclick="launchWorld('dimensions')" class="glass-panel p-6 cursor-pointer group text-center space-y-4 border border-cyan-500/30">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div onclick="launchWorld('dimensions')" class="glass-panel p-6 cursor-pointer group text-center space-y-4 border border-cyan-500/30 hover:border-cyan-400">
                     <div class="h-44 bg-slate-950 rounded-2xl overflow-hidden relative border border-cyan-500/20 flex items-center justify-center">
                         <div class="absolute inset-0 bg-gradient-to-t from-cyan-950/80 to-transparent z-10"></div>
                         <i class="fa-solid fa-cube text-5xl text-cyan-400 group-hover:scale-125 transition-transform duration-500 z-20"></i>
-                        <p class="absolute bottom-3 z-20 text-xs font-bold text-cyan-200">🌀 Portail : Dimensions & Analyse ([L], [M], [T])</p>
+                        <p class="absolute bottom-3 z-20 text-xs font-bold text-cyan-200">🌀 Portail : Tesseract & Dimensions [L], [M], [T]</p>
                     </div>
                     <h3 class="text-xl font-bold text-white group-hover:text-cyan-300">1. Dimensions & Analyse Dimensionnelle</h3>
                 </div>
 
-                <div onclick="launchWorld('gravitation')" class="glass-panel p-6 cursor-pointer group text-center space-y-4 border border-teal-500/30">
+                <div onclick="launchWorld('gravitation')" class="glass-panel p-6 cursor-pointer group text-center space-y-4 border border-teal-500/30 hover:border-teal-400">
                     <div class="h-44 bg-slate-950 rounded-2xl overflow-hidden relative border border-teal-500/20 flex items-center justify-center">
                         <div class="absolute inset-0 bg-gradient-to-t from-teal-950/80 to-transparent z-10"></div>
                         <i class="fa-solid fa-globe text-5xl text-teal-400 group-hover:scale-125 transition-transform duration-500 z-20"></i>
@@ -206,7 +165,7 @@
                     <h3 class="text-xl font-bold text-white group-hover:text-teal-300">2. La Gravitation Universelle (Newton)</h3>
                 </div>
 
-                <div onclick="launchWorld('inertie')" class="glass-panel p-6 cursor-pointer group text-center space-y-4 border border-purple-500/30">
+                <div onclick="launchWorld('inertie')" class="glass-panel p-6 cursor-pointer group text-center space-y-4 border border-purple-500/30 hover:border-purple-400">
                     <div class="h-44 bg-slate-950 rounded-2xl overflow-hidden relative border border-purple-500/20 flex items-center justify-center">
                         <div class="absolute inset-0 bg-gradient-to-t from-purple-950/80 to-transparent z-10"></div>
                         <i class="fa-solid fa-scale-balanced text-5xl text-purple-400 group-hover:scale-110 transition-transform duration-500 z-20"></i>
@@ -215,7 +174,7 @@
                     <h3 class="text-xl font-bold text-white group-hover:text-purple-300">3. Le Principe d'Inertie</h3>
                 </div>
 
-                <div onclick="launchWorld('mouvement')" class="glass-panel p-6 cursor-pointer group text-center space-y-4 border border-amber-500/30">
+                <div onclick="launchWorld('mouvement')" class="glass-panel p-6 cursor-pointer group text-center space-y-4 border border-amber-500/30 hover:border-amber-400">
                     <div class="h-44 bg-slate-950 rounded-2xl overflow-hidden relative border border-amber-500/20 flex items-center justify-center">
                         <div class="absolute inset-0 bg-gradient-to-t from-amber-950/80 to-transparent z-10"></div>
                         <i class="fa-solid fa-gauge-high text-5xl text-amber-400 group-hover:scale-125 transition-transform duration-500 z-20"></i>
@@ -226,16 +185,16 @@
             </div>
         </div>
 
-        <!-- ACTIVE IMMERSIVE WORLD VIEW (الرسم الكبير في الفوق والشرح المفصل في الأسفل) -->
+        <!-- Active Immersive World View (التسيراك الكبير في الفوق والشرح المفصل في الأسفل) -->
         <div id="view-world" class="hidden space-y-8">
-            <div class="flex justify-between items-center bg-slate-900/90 p-4 rounded-2xl border border-slate-800 max-w-4xl mx-auto w-full shadow-xl">
+            <div class="flex justify-between items-center bg-slate-900/80 p-4 rounded-2xl border border-slate-800 max-w-4xl mx-auto w-full">
                 <button onclick="showHome()" class="px-5 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold transition-all flex items-center space-x-2 cursor-pointer">
-                    <i class="fa-solid fa-arrow-left text-cyan-400"></i>
+                    <i class="fa-solid fa-arrow-left"></i>
                     <span>(Retour au Hub) العودة إلى الأكوان</span>
                 </button>
-                <div class="text-xs font-mono text-cyan-300 bg-cyan-950/60 px-4 py-2 rounded-xl border border-cyan-500/40 flex items-center space-x-2">
+                <div class="text-xs font-mono text-cyan-300 bg-cyan-950/50 px-4 py-2 rounded-xl border border-cyan-500/30 flex items-center space-x-2">
                     <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-                    <span class="font-bold">Temps Cosmique 4D : 39h 00min</span>
+                    <span>Temps Cosmique 4D : 39h 00min</span>
                 </div>
             </div>
 
@@ -270,9 +229,9 @@
         </div>
     </main>
 
-    <!-- FLOATING AI WIDGET -->
+    <!-- Floating AI Widget -->
     <div class="fixed bottom-6 right-6 z-50">
-        <button onclick="toggleAI()" class="w-14 h-14 rounded-full bg-gradient-to-r from-cyan-500 to-pink-500 text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all cursor-pointer border border-white/30">
+        <button onclick="toggleAI()" class="w-14 h-14 rounded-full bg-gradient-to-r from-cyan-500 to-pink-500 text-white flex items-center justify-center shadow-2xl hover:scale-110 transition-all cursor-pointer">
             <i class="fa-solid fa-robot text-xl"></i>
         </button>
         <div id="ai-modal" class="absolute bottom-16 right-0 w-80 md:w-96 glass-panel p-5 space-y-4 shadow-2xl border border-cyan-500/40">
@@ -293,12 +252,8 @@
     <footer class="w-full text-center py-6 text-xs text-slate-500 border-t border-slate-800/60 z-10">
         <p>© 2026 AnoPhysics Hub & AONOVERSE AI — Conçu et développé avec passion par Assia N (TCSF)</p>
     </footer>
-        <script>
-        // =========================================================================
-        // * PART 2 : ADVANCED JAVASCRIPT ENGINE & IMMERSIVE PHYSICS WORLDS
-        // * AUTHOR : Assia N (Tronc Commun Scientifique - TCSF)
-        // =========================================================================
 
+    <script>
         let animFrame = null;
         let globalAngle = 0;
 
@@ -384,18 +339,18 @@
                     let y1 = y * Math.cos(rad * 0.7) - z * Math.sin(rad * 0.7);
                     let z1 = y * Math.sin(rad * 0.7) + z * Math.cos(rad * 0.7);
 
-                    let fov = 380;
+                    let fov = 400;
                     let w_dist = 3 / (3 - w1 * 0.25);
                     let fx = x1 * w_dist;
                     let fy = y1 * w_dist;
                     let fz = z1 * w_dist;
 
-                    let dist = fov / (fov + fz + 160);
+                    let dist = fov / (fov + fz + 150);
                     projected.push([cx + fx * dist, cy + fy * dist, fz]);
                 }
 
                 ctx.strokeStyle = color;
-                ctx.lineWidth = 2.2;
+                ctx.lineWidth = 2.4;
 
                 for (let i = 0; i < 16; i++) {
                     for (let j = i + 1; j < 16; j++) {
@@ -417,7 +372,7 @@
                 for (let i = 0; i < projected.length; i++) {
                     ctx.fillStyle = '#fde047';
                     ctx.beginPath();
-                    ctx.arc(projected[i][0], projected[i][1], 3.5, 0, Math.PI * 2);
+                    ctx.arc(projected[i][0], projected[i][1], 4, 0, Math.PI * 2);
                     ctx.fill();
                 }
             }
@@ -429,30 +384,30 @@
                 let cy = canvas.height / 2;
 
                 if(key === 'dimensions') {
-                    drawTesseract4D(cx, cy, 120, '#06b6d4');
+                    drawTesseract4D(cx, cy, 150, '#06b6d4');
                 } 
                 else if(key === 'gravitation') {
-                    ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(cx - 130, cy, 28, 0, Math.PI*2); ctx.fill();
-                    ctx.fillStyle = '#38bdf8'; ctx.beginPath(); ctx.arc(cx + 130, cy, 14, 0, Math.PI*2); ctx.fill();
-                    drawTesseract4D(cx, cy, 80, '#ec4899');
+                    ctx.fillStyle = '#f59e0b'; ctx.beginPath(); ctx.arc(cx - 140, cy, 30, 0, Math.PI*2); ctx.fill();
+                    ctx.fillStyle = '#38bdf8'; ctx.beginPath(); ctx.arc(cx + 140, cy, 14, 0, Math.PI*2); ctx.fill();
+                    drawTesseract4D(cx, cy, 95, '#ec4899');
                     ctx.strokeStyle = 'rgba(236, 72, 153, 0.7)'; ctx.lineWidth = 2.2; ctx.setLineDash([7, 7]);
-                    ctx.beginPath(); ctx.moveTo(cx - 130, cy); ctx.lineTo(cx + 130, cy); ctx.stroke(); ctx.setLineDash([]);
+                    ctx.beginPath(); ctx.moveTo(cx - 140, cy); ctx.lineTo(cx + 140, cy); ctx.stroke(); ctx.setLineDash([]);
                 }
                 else if(key === 'inertie') {
-                    let groundY = cy + 95;
+                    let groundY = cy + 110;
                     ctx.strokeStyle = '#64748b'; ctx.lineWidth = 4;
                     ctx.beginPath(); ctx.moveTo(35, groundY); ctx.lineTo(canvas.width - 35, groundY); ctx.stroke();
-                    drawTesseract4D(cx, cy - 15, 85, '#10b981');
+                    drawTesseract4D(cx, cy - 15, 100, '#10b981');
                 }
                 else if(key === 'mouvement') {
-                    let px = cx + Math.sin(globalAngle)*170, py = cy + Math.cos(globalAngle*0.75)*55;
+                    let px = cx + Math.sin(globalAngle)*180, py = cy + Math.cos(globalAngle*0.75)*60;
                     ctx.strokeStyle = 'rgba(168, 85, 247, 0.8)'; ctx.lineWidth = 2.5; ctx.beginPath();
                     for(let i=0; i<Math.PI*2; i+=0.04) {
-                        let tx = cx + Math.sin(i)*170, ty = cy + Math.cos(i*0.75)*55;
+                        let tx = cx + Math.sin(i)*180, ty = cy + Math.cos(i*0.75)*60;
                         if(i===0) ctx.moveTo(tx, ty); else ctx.lineTo(tx, ty);
                     }
                     ctx.stroke();
-                    drawTesseract4D(px, py, 60, '#06b6d4');
+                    drawTesseract4D(px, py, 75, '#06b6d4');
                 }
 
                 animFrame = requestAnimationFrame(draw);
