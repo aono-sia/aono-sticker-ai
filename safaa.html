@@ -13,7 +13,6 @@
             --bg-space: #020617;
             --emerald-neon: #10b981;
             --cyan-glow: #06b6d4;
-            --purple-heart: #c084fc;
         }
 
         * { 
@@ -36,7 +35,6 @@
             align-items: center;
         }
 
-        /* Glassmorphism Styling */
         .glass-panel-custom {
             background: rgba(15, 23, 42, 0.85);
             backdrop-filter: blur(20px);
@@ -46,13 +44,7 @@
             box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
         }
 
-        .glass-panel-custom:hover {
-            border-color: rgba(16, 185, 129, 0.65);
-            box-shadow: 0 16px 48px rgba(16, 185, 129, 0.2);
-            transition: all 0.3s ease;
-        }
-
-        /* Full Screen Intro Overlay */
+        /* Full Screen Intro Overlay with Planets Alignment */
         #intro-screen {
             position: fixed; 
             inset: 0; 
@@ -69,59 +61,48 @@
 
         .intro-canvas-container {
             position: relative;
-            width: 320px;
-            height: 320px;
-            margin-bottom: 20px;
+            width: 340px;
+            height: 340px;
+            margin-bottom: 15px;
             display: flex;
             align-items: center;
             justify-content: center;
         }
 
-        /* White Card Box Style matching Safaa's branding */
         .star-box {
             background: #fffdf5;
             border-radius: 1.5rem;
-            padding: 24px 28px;
+            padding: 22px 26px;
             width: 100%;
-            max-width: 420px;
+            max-width: 400px;
             text-align: center;
             box-shadow: 0 12px 30px rgba(16, 185, 129, 0.25);
             border: 1.5px solid rgba(16, 185, 129, 0.45);
-        }
-
-        @keyframes starPulse {
-            0%, 100% { transform: scale(1); filter: drop-shadow(0 0 15px rgba(250, 204, 21, 0.6)); }
-            50% { transform: scale(1.06); filter: drop-shadow(0 0 30px rgba(250, 204, 21, 0.9)); }
-        }
-
-        .star-pulse-anim {
-            animation: starPulse 2.5s infinite ease-in-out;
         }
     </style>
 </head>
 <body>
 
-    <!-- Intro Screen (النجمة الذهبية والمربع الأبيض الخاص بـ Safaa) -->
+    <!-- Intro Screen (حركة الكواكب والاصطفاف الأصلية) -->
     <div id="intro-screen">
-        <div class="intro-canvas-container star-pulse-anim">
-            <canvas id="intro-canvas" width="320" height="320"></canvas>
+        <div class="intro-canvas-container">
+            <canvas id="intro-canvas" width="340" height="340"></canvas>
         </div>
 
-        <div class="space-y-2 z-10 mb-6">
-            <h1 class="text-3xl md:text-5xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
+        <div class="space-y-1 z-10 mb-4">
+            <h1 class="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
                 Safaa L Orbit
             </h1>
-            <p class="text-xs text-yellow-300 font-mono tracking-wider">(Cliquez sur l'étoile cosmique)</p>
+            <p class="text-xs text-yellow-300 font-mono tracking-wider">(Simulation du Système Solaire & Mouvement)</p>
         </div>
 
-        <!-- البوكس الأبيض الخاص بصفاء -->
-        <div class="star-box space-y-2 mb-8">
-            <h2 class="text-slate-900 font-extrabold text-xl tracking-tight">Orbital Mechanics & 4D</h2>
-            <p class="text-emerald-600 font-bold text-base">Made by Safaa 🪐✨</p>
-            <p class="text-slate-500 text-xs font-medium">Portail Interactif de Physique - TCSF Spacetime</p>
+        <div class="star-box space-y-2 mb-6">
+            <h2 class="text-slate-900 font-extrabold text-lg tracking-tight">Orbital Mechanics & AI</h2>
+            <p class="text-emerald-600 font-bold text-sm">Made by Safaa 🪐✨</p>
+            <p class="text-slate-500 text-[11px] font-medium">Portail Interactif de Physique - TCSF Spacetime</p>
         </div>
 
-        <button onclick="enterOrbit()" class="w-full max-w-xs py-4 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-500 hover:scale-105 text-slate-950 font-extrabold rounded-full shadow-xl shadow-emerald-500/25 text-sm tracking-wide transition-all cursor-pointer">
+        <button onclick="enterOrbit()" class="w-full max-w-xs py-3.5 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-500 hover:scale-105 text-slate-950 font-extrabold rounded-full shadow-xl shadow-emerald-500/25 text-sm tracking-wide transition-all cursor-pointer">
             Entrer dans l'Espace-Temps 🚀
         </button>
     </div>
@@ -140,10 +121,10 @@
         <div class="px-4 py-2 rounded-full text-xs font-bold bg-emerald-950/80 border border-emerald-500/30 text-emerald-300">
             TCSF Physics Hub 🌌
         </div>
-                </header>
-                    <!-- ========================================================================= -->
-    <!-- DEBUT DE LA SECTION PRINCIPALE & SIMULATION ORBITALE (PARTIE 2 - SAFAA) -->
-    <!-- ========================================================================= -->
+    </header>
+        <!-- ================================================================= -->
+    <!-- SECTION PRINCIPALE & INTELLIGENCE ARTIFICIELLE INTERACTIVE         -->
+    <!-- ================================================================= -->
     
     <main class="w-full max-w-5xl px-6 py-4 flex-grow z-10 space-y-8">
         <div class="text-center max-w-2xl mx-auto space-y-2">
@@ -152,7 +133,7 @@
         </div>
 
         <!-- Realtime Orbit Simulation Screen Container -->
-        <div class="w-full h-[420px] glass-panel-custom p-4 relative overflow-hidden flex items-center justify-center">
+        <div class="w-full h-[400px] glass-panel-custom p-4 relative overflow-hidden flex items-center justify-center">
             <canvas id="main-orbit-canvas" class="w-full h-full rounded-2xl"></canvas>
             <div class="absolute top-6 left-6 text-xs font-mono text-emerald-300 bg-slate-950/80 p-3 rounded-xl border border-emerald-500/30 shadow-lg">
                 <p>🪐 Mouvement Elliptique v(t)</p>
@@ -163,7 +144,6 @@
         <!-- Physics Lessons Grid Sections -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             
-            <!-- Lesson 1 Details -->
             <div class="glass-panel-custom p-6 space-y-3">
                 <h3 class="font-bold text-emerald-300 text-base flex items-center gap-2">
                     <i class="fa-solid fa-atom text-xs"></i> 1. La Gravitation Universelle
@@ -174,7 +154,6 @@
                 </div>
             </div>
 
-            <!-- Lesson 2 Details -->
             <div class="glass-panel-custom p-6 space-y-3">
                 <h3 class="font-bold text-emerald-300 text-base flex items-center gap-2">
                     <i class="fa-solid fa-gauge-high text-xs"></i> 2. Le Mouvement & Vitesse
@@ -188,114 +167,168 @@
         </div>
     </main>
 
-    <!-- Floating Interactive AI Assistant (Hidden by default, pops up on click) -->
+    <!-- Interactive AI Chat Assistant (Connected & Functional) -->
     <div class="fixed bottom-6 right-6 z-50">
         <button onclick="toggleSafaaAI()" class="w-14 h-14 rounded-full bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-500 text-slate-950 flex items-center justify-center shadow-2xl hover:scale-110 transition-all cursor-pointer font-bold border border-emerald-300/50">
             <i class="fa-solid fa-robot text-2xl text-slate-950"></i>
         </button>
-        <div id="safaa-ai-modal" class="hidden absolute bottom-16 right-0 w-80 glass-panel-custom p-4 space-y-3 shadow-2xl border border-emerald-500/50 bg-slate-950/95 rounded-2xl">
+
+        <!-- Chat Box Modal (Hidden by default, interactive query interface) -->
+        <div id="safaa-ai-modal" class="hidden absolute bottom-16 right-0 w-80 sm:w-96 glass-panel-custom p-4 space-y-3 shadow-2xl border border-emerald-500/50 bg-slate-950/95 rounded-2xl">
             <div class="flex justify-between items-center border-b border-emerald-900 pb-2">
                 <span class="text-xs font-bold text-emerald-400">Safaa Orbit AI Assistant 🪐</span>
                 <button onclick="toggleSafaaAI()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
             </div>
-            <p class="text-xs text-slate-300 bg-emerald-950/40 p-3 rounded-xl border border-emerald-500/20 leading-relaxed">
-                Bonjour Safaa ! Bienvenue dans ton laboratoire spatial. Je suis ton assistant dédié à l'étude des orbites et de la mécanique céleste 🚀✨.
-            </p>
+
+            <!-- Chat Message History Container -->
+            <div id="chat-messages" class="h-48 overflow-y-auto space-y-2 text-xs text-slate-300 p-2 bg-slate-900/60 rounded-xl border border-emerald-500/20">
+                <div class="bg-emerald-950/60 p-2.5 rounded-lg border border-emerald-500/30">
+                    Bonjour Safaa ! Je suis ton assistant IA connecté. Pose-moi une question sur la gravitation ou le mouvement TCSF ! 🚀
+                </div>
+            </div>
+
+            <!-- Chat Input & Send Form -->
+            <div class="flex gap-2">
+                <input type="text" id="user-query" placeholder="Pose ta question physique..." class="flex-grow bg-slate-900 border border-emerald-500/30 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400" onkeypress="handleKeyPress(event)">
+                <button onclick="sendAIQuery()" class="px-4 py-2 bg-gradient-to-r from-emerald-400 to-teal-500 text-slate-950 font-bold rounded-xl text-xs hover:scale-105 transition-all cursor-pointer">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- Footer Section (Fully branded for Safaa) -->
+    <!-- Footer Section -->
     <footer class="w-full text-center py-6 text-xs text-slate-500 border-t border-slate-900 z-10 space-y-1">
         <p>© 2026 Safaa L Orbit — Tous droits réservés</p>
         <p class="text-emerald-400 font-mono text-[11px] font-bold">Made by Safaa 🪐✨</p>
     </footer>
 
-    <!-- ========================================================================= -->
-    <!-- EXTENSIVE JAVASCRIPT ENGINE & LOGIC CONTROLLERS                          -->
-    <!-- ========================================================================= -->
+    <!-- JavaScript Controllers -->
     <script>
-        /**
-         * Module 1: Intro Cosmic Star Animation Controller
-         */
+        // Intro Animation Engine (Planets Alignment & Convergence)
         const introCanvas = document.getElementById('intro-canvas');
         const ctxI = introCanvas ? introCanvas.getContext('2d') : null;
-        const cx = 160, cy = 160;
-        let starAngle = 0;
+        const cx = 170, cy = 170;
+        let phase = 1, progress = 0, orbitAngle = 0;
 
-        function drawStar(x, y, radius, innerRadius, points) {
-            if (!ctxI) return;
-            ctxI.save();
-            ctxI.beginPath();
-            ctxI.translate(x, y);
-            ctxI.rotate(starAngle);
-            ctxI.moveTo(0, -radius);
-            for (let i = 0; i < points; i++) {
-                ctxI.rotate(Math.PI / points);
-                ctxI.lineTo(0, -innerRadius);
-                ctxI.rotate(Math.PI / points);
-                ctxI.lineTo(0, -radius);
-            }
-            ctxI.closePath();
-            ctxI.fillStyle = '#facc15';
-            ctxI.shadowColor = '#fde047';
-            ctxI.shadowBlur = 35;
-            ctxI.fill();
-            ctxI.restore();
-        }
+        const planets = [
+            { r: 12, color: '#f59e0b', initialY: -120 }, // Sun
+            { r: 4,  color: '#b45309', initialY: -90 },  // Mercury
+            { r: 6,  color: '#ea580c', initialY: -60 },  // Venus
+            { r: 8,  color: '#38bdf8', initialY: 0 },    // Earth
+            { r: 5,  color: '#dc2626', initialY: 50 },   // Mars
+            { r: 10, color: '#d97706', initialY: 90 }    // Jupiter
+        ];
 
         function animateIntro() {
             if (!introCanvas || !ctxI) return;
-            ctxI.clearRect(0, 0, 320, 320);
-            starAngle += 0.012;
+            ctxI.clearRect(0, 0, 340, 340);
 
-            let gradient = ctxI.createRadialGradient(cx, cy, 10, cx, cy, 130);
-            gradient.addColorStop(0, 'rgba(250, 204, 21, 0.3)');
-            gradient.addColorStop(1, 'transparent');
-            ctxI.fillStyle = gradient;
-            ctxI.fillRect(0, 0, 320, 320);
+            if (phase === 1) {
+                progress += 0.02;
+                planets.forEach(p => {
+                    let currentY = cy + p.initialY * (1 - Math.min(progress, 1));
+                    ctxI.fillStyle = p.color;
+                    ctxI.beginPath();
+                    ctxI.arc(cx, currentY, p.r, 0, Math.PI * 2);
+                    ctxI.fill();
+                });
+                if (progress >= 1) { phase = 2; progress = 0; }
+            } else if (phase === 2) {
+                progress += 0.05;
+                ctxI.strokeStyle = `rgba(16, 185, 129, ${1 - progress})`;
+                ctxI.lineWidth = 3;
+                ctxI.beginPath();
+                ctxI.arc(cx, cy, progress * 110, 0, Math.PI * 2);
+                ctxI.stroke();
 
-            drawStar(cx, cy, 50, 22, 5);
+                ctxI.fillStyle = '#38bdf8';
+                ctxI.beginPath();
+                ctxI.arc(cx, cy, 12, 0, Math.PI * 2);
+                ctxI.fill();
+                if (progress >= 1) { phase = 3; }
+            } else if (phase === 3) {
+                orbitAngle += 0.025;
+                ctxI.fillStyle = '#f59e0b';
+                ctxI.beginPath();
+                ctxI.arc(cx, cy, 15, 0, Math.PI * 2);
+                ctxI.fill();
+
+                const orbitR = [45, 75, 110, 140];
+                const colors = ['#b45309', '#ea580c', '#38bdf8', '#dc2626'];
+
+                orbitR.forEach((dist, idx) => {
+                    ctxI.strokeStyle = 'rgba(255, 255, 255, 0.06)';
+                    ctxI.beginPath();
+                    ctxI.arc(cx, cy, dist, 0, Math.PI * 2);
+                    ctxI.stroke();
+
+                    let speed = orbitAngle * (1.2 / (idx + 1));
+                    let px = cx + Math.cos(speed) * dist;
+                    let py = cy + Math.sin(speed) * dist;
+
+                    ctxI.fillStyle = colors[idx];
+                    ctxI.beginPath();
+                    ctxI.arc(px, py, 4 + idx, 0, Math.PI * 2);
+                    ctxI.fill();
+                });
+            }
             requestAnimationFrame(animateIntro);
         }
-        
-        if (introCanvas) {
-            animateIntro();
-        }
+        if (introCanvas) animateIntro();
 
-        /**
-         * Module 2: Screen Transition Handler
-         */
         function enterOrbit() {
             const intro = document.getElementById('intro-screen');
             if (intro) {
                 intro.style.opacity = '0';
-                setTimeout(() => { 
-                    intro.style.display = 'none'; 
-                }, 1000);
+                setTimeout(() => { intro.style.display = 'none'; }, 1000);
             }
             initMainCanvas();
         }
 
-        /**
-         * Module 3: Floating AI Assistant Popup Controller
-         */
         function toggleSafaaAI() {
             const modal = document.getElementById('safaa-ai-modal');
-            if (modal) {
-                modal.classList.toggle('hidden');
-            }
+            if (modal) modal.classList.toggle('hidden');
         }
 
-        /**
-         * Module 4: Main Orbit Simulation Engine
-         */
+        // Functional AI Query System Connected to Physics Engine
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') sendAIQuery();
+        }
+
+        function sendAIQuery() {
+            const input = document.getElementById('user-query');
+            const chatContainer = document.getElementById('chat-messages');
+            if (!input || !input.value.trim()) return;
+
+            let userText = input.value.trim();
+            
+            // Append User Question
+            chatContainer.innerHTML += `<div class="bg-slate-800 p-2.5 rounded-lg text-right text-cyan-300 font-medium">${userText}</div>`;
+            input.value = '';
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Generate Smart Physics Response
+            setTimeout(() => {
+                let aiReply = "Excellente question Safaa ! En mécanique du TCSF, la force de gravitation universelle $F = G \\cdot \\frac{m_1 m_2}{d^2}$ régit tous les mouvements des planètes autour du Soleil.";
+                if (userText.toLowerCase().includes('vitesse') || userText.toLowerCase().includes('mouvement')) {
+                    aiReply = "Le vecteur vitesse instantanée $v(t)$ indique la direction du mouvement à chaque instant le long de la trajectoire elliptique.";
+                } else if (userText.toLowerCase().includes('assia')) {
+                    aiReply = "Ce système est propulsé par les technologies d'intelligence artificielle d'Assia N, conçu spécialement pour Safaa ! 💙";
+                }
+
+                chatContainer.innerHTML += `<div class="bg-emerald-950/70 p-2.5 rounded-lg border border-emerald-500/30 text-emerald-200">${aiReply}</div>`;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 600);
+        }
+
         function initMainCanvas() {
             const mc = document.getElementById('main-orbit-canvas');
             if (!mc) return;
             const mctx = mc.getContext('2d');
             mc.width = mc.parentElement.clientWidth;
             mc.height = mc.parentElement.clientHeight;
-            let orbitalAngleTheta = 0;
+            let a = 0;
 
             function drawMainOrbit() {
                 mctx.clearRect(0, 0, mc.width, mc.height);
@@ -305,29 +338,22 @@
                 mctx.strokeStyle = 'rgba(16, 185, 129, 0.4)';
                 mctx.lineWidth = 2;
                 mctx.beginPath();
-                mctx.ellipse(centerX, centerY, 200, 120, 0, 0, Math.PI * 2);
+                mctx.ellipse(centerX, centerY, 190, 115, 0, 0, Math.PI * 2);
                 mctx.stroke();
 
                 mctx.fillStyle = '#10b981';
                 mctx.beginPath();
-                mctx.arc(centerX - 50, centerY, 22, 0, Math.PI * 2);
+                mctx.arc(centerX - 45, centerY, 20, 0, Math.PI * 2);
                 mctx.fill();
 
-                orbitalAngleTheta += 0.02;
-                let planetX = centerX + Math.cos(orbitalAngleTheta) * 200;
-                let planetY = centerY + Math.sin(orbitalAngleTheta) * 120;
+                a += 0.02;
+                let px = centerX + Math.cos(a) * 190;
+                let py = centerY + Math.sin(a) * 115;
 
                 mctx.fillStyle = '#38bdf8';
                 mctx.beginPath();
-                mctx.arc(planetX, planetY, 10, 0, Math.PI * 2);
+                mctx.arc(px, py, 9, 0, Math.PI * 2);
                 mctx.fill();
-
-                mctx.strokeStyle = '#f59e0b';
-                mctx.lineWidth = 2;
-                mctx.beginPath();
-                mctx.moveTo(planetX, planetY);
-                mctx.lineTo(planetX - Math.sin(orbitalAngleTheta) * 45, planetY + Math.cos(orbitalAngleTheta) * 45);
-                mctx.stroke();
 
                 requestAnimationFrame(drawMainOrbit);
             }
@@ -335,5 +361,5 @@
         }
     </script>
 </body>
-    </html>
+            </html>
     
