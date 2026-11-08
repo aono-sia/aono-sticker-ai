@@ -28,7 +28,6 @@
             justify-content: space-between;
         }
 
-        /* Glassmorphism Emerald Style */
         .glass-panel-emerald {
             background: rgba(6, 78, 59, 0.25);
             backdrop-filter: blur(16px);
@@ -37,7 +36,6 @@
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
 
-        /* Intro Screen Overlay */
         #intro-screen {
             position: fixed; inset: 0; background: #020617; z-index: 9999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
@@ -62,7 +60,7 @@
 </head>
 <body>
 
-    <!-- Intro Screen (حركة الاصطفاف والتجميع نحو الأرض ثم الانتشار المداري) -->
+    <!-- Intro Screen (حركة الكواكب مطابقة لصورتك: تجميع نحو الأرض ثم انفجار واصطفاف شمسي) -->
     <div id="intro-screen">
         <div class="intro-canvas-container">
             <canvas id="intro-canvas" width="340" height="340"></canvas>
@@ -103,7 +101,7 @@
     <main class="w-full max-w-6xl mx-auto px-6 py-4 flex-grow z-10 space-y-8">
         <div class="text-center max-w-2xl mx-auto space-y-2">
             <h2 class="text-3xl font-extrabold text-white">Laboratoire de Mécanique Céleste</h2>
-            <p class="text-slate-400 text-xs md:text-sm">Simulation des orbites elliptiques, forces gravitationnelles et lois de Kepler pour le Tronc Commun Scientifique.</p>
+            <p class="text-slate-400 text-xs md:text-sm">Simulation des orbites elliptiques, mouvements et lois physiques pour le Tronc Commun Scientifique.</p>
         </div>
 
         <!-- Realtime Orbit Simulation Screen -->
@@ -111,11 +109,11 @@
             <canvas id="main-orbit-canvas" class="w-full h-full rounded-2xl"></canvas>
             <div class="absolute top-6 left-6 text-xs font-mono text-emerald-300 bg-slate-950/80 p-3 rounded-xl border border-emerald-500/30">
                 <p>🪐 Mouvement Elliptique v(t)</p>
-                <p class="text-slate-400 text-[10px] mt-1">Loi des Aires (2ème Loi de Kepler)</p>
+                <p class="text-slate-400 text-[10px] mt-1">Loi des Aires & Trajectoire</p>
             </div>
         </div>
 
-        <!-- Physics Lessons Grid -->
+        <!-- Physics Lessons Grid (Lesson 2 updated to Mouvement) -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div class="glass-panel-emerald p-6 space-y-3">
                 <h3 class="font-bold text-emerald-300 text-base">1. La Gravitation Universelle</h3>
@@ -126,10 +124,10 @@
             </div>
 
             <div class="glass-panel-emerald p-6 space-y-3">
-                <h3 class="font-bold text-emerald-300 text-base">2. Mouvement Circulaire</h3>
-                <p class="text-slate-300 text-xs leading-relaxed">Étude du vecteur vitesse v(t) et de l'accélération centripète a_n orientée vers le centre du corps attracteur.</p>
+                <h3 class="font-bold text-emerald-300 text-base">2. Le Mouvement & Vitesse</h3>
+                <p class="text-slate-300 text-xs leading-relaxed">Étude du vecteur vitesse instantanée $v(t)$ et de la nature du mouvement dans le référentiel héliocentrique.</p>
                 <div class="p-2.5 rounded-xl bg-slate-950/80 text-[11px] font-mono text-emerald-400 border border-emerald-500/20">
-                    a_n = v² / r | T = 2πr / v
+                    v = dL / dt | a_n = v² / r
                 </div>
             </div>
 
@@ -164,23 +162,26 @@
     </footer>
 
     <script>
-        // Intro Animation Engine (Alignment -> Merge to Earth -> Big Bang Burst -> Orbit Solar System)
+        // Intro Animation Engine (Planets alignment matching source image -> converge to Earth -> explosion -> solar system orbit)
         const introCanvas = document.getElementById('intro-canvas');
         const ctxI = introCanvas.getContext('2d');
         const cx = 170, cy = 170;
 
-        let phase = 1; // 1: Converge to Earth, 2: Explode Burst, 3: Orbit Solar System
+        let phase = 1; 
         let progress = 0;
         let orbitAngle = 0;
 
+        // Planets matching the uploaded vertical alignment image order
         const planets = [
-            { r: 12, color: '#f59e0b', initialY: -130 }, // Sun
-            { r: 4,  color: '#d97706', initialY: -95 },  // Mercury
-            { r: 7,  color: '#f97316', initialY: -65 },  // Venus
+            { r: 13, color: '#f59e0b', initialY: -130 }, // Sun (Top)
+            { r: 4,  color: '#b45309', initialY: -100 }, // Mercury
+            { r: 7,  color: '#ea580c', initialY: -70 },  // Venus
             { r: 8,  color: '#38bdf8', initialY: 0, isEarth: true }, // Earth (Center)
-            { r: 6,  color: '#ef4444', initialY: 45 },   // Mars
-            { r: 11, color: '#eab308', initialY: 85 },   // Jupiter
-            { r: 9,  color: '#a855f7', initialY: 125 }   // Saturn
+            { r: 4,  color: '#94a3b8', initialY: 30 },   // Moon
+            { r: 6,  color: '#dc2626', initialY: 55 },   // Mars
+            { r: 11, color: '#d97706', initialY: 90 },   // Jupiter
+            { r: 9,  color: '#facc15', initialY: 120, hasRing: true }, // Saturn
+            { r: 7,  color: '#67e8f9', initialY: 140 }   // Uranus/Neptune
         ];
 
         function animateIntro() {
@@ -203,27 +204,25 @@
                 ctxI.strokeStyle = `rgba(16, 185, 129, ${1 - progress})`;
                 ctxI.lineWidth = 4;
                 ctxI.beginPath();
-                ctxI.arc(cx, cy, progress * 110, 0, Math.PI * 2);
+                ctxI.arc(cx, cy, progress * 120, 0, Math.PI * 2);
                 ctxI.stroke();
 
                 ctxI.fillStyle = '#38bdf8';
                 ctxI.beginPath();
-                ctxI.arc(cx, cy, 10, 0, Math.PI * 2);
+                ctxI.arc(cx, cy, 12, 0, Math.PI * 2);
                 ctxI.fill();
 
                 if (progress >= 1) { phase = 3; }
             } 
             else if (phase === 3) { // Solar System Galaxy Orbit
                 orbitAngle += 0.02;
-                // Draw Sun
                 ctxI.fillStyle = '#f59e0b';
                 ctxI.beginPath();
-                ctxI.arc(cx, cy, 15, 0, Math.PI * 2);
+                ctxI.arc(cx, cy, 16, 0, Math.PI * 2);
                 ctxI.fill();
 
-                // Draw orbiting planets
                 const orbitR = [35, 58, 82, 110, 135];
-                const orbitColors = ['#d97706', '#f97316', '#38bdf8', '#ef4444', '#eab308'];
+                const orbitColors = ['#b45309', '#ea580c', '#38bdf8', '#dc2626', '#d97706'];
 
                 orbitR.forEach((dist, idx) => {
                     ctxI.strokeStyle = 'rgba(255, 255, 255, 0.1)';
@@ -258,7 +257,6 @@
             m.classList.toggle('hidden');
         }
 
-        // Main Screen Orbit Simulation
         function initMainCanvas() {
             const mc = document.getElementById('main-orbit-canvas');
             const mctx = mc.getContext('2d');
@@ -271,20 +269,17 @@
                 let centerX = mc.width / 2;
                 let centerY = mc.height / 2;
 
-                // Ellipse orbit
                 mctx.strokeStyle = 'rgba(16, 185, 129, 0.4)';
                 mctx.lineWidth = 2;
                 mctx.beginPath();
                 mctx.ellipse(centerX, centerY, 180, 110, 0, 0, Math.PI * 2);
                 mctx.stroke();
 
-                // Center Attractor (Star)
                 mctx.fillStyle = '#10b981';
                 mctx.beginPath();
                 mctx.arc(centerX - 40, centerY, 18, 0, Math.PI * 2);
                 mctx.fill();
 
-                // Planet
                 a += 0.02;
                 let px = centerX + Math.cos(a) * 180;
                 let py = centerY + Math.sin(a) * 110;
@@ -294,7 +289,6 @@
                 mctx.arc(px, py, 9, 0, Math.PI * 2);
                 mctx.fill();
 
-                // Velocity Vector v
                 mctx.strokeStyle = '#f59e0b';
                 mctx.lineWidth = 2;
                 mctx.beginPath();
@@ -308,4 +302,5 @@
         }
     </script>
 </body>
-</html>
+            </html>
+                
