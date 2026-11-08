@@ -60,7 +60,7 @@
 </head>
 <body>
 
-    <!-- Intro Screen (حركة الكواكب مطابقة لصورتك: تجميع نحو الأرض ثم انفجار واصطفاف شمسي) -->
+    <!-- Intro Screen -->
     <div id="intro-screen">
         <div class="intro-canvas-container">
             <canvas id="intro-canvas" width="340" height="340"></canvas>
@@ -113,7 +113,7 @@
             </div>
         </div>
 
-        <!-- Physics Lessons Grid (Lesson 2 updated to Mouvement) -->
+        <!-- Physics Lessons Grid -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
             <div class="glass-panel-emerald p-6 space-y-3">
                 <h3 class="font-bold text-emerald-300 text-base">1. La Gravitation Universelle</h3>
@@ -125,7 +125,7 @@
 
             <div class="glass-panel-emerald p-6 space-y-3">
                 <h3 class="font-bold text-emerald-300 text-base">2. Le Mouvement & Vitesse</h3>
-                <p class="text-slate-300 text-xs leading-relaxed">Étude du vecteur vitesse instantanée $v(t)$ et de la nature du mouvement dans le référentiel héliocentrique.</p>
+                <p class="text-slate-300 text-xs leading-relaxed">Étude du vecteur vitesse instantanée v(t) et de la nature du mouvement dans le référentiel héliocentrique.</p>
                 <div class="p-2.5 rounded-xl bg-slate-950/80 text-[11px] font-mono text-emerald-400 border border-emerald-500/20">
                     v = dL / dt | a_n = v² / r
                 </div>
@@ -162,7 +162,6 @@
     </footer>
 
     <script>
-        // Intro Animation Engine (Planets alignment matching source image -> converge to Earth -> explosion -> solar system orbit)
         const introCanvas = document.getElementById('intro-canvas');
         const ctxI = introCanvas.getContext('2d');
         const cx = 170, cy = 170;
@@ -171,23 +170,22 @@
         let progress = 0;
         let orbitAngle = 0;
 
-        // Planets matching the uploaded vertical alignment image order
         const planets = [
-            { r: 13, color: '#f59e0b', initialY: -130 }, // Sun (Top)
-            { r: 4,  color: '#b45309', initialY: -100 }, // Mercury
-            { r: 7,  color: '#ea580c', initialY: -70 },  // Venus
-            { r: 8,  color: '#38bdf8', initialY: 0, isEarth: true }, // Earth (Center)
-            { r: 4,  color: '#94a3b8', initialY: 30 },   // Moon
-            { r: 6,  color: '#dc2626', initialY: 55 },   // Mars
-            { r: 11, color: '#d97706', initialY: 90 },   // Jupiter
-            { r: 9,  color: '#facc15', initialY: 120, hasRing: true }, // Saturn
-            { r: 7,  color: '#67e8f9', initialY: 140 }   // Uranus/Neptune
+            { r: 13, color: '#f59e0b', initialY: -130 }, 
+            { r: 4,  color: '#b45309', initialY: -100 }, 
+            { r: 7,  color: '#ea580c', initialY: -70 },  
+            { r: 8,  color: '#38bdf8', initialY: 0, isEarth: true }, 
+            { r: 4,  color: '#94a3b8', initialY: 30 },   
+            { r: 6,  color: '#dc2626', initialY: 55 },   
+            { r: 11, color: '#d97706', initialY: 90 },   
+            { r: 9,  color: '#facc15', initialY: 120 }, 
+            { r: 7,  color: '#67e8f9', initialY: 140 }   
         ];
 
         function animateIntro() {
             ctxI.clearRect(0, 0, 340, 340);
 
-            if (phase === 1) { // Converge to Earth at center
+            if (phase === 1) { 
                 progress += 0.015;
                 planets.forEach(p => {
                     let currentY = cy + p.initialY * (1 - Math.min(progress, 1));
@@ -199,7 +197,7 @@
 
                 if (progress >= 1) { phase = 2; progress = 0; }
             } 
-            else if (phase === 2) { // Energy Burst from Earth
+            else if (phase === 2) { 
                 progress += 0.04;
                 ctxI.strokeStyle = `rgba(16, 185, 129, ${1 - progress})`;
                 ctxI.lineWidth = 4;
@@ -214,7 +212,7 @@
 
                 if (progress >= 1) { phase = 3; }
             } 
-            else if (phase === 3) { // Solar System Galaxy Orbit
+            else if (phase === 3) { 
                 orbitAngle += 0.02;
                 ctxI.fillStyle = '#f59e0b';
                 ctxI.beginPath();
@@ -290,7 +288,7 @@
                 mctx.fill();
 
                 mctx.strokeStyle = '#f59e0b';
-                mctx.lineWidth = 2;
+                mctx.lineWidth, mctx.lineWidth = 2;
                 mctx.beginPath();
                 mctx.moveTo(px, py);
                 mctx.lineTo(px - Math.sin(a) * 35, py + Math.cos(a) * 35);
@@ -302,5 +300,5 @@
         }
     </script>
 </body>
-            </html>
-                
+    </html>
+                    
