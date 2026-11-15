@@ -4,7 +4,298 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mission Spatiale - Système Solaire</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+        }
+
+        body {
+            background: radial-gradient(ellipse at bottom, #111936 0%, #05070e 100%);
+            color: #f8fafc;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 15px 40px;
+            overflow-x: hidden;
+        }
+
+        .stars-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: 
+                radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(1.5px 1.5px at 90px 140px, #93c5fd, rgba(0,0,0,0)),
+                radial-gradient(1px 1px at 200px 80px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 310px 220px, #fde047, rgba(0,0,0,0));
+            background-size: 350px 350px;
+            opacity: 0.4;
+            z-index: -1;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .badge {
+            display: inline-block;
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            color: #38bdf8;
+            background: rgba(56, 189, 248, 0.1);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 4px 12px;
+            border-radius: 20px;
+            margin-bottom: 8px;
+        }
+
+        header h1 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+        }
+
+        header p {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            margin-top: 4px;
+        }
+
+        .solar-system-wrapper {
+            width: 100%;
+            max-width: 420px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 10px 0 20px;
+        }
+
+        .controls-hint {
+            font-size: 0.75rem;
+            color: #94a3b8;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.04);
+            padding: 5px 12px;
+            border-radius: 12px;
+        }
+
+        .solar-system {
+            position: relative;
+            width: 340px;
+            height: 340px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .sun {
+            width: 36px;
+            height: 36px;
+            background: radial-gradient(circle, #fef08a 10%, #f59e0b 60%, #ea580c 100%);
+            border-radius: 50%;
+            box-shadow: 0 0 30px #f59e0b, 0 0 60px rgba(234, 88, 12, 0.5);
+            z-index: 10;
+        }
+
+        .orbit {
+            position: absolute;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 50%;
+            animation: rotateOrbit linear infinite;
+        }
+
+        .solar-system:hover .orbit {
+            animation-play-state: paused;
+        }
+
+        .planet {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+            transition: transform 0.25s ease;
+        }
+
+        .planet:hover {
+            transform: translate(-50%, -50%) scale(1.6);
+            z-index: 20;
+        }
+
+        .orbit-1 { width: 64px; height: 64px; animation-duration: 5s; }
+        .p-mercure { width: 7px; height: 7px; background: #cbd5e1; }
+
+        .orbit-2 { width: 96px; height: 96px; animation-duration: 8s; }
+        .p-venus { width: 10px; height: 10px; background: #fcd34d; }
+
+        .orbit-3 { width: 132px; height: 132px; animation-duration: 12s; }
+        .p-terre { width: 11px; height: 11px; background: radial-gradient(circle at 30% 30%, #60a5fa, #1d4ed8); }
+
+        .orbit-4 { width: 168px; height: 168px; animation-duration: 16s; }
+        .p-mars { width: 9px; height: 9px; background: #ef4444; }
+
+        .orbit-5 { width: 212px; height: 212px; animation-duration: 24s; }
+        .p-jupiter { width: 18px; height: 18px; background: linear-gradient(135deg, #fdba74, #c2410c); }
+
+        .orbit-6 { width: 256px; height: 256px; animation-duration: 32s; }
+        .p-saturne { width: 15px; height: 15px; background: #fde047; position: relative; }
+        .saturn-ring {
+            position: absolute;
+            top: 50%; left: 50%;
+            width: 26px; height: 8px;
+            border: 2px solid rgba(253, 224, 71, 0.7);
+            border-radius: 50%;
+            transform: translate(-50%, -50%) rotate(-20deg);
+        }
+
+        .orbit-7 { width: 296px; height: 296px; animation-duration: 42s; }
+        .p-uranus { width: 12px; height: 12px; background: #5eead4; }
+
+        .orbit-8 { width: 334px; height: 334px; animation-duration: 52s; }
+        .p-neptune { width: 12px; height: 12px; background: #3b82f6; }
+
+        @keyframes rotateOrbit {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .card {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(14px);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 18px;
+            padding: 20px;
+            width: 100%;
+            max-width: 400px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+            margin-bottom: 20px;
+            transition: transform 0.2s ease;
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            margin-bottom: 12px;
+        }
+
+        .planet-avatar {
+            width: 46px;
+            height: 46px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #60a5fa, #1d4ed8);
+            box-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
+            flex-shrink: 0;
+        }
+
+        .fiche-label {
+            font-size: 0.65rem;
+            letter-spacing: 1.5px;
+            color: #38bdf8;
+            font-weight: 700;
+            display: block;
+        }
+
+        .card-header h2 {
+            font-size: 1.4rem;
+            line-height: 1.2;
+        }
+
+        .planet-rank {
+            font-size: 0.78rem;
+            color: #94a3b8;
+        }
+
+        .planet-desc {
+            font-size: 0.85rem;
+            color: #cbd5e1;
+            line-height: 1.5;
+            margin-bottom: 16px;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .spec-item {
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 10px 12px;
+            border-radius: 12px;
+        }
+
+        .spec-item span {
+            display: block;
+            font-size: 0.62rem;
+            color: #94a3b8;
+            letter-spacing: 0.8px;
+            margin-bottom: 4px;
+        }
+
+        .spec-item strong {
+            font-size: 0.85rem;
+            color: #f1f5f9;
+        }
+
+        .selector-section {
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 25px;
+        }
+
+        .selector-title {
+            font-size: 0.72rem;
+            letter-spacing: 1.2px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+        }
+
+        .planets-buttons {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 8px;
+        }
+
+        .p-btn {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            padding: 10px 4px;
+            border-radius: 10px;
+            font-size: 0.78rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .p-btn:hover {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: #38bdf8;
+        }
+
+        .p-btn.active {
+            background: linear-gradient(135deg, #2563eb, #38bdf8);
+            color: #ffffff;
+            border-color: #7dd3fc;
+            font-weight: 700;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+        }
+
+        footer {
+            font-size: 0.7rem;
+            color: #64748b;
+            letter-spacing: 1.5px;
+            text-align: center;
+        }
+    </style>
 </head>
 <body>
 
@@ -16,51 +307,27 @@
         <p>Réalisé par : <strong>Safaa Labsi</strong> • Tronc Commun Scientifique (2026-2027)</p>
     </header>
 
-    <!-- منطقة دوران الكواكب (Le Soleil + 8 Planètes) -->
     <section class="solar-system-wrapper">
         <div class="controls-hint">Appuie sur une planète pour découvrir ses informations</div>
         
         <div class="solar-system">
             <div class="sun" title="Le Soleil"></div>
 
-            <!-- 1. Mercure -->
-            <div class="orbit orbit-1">
-                <div class="planet p-mercure" onclick="selectPlanet('Mercure')"></div>
-            </div>
-            <!-- 2. Vénus -->
-            <div class="orbit orbit-2">
-                <div class="planet p-venus" onclick="selectPlanet('Vénus')"></div>
-            </div>
-            <!-- 3. Terre -->
-            <div class="orbit orbit-3">
-                <div class="planet p-terre" onclick="selectPlanet('Terre')"></div>
-            </div>
-            <!-- 4. Mars -->
-            <div class="orbit orbit-4">
-                <div class="planet p-mars" onclick="selectPlanet('Mars')"></div>
-            </div>
-            <!-- 5. Jupiter -->
-            <div class="orbit orbit-5">
-                <div class="planet p-jupiter" onclick="selectPlanet('Jupiter')"></div>
-            </div>
-            <!-- 6. Saturne (مع الحلقات ديالو) -->
+            <div class="orbit orbit-1"><div class="planet p-mercure" onclick="selectPlanet('Mercure')"></div></div>
+            <div class="orbit orbit-2"><div class="planet p-venus" onclick="selectPlanet('Vénus')"></div></div>
+            <div class="orbit orbit-3"><div class="planet p-terre" onclick="selectPlanet('Terre')"></div></div>
+            <div class="orbit orbit-4"><div class="planet p-mars" onclick="selectPlanet('Mars')"></div></div>
+            <div class="orbit orbit-5"><div class="planet p-jupiter" onclick="selectPlanet('Jupiter')"></div></div>
             <div class="orbit orbit-6">
                 <div class="planet p-saturne" onclick="selectPlanet('Saturne')">
                     <div class="saturn-ring"></div>
                 </div>
             </div>
-            <!-- 7. Uranus -->
-            <div class="orbit orbit-7">
-                <div class="planet p-uranus" onclick="selectPlanet('Uranus')"></div>
-            </div>
-            <!-- 8. Neptune -->
-            <div class="orbit orbit-8">
-                <div class="planet p-neptune" onclick="selectPlanet('Neptune')"></div>
-            </div>
+            <div class="orbit orbit-7"><div class="planet p-uranus" onclick="selectPlanet('Uranus')"></div></div>
+            <div class="orbit orbit-8"><div class="planet p-neptune" onclick="selectPlanet('Neptune')"></div></div>
         </div>
     </section>
 
-    <!-- البطاقة العلمية (Fiche Scientifique) -->
     <section class="card" id="planetCard">
         <div class="card-header">
             <div class="planet-avatar" id="cardAvatar"></div>
@@ -95,7 +362,6 @@
         </div>
     </section>
 
-    <!-- أزرار الاختيار السريع -->
     <section class="selector-section">
         <div class="selector-title">CHOISIR UNE PLANÈTE</div>
         <div class="planets-buttons" id="buttonsContainer"></div>
@@ -105,418 +371,118 @@
         RÉALISÉ PAR SAFAA LABSI • 2026-2027
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        const planetsDatabase = {
+            "Mercure": {
+                rank: "1re planète du Soleil",
+                desc: "La planète la plus proche du Soleil et la plus petite du Système solaire. Sa surface est couverte de cratères.",
+                type: "Tellurique",
+                part: "Écarts thermiques extrêmes",
+                dist: "57,9 millions km",
+                temp: "167 °C",
+                gradient: "radial-gradient(circle at 30% 30%, #e2e8f0, #64748b)"
+            },
+            "Vénus": {
+                rank: "2e planète du Soleil",
+                desc: "La planète la plus chaude du Système solaire à cause d'un effet de serre massif provoqué par son atmosphère dense.",
+                type: "Tellurique",
+                part: "La plus chaude",
+                dist: "108,2 millions km",
+                temp: "464 °C",
+                gradient: "radial-gradient(circle at 30% 30%, #fef08a, #d97706)"
+            },
+            "Terre": {
+                rank: "3e planète du Soleil",
+                desc: "Notre planète d'origine, la seule connue dans l'univers à abriter la vie grâce à ses océans d'eau liquide.",
+                type: "Tellurique",
+                part: "Abrite la vie",
+                dist: "149,6 millions km",
+                temp: "15 °C",
+                gradient: "radial-gradient(circle at 30% 30%, #60a5fa, #1d4ed8)"
+            },
+            "Mars": {
+                rank: "4e planète du Soleil",
+                desc: "Surnommée la planète rouge en raison de l'oxyde de fer présent à sa surface. Elle abrite Olympus Mons.",
+                type: "Tellurique",
+                part: "Planète rouge",
+                dist: "227,9 millions km",
+                temp: "-65 °C",
+                gradient: "radial-gradient(circle at 30% 30%, #f87171, #991b1b)"
+            },
+            "Jupiter": {
+                rank: "5e planète du Soleil",
+                desc: "La plus grande planète du Système solaire, une immense géante gazeuse célèbre pour sa Grande Tache Rouge.",
+                type: "Géante gazeuse",
+                part: "La plus grande",
+                dist: "778,5 millions km",
+                temp: "-110 °C",
+                gradient: "radial-gradient(circle at 30% 30%, #fdba74, #9a3412)"
+            },
+            "Saturne": {
+                rank: "6e planète du Soleil",
+                desc: "Célèbre pour son spectaculaire système d'anneaux composés principalement de particules de glace.",
+                type: "Géante gazeuse",
+                part: "Anneaux spectaculaires",
+                dist: "1,43 milliard km",
+                temp: "-140 °C",
+                gradient: "radial-gradient(circle at 30% 30%, #fef08a, #ca8a04)"
+            },
+            "Uranus": {
+                rank: "7e planète du Soleil",
+                desc: "Une géante de glace qui possède la particularité unique de tourner presque couchée sur son orbite.",
+                type: "Géante de glace",
+                part: "Rotation inclinée",
+                dist: "2,87 milliards km",
+                temp: "-195 °C",
+                gradient: "radial-gradient(circle at 30% 30%, #99f6e4, #0d9488)"
+            },
+            "Neptune": {
+                rank: "8e planète du Soleil",
+                desc: "La planète la plus éloignée du Soleil, balayée par les vents les plus violents du Système solaire.",
+                type: "Géante de glace",
+                part: "Vents supersoniques",
+                dist: "4,5 milliards km",
+                temp: "-200 °C",
+                gradient: "radial-gradient(circle at 30% 30%, #60a5fa, #1e3a8a)"
+            }
+        };
+
+        const buttonsContainer = document.getElementById("buttonsContainer");
+
+        Object.keys(planetsDatabase).forEach(planetName => {
+            const btn = document.createElement("button");
+            btn.className = "p-btn" + (planetName === "Terre" ? " active" : "");
+            btn.textContent = planetName;
+            btn.onclick = () => selectPlanet(planetName);
+            buttonsContainer.appendChild(btn);
+        });
+
+        function selectPlanet(name) {
+            const planet = planetsDatabase[name];
+            if (!planet) return;
+
+            document.getElementById("planetName").textContent = name;
+            document.getElementById("planetRank").textContent = planet.rank;
+            document.getElementById("planetDesc").textContent = planet.desc;
+            document.getElementById("planetType").textContent = planet.type;
+            document.getElementById("planetPart").textContent = planet.part;
+            document.getElementById("planetDist").textContent = planet.dist;
+            document.getElementById("planetTemp").textContent = planet.temp;
+
+            const avatar = document.getElementById("cardAvatar");
+            avatar.style.background = planet.gradient;
+
+            document.querySelectorAll(".p-btn").forEach(btn => {
+                btn.classList.toggle("active", btn.textContent === name);
+            });
+
+            const card = document.getElementById("planetCard");
+            card.style.transform = "scale(0.98)";
+            setTimeout(() => {
+                card.style.transform = "scale(1)";
+            }, 150);
+        }
+    </script>
 </body>
     </html>
-    * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-}
-
-body {
-    background: radial-gradient(ellipse at bottom, #111936 0%, #05070e 100%);
-    color: #f8fafc;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 15px 40px;
-    overflow-x: hidden;
-}
-
-/* خلفية نجوم خفيفة */
-.stars-bg {
-    position: fixed;
-    top: 0; left: 0; width: 100%; height: 100%;
-    background-image: 
-        radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(1.5px 1.5px at 90px 140px, #93c5fd, rgba(0,0,0,0)),
-        radial-gradient(1px 1px at 200px 80px, #ffffff, rgba(0,0,0,0)),
-        radial-gradient(2px 2px at 310px 220px, #fde047, rgba(0,0,0,0));
-    background-size: 350px 350px;
-    opacity: 0.4;
-    z-index: -1;
-}
-
-header {
-    text-align: center;
-    margin-bottom: 15px;
-}
-
-.badge {
-    display: inline-block;
-    font-size: 0.7rem;
-    letter-spacing: 2px;
-    color: #38bdf8;
-    background: rgba(56, 189, 248, 0.1);
-    border: 1px solid rgba(56, 189, 248, 0.3);
-    padding: 4px 12px;
-    border-radius: 20px;
-    margin-bottom: 8px;
-}
-
-header h1 {
-    font-size: 1.4rem;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-}
-
-header p {
-    font-size: 0.8rem;
-    color: #94a3b8;
-    margin-top: 4px;
-}
-
-/* منطقة النظام الشمسي */
-.solar-system-wrapper {
-    width: 100%;
-    max-width: 420px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 10px 0 20px;
-}
-
-.controls-hint {
-    font-size: 0.75rem;
-    color: #94a3b8;
-    margin-bottom: 10px;
-    background: rgba(255, 255, 255, 0.04);
-    padding: 5px 12px;
-    border-radius: 12px;
-}
-
-.solar-system {
-    position: relative;
-    width: 340px;
-    height: 340px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.sun {
-    width: 36px;
-    height: 36px;
-    background: radial-gradient(circle, #fef08a 10%, #f59e0b 60%, #ea580c 100%);
-    border-radius: 50%;
-    box-shadow: 0 0 30px #f59e0b, 0 0 60px rgba(234, 88, 12, 0.5);
-    z-index: 10;
-}
-
-.orbit {
-    position: absolute;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 50%;
-    animation: rotateOrbit linear infinite;
-}
-
-/* توقيف الدوران فاش تحط الصبع أو الفأرة باش يسهل الكليك */
-.solar-system:hover .orbit {
-    animation-play-state: paused;
-}
-
-.planet {
-    position: absolute;
-    top: 0;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    border-radius: 50%;
-    cursor: pointer;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
-    transition: transform 0.25s ease;
-}
-
-.planet:hover {
-    transform: translate(-50%, -50%) scale(1.6);
-    z-index: 20;
-}
-
-/* قياسات وسرعة كل مدار من 1 حتى لـ 8 */
-.orbit-1 { width: 64px; height: 64px; animation-duration: 5s; }
-.p-mercure { width: 7px; height: 7px; background: #cbd5e1; }
-
-.orbit-2 { width: 96px; height: 96px; animation-duration: 8s; }
-.p-venus { width: 10px; height: 10px; background: #fcd34d; }
-
-.orbit-3 { width: 132px; height: 132px; animation-duration: 12s; }
-.p-terre { width: 11px; height: 11px; background: radial-gradient(circle at 30% 30%, #60a5fa, #1d4ed8); }
-
-.orbit-4 { width: 168px; height: 168px; animation-duration: 16s; }
-.p-mars { width: 9px; height: 9px; background: #ef4444; }
-
-.orbit-5 { width: 212px; height: 212px; animation-duration: 24s; }
-.p-jupiter { width: 18px; height: 18px; background: linear-gradient(135deg, #fdba74, #c2410c); }
-
-.orbit-6 { width: 256px; height: 256px; animation-duration: 32s; }
-.p-saturne { width: 15px; height: 15px; background: #fde047; position: relative; }
-.saturn-ring {
-    position: absolute;
-    top: 50%; left: 50%;
-    width: 26px; height: 8px;
-    border: 2px solid rgba(253, 224, 71, 0.7);
-    border-radius: 50%;
-    transform: translate(-50%, -50%) rotate(-20deg);
-}
-
-.orbit-7 { width: 296px; height: 296px; animation-duration: 42s; }
-.p-uranus { width: 12px; height: 12px; background: #5eead4; }
-
-.orbit-8 { width: 334px; height: 334px; animation-duration: 52s; }
-.p-neptune { width: 12px; height: 12px; background: #3b82f6; }
-
-@keyframes rotateOrbit {
-    from { transform: rotate(0deg); }
-    to { transform: rotate(360deg); }
-}
-
-/* البطاقة العلمية */
-.card {
-    background: rgba(15, 23, 42, 0.8);
-    backdrop-filter: blur(14px);
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    border-radius: 18px;
-    padding: 20px;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
-    margin-bottom: 20px;
-    transition: transform 0.2s ease;
-}
-
-.card-header {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    margin-bottom: 12px;
-}
-
-.planet-avatar {
-    width: 46px;
-    height: 46px;
-    border-radius: 50%;
-    background: radial-gradient(circle at 30% 30%, #60a5fa, #1d4ed8);
-    box-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
-    flex-shrink: 0;
-}
-
-.fiche-label {
-    font-size: 0.65rem;
-    letter-spacing: 1.5px;
-    color: #38bdf8;
-    font-weight: 700;
-    display: block;
-}
-
-.card-header h2 {
-    font-size: 1.4rem;
-    line-height: 1.2;
-}
-
-.planet-rank {
-    font-size: 0.78rem;
-    color: #94a3b8;
-}
-
-.planet-desc {
-    font-size: 0.85rem;
-    color: #cbd5e1;
-    line-height: 1.5;
-    margin-bottom: 16px;
-}
-
-.specs-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
-}
-
-.spec-item {
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    padding: 10px 12px;
-    border-radius: 12px;
-}
-
-.spec-item span {
-    display: block;
-    font-size: 0.62rem;
-    color: #94a3b8;
-    letter-spacing: 0.8px;
-    margin-bottom: 4px;
-}
-
-.spec-item strong {
-    font-size: 0.85rem;
-    color: #f1f5f9;
-}
-
-/* أزرار الاختيار */
-.selector-section {
-    width: 100%;
-    max-width: 400px;
-    margin-bottom: 25px;
-}
-
-.selector-title {
-    font-size: 0.72rem;
-    letter-spacing: 1.2px;
-    color: #94a3b8;
-    margin-bottom: 10px;
-}
-
-.planets-buttons {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 8px;
-}
-
-.p-btn {
-    background: rgba(30, 41, 59, 0.7);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: #e2e8f0;
-    padding: 10px 4px;
-    border-radius: 10px;
-    font-size: 0.78rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.p-btn:hover {
-    background: rgba(56, 189, 248, 0.2);
-    border-color: #38bdf8;
-}
-
-.p-btn.active {
-    background: linear-gradient(135deg, #2563eb, #38bdf8);
-    color: #ffffff;
-    border-color: #7dd3fc;
-    font-weight: 700;
-    box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
-}
-
-footer {
-    font-size: 0.7rem;
-    color: #64748b;
-    letter-spacing: 1.5px;
-    text-align: center;
-}
-const planetsDatabase = {
-    "Mercure": {
-        rank: "1re planète du Soleil",
-        desc: "La planète la plus proche du Soleil et la plus petite du Système solaire. Sa surface est couverte de cratères similaires à ceux de la Lune.",
-        type: "Tellurique",
-        part: "Écarts thermiques extrêmes",
-        dist: "57,9 millions km",
-        temp: "167 °C",
-        gradient: "radial-gradient(circle at 30% 30%, #e2e8f0, #64748b)"
-    },
-    "Vénus": {
-        rank: "2e planète du Soleil",
-        desc: "La planète la plus chaude du Système solaire à cause d'un effet de serre massif provoqué par son atmosphère dense de dioxyde de carbone.",
-        type: "Tellurique",
-        part: "La plus chaude",
-        dist: "108,2 millions km",
-        temp: "464 °C",
-        gradient: "radial-gradient(circle at 30% 30%, #fef08a, #d97706)"
-    },
-    "Terre": {
-        rank: "3e planète du Soleil",
-        desc: "Notre planète d'origine, la seule connue dans l'univers à abriter la vie grâce à ses océans d'eau liquide et son atmosphère protectrice.",
-        type: "Tellurique",
-        part: "Abrite la vie",
-        dist: "149,6 millions km",
-        temp: "15 °C",
-        gradient: "radial-gradient(circle at 30% 30%, #60a5fa, #1d4ed8)"
-    },
-    "Mars": {
-        rank: "4e planète du Soleil",
-        desc: "Surnommée la planète rouge en raison de l'oxyde de fer présent à sa surface. Elle abrite le plus grand volcan du Système solaire, Olympus Mons.",
-        type: "Tellurique",
-        part: "Planète rouge",
-        dist: "227,9 millions km",
-        temp: "-65 °C",
-        gradient: "radial-gradient(circle at 30% 30%, #f87171, #991b1b)"
-    },
-    "Jupiter": {
-        rank: "5e planète du Soleil",
-        desc: "La plus grande planète du Système solaire, une immense géante gazeuse célèbre pour sa Grande Tache Rouge, une tempête géante.",
-        type: "Géante gazeuse",
-        part: "La plus grande",
-        dist: "778,5 millions km",
-        temp: "-110 °C",
-        gradient: "radial-gradient(circle at 30% 30%, #fdba74, #9a3412)"
-    },
-    "Saturne": {
-        rank: "6e planète du Soleil",
-        desc: "Célèbre pour son spectaculaire système d'anneaux composés principalement de particules de glace et de poussières rocheuses.",
-        type: "Géante gazeuse",
-        part: "Anneaux spectaculaires",
-        dist: "1,43 milliard km",
-        temp: "-140 °C",
-        gradient: "radial-gradient(circle at 30% 30%, #fef08a, #ca8a04)"
-    },
-    "Uranus": {
-        rank: "7e planète du Soleil",
-        desc: "Une géante de glace qui possède la particularité unique de tourner presque couchée sur son orbite avec un axe incliné à 98°.",
-        type: "Géante de glace",
-        part: "Rotation inclinée",
-        dist: "2,87 milliards km",
-        temp: "-195 °C",
-        gradient: "radial-gradient(circle at 30% 30%, #99f6e4, #0d9488)"
-    },
-    "Neptune": {
-        rank: "8e planète du Soleil",
-        desc: "La planète la plus éloignée du Soleil, balayée par les vents les plus violents du Système solaire pouvant atteindre 2 100 km/h.",
-        type: "Géante de glace",
-        part: "Vents supersoniques",
-        dist: "4,5 milliards km",
-        temp: "-200 °C",
-        gradient: "radial-gradient(circle at 30% 30%, #60a5fa, #1e3a8a)"
-    }
-};
-
-const buttonsContainer = document.getElementById("buttonsContainer");
-
-// إنشاء الأزرار أوتوماتيكيا
-Object.keys(planetsDatabase).forEach(planetName => {
-    const btn = document.createElement("button");
-    btn.className = "p-btn" + (planetName === "Terre" ? " active" : "");
-    btn.textContent = planetName;
-    btn.onclick = () => selectPlanet(planetName);
-    buttonsContainer.appendChild(btn);
-});
-
-// دالة تغيير المعلومات فاش كتختار كوكب
-function selectPlanet(name) {
-    const planet = planetsDatabase[name];
-    if (!planet) return;
-
-    // تحديث النصوص
-    document.getElementById("planetName").textContent = name;
-    document.getElementById("planetRank").textContent = planet.rank;
-    document.getElementById("planetDesc").textContent = planet.desc;
-    document.getElementById("planetType").textContent = planet.type;
-    document.getElementById("planetPart").textContent = planet.part;
-    document.getElementById("planetDist").textContent = planet.dist;
-    document.getElementById("planetTemp").textContent = planet.temp;
-
-    // تحديث لون الكوكب داخل البطاقة
-    const avatar = document.getElementById("cardAvatar");
-    avatar.style.background = planet.gradient;
-
-    // تحديث الزر النشط (Active)
-    document.querySelectorAll(".p-btn").forEach(btn => {
-        btn.classList.toggle("active", btn.textContent === name);
-    });
-
-    // حركة خفيفة للبطاقة باش تبان تفاعلية
-    const card = document.getElementById("planetCard");
-    card.style.transform = "scale(0.98)";
-    setTimeout(() => {
-        card.style.transform = "scale(1)";
-    }, 150);
-}
+                                                
