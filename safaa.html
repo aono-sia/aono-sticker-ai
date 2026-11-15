@@ -1,365 +1,522 @@
 <!DOCTYPE html>
-<html lang="fr" dir="ltr">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Safaa L Orbit - Orbital Mechanics & Space Physics | TCSF</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
-
-        :root {
-            --bg-space: #020617;
-            --emerald-neon: #10b981;
-            --cyan-glow: #06b6d4;
-        }
-
-        * { 
-            box-sizing: border-box; 
-            margin: 0; 
-            padding: 0; 
-            scrollbar-width: thin;
-            scrollbar-color: var(--emerald-neon) var(--bg-space);
-        }
-
-        body {
-            font-family: 'Plus Jakarta Sans', sans-serif;
-            background-color: var(--bg-space);
-            color: #f8fafc;
-            overflow-x: hidden;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .glass-panel-custom {
-            background: rgba(15, 23, 42, 0.85);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(16, 185, 129, 0.35);
-            border-radius: 1.75rem;
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
-        }
-
-        /* Full Screen Intro Overlay with Planets Alignment */
-        #intro-screen {
-            position: fixed; 
-            inset: 0; 
-            background: radial-gradient(circle at center, #090d1f 0%, #020617 100%); 
-            z-index: 9999;
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center;
-            transition: opacity 1s ease, visibility 1s ease;
-            padding: 24px;
-            text-align: center;
-        }
-
-        .intro-canvas-container {
-            position: relative;
-            width: 340px;
-            height: 340px;
-            margin-bottom: 15px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .star-box {
-            background: #fffdf5;
-            border-radius: 1.5rem;
-            padding: 22px 26px;
-            width: 100%;
-            max-width: 400px;
-            text-align: center;
-            box-shadow: 0 12px 30px rgba(16, 185, 129, 0.25);
-            border: 1.5px solid rgba(16, 185, 129, 0.45);
-        }
-    </style>
+    <title>Mission Spatiale - Système Solaire</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Intro Screen (حركة الكواكب والاصطفاف الأصلية) -->
-    <div id="intro-screen">
-        <div class="intro-canvas-container">
-            <canvas id="intro-canvas" width="340" height="340"></canvas>
-        </div>
+    <div class="stars-bg"></div>
 
-        <div class="space-y-1 z-10 mb-4">
-            <h1 class="text-3xl md:text-4xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-emerald-400 via-teal-300 to-cyan-400">
-                Safaa L Orbit
-            </h1>
-            <p class="text-xs text-yellow-300 font-mono tracking-wider">(Simulation du Système Solaire & Mouvement)</p>
-        </div>
-
-        <div class="star-box space-y-2 mb-6">
-            <h2 class="text-slate-900 font-extrabold text-lg tracking-tight">Orbital Mechanics & AI</h2>
-            <p class="text-emerald-600 font-bold text-sm">Made by Safaa 🪐✨</p>
-            <p class="text-slate-500 text-[11px] font-medium">Portail Interactif de Physique - TCSF Spacetime</p>
-        </div>
-
-        <button onclick="enterOrbit()" class="w-full max-w-xs py-3.5 bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-500 hover:scale-105 text-slate-950 font-extrabold rounded-full shadow-xl shadow-emerald-500/25 text-sm tracking-wide transition-all cursor-pointer">
-            Entrer dans l'Espace-Temps 🚀
-        </button>
-    </div>
-
-    <!-- Header SL Orbit -->
-    <header class="w-full max-w-5xl px-6 py-6 flex justify-between items-center z-10">
-        <div class="flex items-center space-x-3">
-            <div class="w-12 h-12 rounded-2xl bg-emerald-950/80 border border-emerald-500/40 flex items-center justify-center shadow-lg shadow-emerald-500/20">
-                <i class="fa-solid fa-planet-ringed text-emerald-400 text-2xl"></i>
-            </div>
-            <div>
-                <span class="font-extrabold text-2xl text-white">Safaa L Orbit</span>
-                <span class="text-[10px] block text-emerald-400 font-mono font-bold">Made by Safaa 🪐✨</span>
-            </div>
-        </div>
-        <div class="px-4 py-2 rounded-full text-xs font-bold bg-emerald-950/80 border border-emerald-500/30 text-emerald-300">
-            TCSF Physics Hub 🌌
-        </div>
+    <header>
+        <div class="badge">✨ MISSION SPATIALE ✨</div>
+        <h1>Système Solaire Interactif</h1>
+        <p>Réalisé par : <strong>Safaa Labsi</strong> • Tronc Commun Scientifique (2026-2027)</p>
     </header>
-        <!-- ================================================================= -->
-    <!-- SECTION PRINCIPALE & INTELLIGENCE ARTIFICIELLE INTERACTIVE         -->
-    <!-- ================================================================= -->
-    
-    <main class="w-full max-w-5xl px-6 py-4 flex-grow z-10 space-y-8">
-        <div class="text-center max-w-2xl mx-auto space-y-2">
-            <h2 class="text-3xl font-extrabold text-white">Laboratoire de Mécanique Céleste</h2>
-            <p class="text-slate-400 text-xs md:text-sm">Simulation des orbites elliptiques, mouvements et lois physiques pour le Tronc Commun Scientifique.</p>
-        </div>
 
-        <!-- Realtime Orbit Simulation Screen Container -->
-        <div class="w-full h-[400px] glass-panel-custom p-4 relative overflow-hidden flex items-center justify-center">
-            <canvas id="main-orbit-canvas" class="w-full h-full rounded-2xl"></canvas>
-            <div class="absolute top-6 left-6 text-xs font-mono text-emerald-300 bg-slate-950/80 p-3 rounded-xl border border-emerald-500/30 shadow-lg">
-                <p>🪐 Mouvement Elliptique v(t)</p>
-                <p class="text-slate-400 text-[10px] mt-1">Loi des Aires & Trajectoire Héliocentrique</p>
+    <!-- منطقة دوران الكواكب (Le Soleil + 8 Planètes) -->
+    <section class="solar-system-wrapper">
+        <div class="controls-hint">Appuie sur une planète pour découvrir ses informations</div>
+        
+        <div class="solar-system">
+            <div class="sun" title="Le Soleil"></div>
+
+            <!-- 1. Mercure -->
+            <div class="orbit orbit-1">
+                <div class="planet p-mercure" onclick="selectPlanet('Mercure')"></div>
             </div>
-        </div>
-
-        <!-- Physics Lessons Grid Sections -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            
-            <div class="glass-panel-custom p-6 space-y-3">
-                <h3 class="font-bold text-emerald-300 text-base flex items-center gap-2">
-                    <i class="fa-solid fa-atom text-xs"></i> 1. La Gravitation Universelle
-                </h3>
-                <p class="text-slate-300 text-xs leading-relaxed">Attraction mutuelle des corps célestes selon la loi de Newton inversement proportionnelle au carré de la distance.</p>
-                <div class="p-2.5 rounded-xl bg-slate-950/80 text-[11px] font-mono text-emerald-400 border border-emerald-500/20">
-                    F = G · (m₁ · m₂) / d²
+            <!-- 2. Vénus -->
+            <div class="orbit orbit-2">
+                <div class="planet p-venus" onclick="selectPlanet('Vénus')"></div>
+            </div>
+            <!-- 3. Terre -->
+            <div class="orbit orbit-3">
+                <div class="planet p-terre" onclick="selectPlanet('Terre')"></div>
+            </div>
+            <!-- 4. Mars -->
+            <div class="orbit orbit-4">
+                <div class="planet p-mars" onclick="selectPlanet('Mars')"></div>
+            </div>
+            <!-- 5. Jupiter -->
+            <div class="orbit orbit-5">
+                <div class="planet p-jupiter" onclick="selectPlanet('Jupiter')"></div>
+            </div>
+            <!-- 6. Saturne (مع الحلقات ديالو) -->
+            <div class="orbit orbit-6">
+                <div class="planet p-saturne" onclick="selectPlanet('Saturne')">
+                    <div class="saturn-ring"></div>
                 </div>
             </div>
-
-            <div class="glass-panel-custom p-6 space-y-3">
-                <h3 class="font-bold text-emerald-300 text-base flex items-center gap-2">
-                    <i class="fa-solid fa-gauge-high text-xs"></i> 2. Le Mouvement & Vitesse
-                </h3>
-                <p class="text-slate-300 text-xs leading-relaxed">Étude du vecteur vitesse instantanée v(t) et de la nature du mouvement dans le référentiel héliocentrique.</p>
-                <div class="p-2.5 rounded-xl bg-slate-950/80 text-[11px] font-mono text-emerald-400 border border-emerald-500/20">
-                    v = dL / dt | a_n = v² / r
-                </div>
+            <!-- 7. Uranus -->
+            <div class="orbit orbit-7">
+                <div class="planet p-uranus" onclick="selectPlanet('Uranus')"></div>
             </div>
-
-        </div>
-    </main>
-
-    <!-- Interactive AI Chat Assistant (Connected & Functional) -->
-    <div class="fixed bottom-6 right-6 z-50">
-        <button onclick="toggleSafaaAI()" class="w-14 h-14 rounded-full bg-gradient-to-r from-emerald-400 via-teal-400 to-cyan-500 text-slate-950 flex items-center justify-center shadow-2xl hover:scale-110 transition-all cursor-pointer font-bold border border-emerald-300/50">
-            <i class="fa-solid fa-robot text-2xl text-slate-950"></i>
-        </button>
-
-        <!-- Chat Box Modal (Hidden by default, interactive query interface) -->
-        <div id="safaa-ai-modal" class="hidden absolute bottom-16 right-0 w-80 sm:w-96 glass-panel-custom p-4 space-y-3 shadow-2xl border border-emerald-500/50 bg-slate-950/95 rounded-2xl">
-            <div class="flex justify-between items-center border-b border-emerald-900 pb-2">
-                <span class="text-xs font-bold text-emerald-400">Safaa Orbit AI Assistant 🪐</span>
-                <button onclick="toggleSafaaAI()" class="text-slate-400 hover:text-white cursor-pointer"><i class="fa-solid fa-xmark"></i></button>
-            </div>
-
-            <!-- Chat Message History Container -->
-            <div id="chat-messages" class="h-48 overflow-y-auto space-y-2 text-xs text-slate-300 p-2 bg-slate-900/60 rounded-xl border border-emerald-500/20">
-                <div class="bg-emerald-950/60 p-2.5 rounded-lg border border-emerald-500/30">
-                    Bonjour Safaa ! Je suis ton assistant IA connecté. Pose-moi une question sur la gravitation ou le mouvement TCSF ! 🚀
-                </div>
-            </div>
-
-            <!-- Chat Input & Send Form -->
-            <div class="flex gap-2">
-                <input type="text" id="user-query" placeholder="Pose ta question physique..." class="flex-grow bg-slate-900 border border-emerald-500/30 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-emerald-400" onkeypress="handleKeyPress(event)">
-                <button onclick="sendAIQuery()" class="px-4 py-2 bg-gradient-to-r from-emerald-400 to-teal-500 text-slate-950 font-bold rounded-xl text-xs hover:scale-105 transition-all cursor-pointer">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
+            <!-- 8. Neptune -->
+            <div class="orbit orbit-8">
+                <div class="planet p-neptune" onclick="selectPlanet('Neptune')"></div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- Footer Section -->
-    <footer class="w-full text-center py-6 text-xs text-slate-500 border-t border-slate-900 z-10 space-y-1">
-        <p>© 2026 Safaa L Orbit — Tous droits réservés</p>
-        <p class="text-emerald-400 font-mono text-[11px] font-bold">Made by Safaa 🪐✨</p>
+    <!-- البطاقة العلمية (Fiche Scientifique) -->
+    <section class="card" id="planetCard">
+        <div class="card-header">
+            <div class="planet-avatar" id="cardAvatar"></div>
+            <div>
+                <span class="fiche-label">FICHE SCIENTIFIQUE</span>
+                <h2 id="planetName">Terre</h2>
+                <span class="planet-rank" id="planetRank">3e planète du Soleil</span>
+            </div>
+        </div>
+
+        <p class="planet-desc" id="planetDesc">
+            Notre planète d'origine, la seule connue dans l'univers à abriter la vie grâce à ses océans d'eau liquide et son atmosphère protectrice.
+        </p>
+
+        <div class="specs-grid">
+            <div class="spec-item">
+                <span>TYPE</span>
+                <strong id="planetType">Tellurique</strong>
+            </div>
+            <div class="spec-item">
+                <span>PARTICULARITÉ</span>
+                <strong id="planetPart">Présence d'eau liquide</strong>
+            </div>
+            <div class="spec-item">
+                <span>DISTANCE DU SOLEIL</span>
+                <strong id="planetDist">149,6 millions km</strong>
+            </div>
+            <div class="spec-item">
+                <span>TEMPÉRATURE MOYENNE</span>
+                <strong id="planetTemp">15 °C</strong>
+            </div>
+        </div>
+    </section>
+
+    <!-- أزرار الاختيار السريع -->
+    <section class="selector-section">
+        <div class="selector-title">CHOISIR UNE PLANÈTE</div>
+        <div class="planets-buttons" id="buttonsContainer"></div>
+    </section>
+
+    <footer>
+        RÉALISÉ PAR SAFAA LABSI • 2026-2027
     </footer>
 
-    <!-- JavaScript Controllers -->
-    <script>
-        // Intro Animation Engine (Planets Alignment & Convergence)
-        const introCanvas = document.getElementById('intro-canvas');
-        const ctxI = introCanvas ? introCanvas.getContext('2d') : null;
-        const cx = 170, cy = 170;
-        let phase = 1, progress = 0, orbitAngle = 0;
-
-        const planets = [
-            { r: 12, color: '#f59e0b', initialY: -120 }, // Sun
-            { r: 4,  color: '#b45309', initialY: -90 },  // Mercury
-            { r: 6,  color: '#ea580c', initialY: -60 },  // Venus
-            { r: 8,  color: '#38bdf8', initialY: 0 },    // Earth
-            { r: 5,  color: '#dc2626', initialY: 50 },   // Mars
-            { r: 10, color: '#d97706', initialY: 90 }    // Jupiter
-        ];
-
-        function animateIntro() {
-            if (!introCanvas || !ctxI) return;
-            ctxI.clearRect(0, 0, 340, 340);
-
-            if (phase === 1) {
-                progress += 0.02;
-                planets.forEach(p => {
-                    let currentY = cy + p.initialY * (1 - Math.min(progress, 1));
-                    ctxI.fillStyle = p.color;
-                    ctxI.beginPath();
-                    ctxI.arc(cx, currentY, p.r, 0, Math.PI * 2);
-                    ctxI.fill();
-                });
-                if (progress >= 1) { phase = 2; progress = 0; }
-            } else if (phase === 2) {
-                progress += 0.05;
-                ctxI.strokeStyle = `rgba(16, 185, 129, ${1 - progress})`;
-                ctxI.lineWidth = 3;
-                ctxI.beginPath();
-                ctxI.arc(cx, cy, progress * 110, 0, Math.PI * 2);
-                ctxI.stroke();
-
-                ctxI.fillStyle = '#38bdf8';
-                ctxI.beginPath();
-                ctxI.arc(cx, cy, 12, 0, Math.PI * 2);
-                ctxI.fill();
-                if (progress >= 1) { phase = 3; }
-            } else if (phase === 3) {
-                orbitAngle += 0.025;
-                ctxI.fillStyle = '#f59e0b';
-                ctxI.beginPath();
-                ctxI.arc(cx, cy, 15, 0, Math.PI * 2);
-                ctxI.fill();
-
-                const orbitR = [45, 75, 110, 140];
-                const colors = ['#b45309', '#ea580c', '#38bdf8', '#dc2626'];
-
-                orbitR.forEach((dist, idx) => {
-                    ctxI.strokeStyle = 'rgba(255, 255, 255, 0.06)';
-                    ctxI.beginPath();
-                    ctxI.arc(cx, cy, dist, 0, Math.PI * 2);
-                    ctxI.stroke();
-
-                    let speed = orbitAngle * (1.2 / (idx + 1));
-                    let px = cx + Math.cos(speed) * dist;
-                    let py = cy + Math.sin(speed) * dist;
-
-                    ctxI.fillStyle = colors[idx];
-                    ctxI.beginPath();
-                    ctxI.arc(px, py, 4 + idx, 0, Math.PI * 2);
-                    ctxI.fill();
-                });
-            }
-            requestAnimationFrame(animateIntro);
-        }
-        if (introCanvas) animateIntro();
-
-        function enterOrbit() {
-            const intro = document.getElementById('intro-screen');
-            if (intro) {
-                intro.style.opacity = '0';
-                setTimeout(() => { intro.style.display = 'none'; }, 1000);
-            }
-            initMainCanvas();
-        }
-
-        function toggleSafaaAI() {
-            const modal = document.getElementById('safaa-ai-modal');
-            if (modal) modal.classList.toggle('hidden');
-        }
-
-        // Functional AI Query System Connected to Physics Engine
-        function handleKeyPress(event) {
-            if (event.key === 'Enter') sendAIQuery();
-        }
-
-        function sendAIQuery() {
-            const input = document.getElementById('user-query');
-            const chatContainer = document.getElementById('chat-messages');
-            if (!input || !input.value.trim()) return;
-
-            let userText = input.value.trim();
-            
-            // Append User Question
-            chatContainer.innerHTML += `<div class="bg-slate-800 p-2.5 rounded-lg text-right text-cyan-300 font-medium">${userText}</div>`;
-            input.value = '';
-            chatContainer.scrollTop = chatContainer.scrollHeight;
-
-            // Generate Smart Physics Response
-            setTimeout(() => {
-                let aiReply = "Excellente question Safaa ! En mécanique du TCSF, la force de gravitation universelle $F = G \\cdot \\frac{m_1 m_2}{d^2}$ régit tous les mouvements des planètes autour du Soleil.";
-                if (userText.toLowerCase().includes('vitesse') || userText.toLowerCase().includes('mouvement')) {
-                    aiReply = "Le vecteur vitesse instantanée $v(t)$ indique la direction du mouvement à chaque instant le long de la trajectoire elliptique.";
-                } else if (userText.toLowerCase().includes('assia')) {
-                    aiReply = "Ce système est propulsé par les technologies d'intelligence artificielle d'Assia N, conçu spécialement pour Safaa ! 💙";
-                }
-
-                chatContainer.innerHTML += `<div class="bg-emerald-950/70 p-2.5 rounded-lg border border-emerald-500/30 text-emerald-200">${aiReply}</div>`;
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }, 600);
-        }
-
-        function initMainCanvas() {
-            const mc = document.getElementById('main-orbit-canvas');
-            if (!mc) return;
-            const mctx = mc.getContext('2d');
-            mc.width = mc.parentElement.clientWidth;
-            mc.height = mc.parentElement.clientHeight;
-            let a = 0;
-
-            function drawMainOrbit() {
-                mctx.clearRect(0, 0, mc.width, mc.height);
-                let centerX = mc.width / 2;
-                let centerY = mc.height / 2;
-
-                mctx.strokeStyle = 'rgba(16, 185, 129, 0.4)';
-                mctx.lineWidth = 2;
-                mctx.beginPath();
-                mctx.ellipse(centerX, centerY, 190, 115, 0, 0, Math.PI * 2);
-                mctx.stroke();
-
-                mctx.fillStyle = '#10b981';
-                mctx.beginPath();
-                mctx.arc(centerX - 45, centerY, 20, 0, Math.PI * 2);
-                mctx.fill();
-
-                a += 0.02;
-                let px = centerX + Math.cos(a) * 190;
-                let py = centerY + Math.sin(a) * 115;
-
-                mctx.fillStyle = '#38bdf8';
-                mctx.beginPath();
-                mctx.arc(px, py, 9, 0, Math.PI * 2);
-                mctx.fill();
-
-                requestAnimationFrame(drawMainOrbit);
-            }
-            drawMainOrbit();
-        }
-    </script>
+    <script src="script.js"></script>
 </body>
-            </html>
-    
+    </html>
+    * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+body {
+    background: radial-gradient(ellipse at bottom, #111936 0%, #05070e 100%);
+    color: #f8fafc;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px 15px 40px;
+    overflow-x: hidden;
+}
+
+/* خلفية نجوم خفيفة */
+.stars-bg {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background-image: 
+        radial-gradient(1px 1px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(1.5px 1.5px at 90px 140px, #93c5fd, rgba(0,0,0,0)),
+        radial-gradient(1px 1px at 200px 80px, #ffffff, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 310px 220px, #fde047, rgba(0,0,0,0));
+    background-size: 350px 350px;
+    opacity: 0.4;
+    z-index: -1;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.badge {
+    display: inline-block;
+    font-size: 0.7rem;
+    letter-spacing: 2px;
+    color: #38bdf8;
+    background: rgba(56, 189, 248, 0.1);
+    border: 1px solid rgba(56, 189, 248, 0.3);
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 8px;
+}
+
+header h1 {
+    font-size: 1.4rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
+
+header p {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    margin-top: 4px;
+}
+
+/* منطقة النظام الشمسي */
+.solar-system-wrapper {
+    width: 100%;
+    max-width: 420px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 0 20px;
+}
+
+.controls-hint {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    margin-bottom: 10px;
+    background: rgba(255, 255, 255, 0.04);
+    padding: 5px 12px;
+    border-radius: 12px;
+}
+
+.solar-system {
+    position: relative;
+    width: 340px;
+    height: 340px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sun {
+    width: 36px;
+    height: 36px;
+    background: radial-gradient(circle, #fef08a 10%, #f59e0b 60%, #ea580c 100%);
+    border-radius: 50%;
+    box-shadow: 0 0 30px #f59e0b, 0 0 60px rgba(234, 88, 12, 0.5);
+    z-index: 10;
+}
+
+.orbit {
+    position: absolute;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+    animation: rotateOrbit linear infinite;
+}
+
+/* توقيف الدوران فاش تحط الصبع أو الفأرة باش يسهل الكليك */
+.solar-system:hover .orbit {
+    animation-play-state: paused;
+}
+
+.planet {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    cursor: pointer;
+    box-shadow: 0 0 8px rgba(255, 255, 255, 0.4);
+    transition: transform 0.25s ease;
+}
+
+.planet:hover {
+    transform: translate(-50%, -50%) scale(1.6);
+    z-index: 20;
+}
+
+/* قياسات وسرعة كل مدار من 1 حتى لـ 8 */
+.orbit-1 { width: 64px; height: 64px; animation-duration: 5s; }
+.p-mercure { width: 7px; height: 7px; background: #cbd5e1; }
+
+.orbit-2 { width: 96px; height: 96px; animation-duration: 8s; }
+.p-venus { width: 10px; height: 10px; background: #fcd34d; }
+
+.orbit-3 { width: 132px; height: 132px; animation-duration: 12s; }
+.p-terre { width: 11px; height: 11px; background: radial-gradient(circle at 30% 30%, #60a5fa, #1d4ed8); }
+
+.orbit-4 { width: 168px; height: 168px; animation-duration: 16s; }
+.p-mars { width: 9px; height: 9px; background: #ef4444; }
+
+.orbit-5 { width: 212px; height: 212px; animation-duration: 24s; }
+.p-jupiter { width: 18px; height: 18px; background: linear-gradient(135deg, #fdba74, #c2410c); }
+
+.orbit-6 { width: 256px; height: 256px; animation-duration: 32s; }
+.p-saturne { width: 15px; height: 15px; background: #fde047; position: relative; }
+.saturn-ring {
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 26px; height: 8px;
+    border: 2px solid rgba(253, 224, 71, 0.7);
+    border-radius: 50%;
+    transform: translate(-50%, -50%) rotate(-20deg);
+}
+
+.orbit-7 { width: 296px; height: 296px; animation-duration: 42s; }
+.p-uranus { width: 12px; height: 12px; background: #5eead4; }
+
+.orbit-8 { width: 334px; height: 334px; animation-duration: 52s; }
+.p-neptune { width: 12px; height: 12px; background: #3b82f6; }
+
+@keyframes rotateOrbit {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* البطاقة العلمية */
+.card {
+    background: rgba(15, 23, 42, 0.8);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 18px;
+    padding: 20px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    margin-bottom: 20px;
+    transition: transform 0.2s ease;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 12px;
+}
+
+.planet-avatar {
+    width: 46px;
+    height: 46px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, #60a5fa, #1d4ed8);
+    box-shadow: 0 0 15px rgba(96, 165, 250, 0.5);
+    flex-shrink: 0;
+}
+
+.fiche-label {
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    color: #38bdf8;
+    font-weight: 700;
+    display: block;
+}
+
+.card-header h2 {
+    font-size: 1.4rem;
+    line-height: 1.2;
+}
+
+.planet-rank {
+    font-size: 0.78rem;
+    color: #94a3b8;
+}
+
+.planet-desc {
+    font-size: 0.85rem;
+    color: #cbd5e1;
+    line-height: 1.5;
+    margin-bottom: 16px;
+}
+
+.specs-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.spec-item {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 10px 12px;
+    border-radius: 12px;
+}
+
+.spec-item span {
+    display: block;
+    font-size: 0.62rem;
+    color: #94a3b8;
+    letter-spacing: 0.8px;
+    margin-bottom: 4px;
+}
+
+.spec-item strong {
+    font-size: 0.85rem;
+    color: #f1f5f9;
+}
+
+/* أزرار الاختيار */
+.selector-section {
+    width: 100%;
+    max-width: 400px;
+    margin-bottom: 25px;
+}
+
+.selector-title {
+    font-size: 0.72rem;
+    letter-spacing: 1.2px;
+    color: #94a3b8;
+    margin-bottom: 10px;
+}
+
+.planets-buttons {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+}
+
+.p-btn {
+    background: rgba(30, 41, 59, 0.7);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+    padding: 10px 4px;
+    border-radius: 10px;
+    font-size: 0.78rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.p-btn:hover {
+    background: rgba(56, 189, 248, 0.2);
+    border-color: #38bdf8;
+}
+
+.p-btn.active {
+    background: linear-gradient(135deg, #2563eb, #38bdf8);
+    color: #ffffff;
+    border-color: #7dd3fc;
+    font-weight: 700;
+    box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
+}
+
+footer {
+    font-size: 0.7rem;
+    color: #64748b;
+    letter-spacing: 1.5px;
+    text-align: center;
+}
+const planetsDatabase = {
+    "Mercure": {
+        rank: "1re planète du Soleil",
+        desc: "La planète la plus proche du Soleil et la plus petite du Système solaire. Sa surface est couverte de cratères similaires à ceux de la Lune.",
+        type: "Tellurique",
+        part: "Écarts thermiques extrêmes",
+        dist: "57,9 millions km",
+        temp: "167 °C",
+        gradient: "radial-gradient(circle at 30% 30%, #e2e8f0, #64748b)"
+    },
+    "Vénus": {
+        rank: "2e planète du Soleil",
+        desc: "La planète la plus chaude du Système solaire à cause d'un effet de serre massif provoqué par son atmosphère dense de dioxyde de carbone.",
+        type: "Tellurique",
+        part: "La plus chaude",
+        dist: "108,2 millions km",
+        temp: "464 °C",
+        gradient: "radial-gradient(circle at 30% 30%, #fef08a, #d97706)"
+    },
+    "Terre": {
+        rank: "3e planète du Soleil",
+        desc: "Notre planète d'origine, la seule connue dans l'univers à abriter la vie grâce à ses océans d'eau liquide et son atmosphère protectrice.",
+        type: "Tellurique",
+        part: "Abrite la vie",
+        dist: "149,6 millions km",
+        temp: "15 °C",
+        gradient: "radial-gradient(circle at 30% 30%, #60a5fa, #1d4ed8)"
+    },
+    "Mars": {
+        rank: "4e planète du Soleil",
+        desc: "Surnommée la planète rouge en raison de l'oxyde de fer présent à sa surface. Elle abrite le plus grand volcan du Système solaire, Olympus Mons.",
+        type: "Tellurique",
+        part: "Planète rouge",
+        dist: "227,9 millions km",
+        temp: "-65 °C",
+        gradient: "radial-gradient(circle at 30% 30%, #f87171, #991b1b)"
+    },
+    "Jupiter": {
+        rank: "5e planète du Soleil",
+        desc: "La plus grande planète du Système solaire, une immense géante gazeuse célèbre pour sa Grande Tache Rouge, une tempête géante.",
+        type: "Géante gazeuse",
+        part: "La plus grande",
+        dist: "778,5 millions km",
+        temp: "-110 °C",
+        gradient: "radial-gradient(circle at 30% 30%, #fdba74, #9a3412)"
+    },
+    "Saturne": {
+        rank: "6e planète du Soleil",
+        desc: "Célèbre pour son spectaculaire système d'anneaux composés principalement de particules de glace et de poussières rocheuses.",
+        type: "Géante gazeuse",
+        part: "Anneaux spectaculaires",
+        dist: "1,43 milliard km",
+        temp: "-140 °C",
+        gradient: "radial-gradient(circle at 30% 30%, #fef08a, #ca8a04)"
+    },
+    "Uranus": {
+        rank: "7e planète du Soleil",
+        desc: "Une géante de glace qui possède la particularité unique de tourner presque couchée sur son orbite avec un axe incliné à 98°.",
+        type: "Géante de glace",
+        part: "Rotation inclinée",
+        dist: "2,87 milliards km",
+        temp: "-195 °C",
+        gradient: "radial-gradient(circle at 30% 30%, #99f6e4, #0d9488)"
+    },
+    "Neptune": {
+        rank: "8e planète du Soleil",
+        desc: "La planète la plus éloignée du Soleil, balayée par les vents les plus violents du Système solaire pouvant atteindre 2 100 km/h.",
+        type: "Géante de glace",
+        part: "Vents supersoniques",
+        dist: "4,5 milliards km",
+        temp: "-200 °C",
+        gradient: "radial-gradient(circle at 30% 30%, #60a5fa, #1e3a8a)"
+    }
+};
+
+const buttonsContainer = document.getElementById("buttonsContainer");
+
+// إنشاء الأزرار أوتوماتيكيا
+Object.keys(planetsDatabase).forEach(planetName => {
+    const btn = document.createElement("button");
+    btn.className = "p-btn" + (planetName === "Terre" ? " active" : "");
+    btn.textContent = planetName;
+    btn.onclick = () => selectPlanet(planetName);
+    buttonsContainer.appendChild(btn);
+});
+
+// دالة تغيير المعلومات فاش كتختار كوكب
+function selectPlanet(name) {
+    const planet = planetsDatabase[name];
+    if (!planet) return;
+
+    // تحديث النصوص
+    document.getElementById("planetName").textContent = name;
+    document.getElementById("planetRank").textContent = planet.rank;
+    document.getElementById("planetDesc").textContent = planet.desc;
+    document.getElementById("planetType").textContent = planet.type;
+    document.getElementById("planetPart").textContent = planet.part;
+    document.getElementById("planetDist").textContent = planet.dist;
+    document.getElementById("planetTemp").textContent = planet.temp;
+
+    // تحديث لون الكوكب داخل البطاقة
+    const avatar = document.getElementById("cardAvatar");
+    avatar.style.background = planet.gradient;
+
+    // تحديث الزر النشط (Active)
+    document.querySelectorAll(".p-btn").forEach(btn => {
+        btn.classList.toggle("active", btn.textContent === name);
+    });
+
+    // حركة خفيفة للبطاقة باش تبان تفاعلية
+    const card = document.getElementById("planetCard");
+    card.style.transform = "scale(0.98)";
+    setTimeout(() => {
+        card.style.transform = "scale(1)";
+    }, 150);
+}
