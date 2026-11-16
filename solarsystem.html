@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ROTATE X • Ultimate 360° AR Hologram Universe & Encyclopedia</title>
+    <title>ROTATE X • Ultimate Sci-Fi Hologram Solar System & Encyclopedia</title>
     <!-- استدعاء محرك الواقع المعزز الرسمي من جوجل -->
     <script type="module" src="https://unpkg.com/@model-viewer/public@v3.4.0/dist/model-viewer.min.js"></script>
     <style>
@@ -17,7 +17,7 @@
         }
 
         body {
-            background-color: #000000;
+            background-color: #000208;
             color: #ffffff;
             width: 100vw;
             height: 100vh;
@@ -25,16 +25,35 @@
             position: relative;
         }
 
-        /* الخلفية الفضائية الأساسية */
-        .space-bg {
+        /* خلفية الفضاء السيبراني وشبكة الأرضية المتحركة */
+        .cyber-bg {
             position: fixed;
             inset: 0;
-            background: radial-gradient(circle at 50% 50%, #061127 0%, #02040a 60%, #000000 100%);
-            z-index: 2;
-            transition: opacity 0.4s ease;
+            background: radial-gradient(circle at 50% 45%, #03122c 0%, #010612 55%, #000000 100%);
+            z-index: 1;
         }
 
-        .stars-layer-1, .stars-layer-2, .stars-layer-3 {
+        .cyber-grid {
+            position: fixed;
+            inset: -50%;
+            width: 200%;
+            height: 200%;
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+            background-size: 45px 45px;
+            z-index: 2;
+            transform: perspective(600px) rotateX(65deg);
+            animation: gridMove 20s linear infinite;
+            pointer-events: none;
+        }
+
+        @keyframes gridMove {
+            0% { transform: perspective(600px) rotateX(65deg) translateY(0); }
+            100% { transform: perspective(600px) rotateX(65deg) translateY(45px); }
+        }
+
+        .stars-layer-1, .stars-layer-2 {
             position: fixed;
             inset: -50%;
             width: 200%;
@@ -47,35 +66,26 @@
             background-image: 
                 radial-gradient(1px 1px at 30px 50px, #ffffff, transparent),
                 radial-gradient(1.5px 1.5px at 160px 200px, #38bdf8, transparent),
-                radial-gradient(1px 1px at 290px 120px, #fde047, transparent),
-                radial-gradient(2px 2px at 370px 280px, #ffffff, transparent);
+                radial-gradient(1px 1px at 290px 120px, #fde047, transparent);
             background-size: 320px 320px;
+            opacity: 0.7;
         }
 
         .stars-layer-2 {
             background-image: 
                 radial-gradient(1.2px 1.2px at 100px 150px, #ffffff, transparent),
-                radial-gradient(1.8px 1.8px at 250px 70px, #a855f7, transparent),
-                radial-gradient(1px 1px at 50px 320px, #38bdf8, transparent);
+                radial-gradient(1.8px 1.8px at 250px 70px, #38bdf8, transparent);
             background-size: 450px 450px;
-            opacity: 0.6;
+            opacity: 0.5;
         }
 
-        .stars-layer-3 {
-            background-image: 
-                radial-gradient(0.8px 0.8px at 80px 200px, #38bdf8, transparent),
-                radial-gradient(1.5px 1.5px at 300px 100px, #ffffff, transparent);
-            background-size: 600px 600px;
-            opacity: 0.4;
-        }
-
-        /* لوحة التحكم العلوية والجانبية */
+        /* لوحة التحكم العلوية الشاملة (HUD) */
         .hud-top-bar {
             position: fixed;
             top: 15px;
             left: 15px;
             right: 15px;
-            z-index: 50;
+            z-index: 60;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -83,22 +93,22 @@
         }
 
         .hud-brand {
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 900;
-            letter-spacing: 3px;
+            letter-spacing: 2.5px;
             color: #38bdf8;
             text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
-            background: rgba(15, 23, 42, 0.75);
+            background: rgba(15, 23, 42, 0.8);
             padding: 8px 14px;
             border-radius: 20px;
-            border: 1px solid rgba(56, 189, 248, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.4);
             backdrop-filter: blur(10px);
             pointer-events: auto;
         }
 
         .hud-controls-group {
             display: flex;
-            gap: 8px;
+            gap: 6px;
             pointer-events: auto;
         }
 
@@ -106,15 +116,15 @@
             background: rgba(15, 23, 42, 0.85);
             border: 1px solid rgba(56, 189, 248, 0.5);
             color: #38bdf8;
-            padding: 8px 14px;
+            padding: 7px 12px;
             border-radius: 20px;
-            font-size: 0.72rem;
+            font-size: 0.68rem;
             font-weight: 800;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
             backdrop-filter: blur(10px);
             cursor: pointer;
             box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
-            transition: all 0.3s ease;
+            transition: all 0.3s;
         }
 
         .hud-btn:hover, .hud-btn.active {
@@ -123,16 +133,60 @@
             box-shadow: 0 0 25px #38bdf8;
         }
 
+        /* نافذة البحث المتطور */
+        #searchModal {
+            position: fixed;
+            top: 70px;
+            right: 15px;
+            width: 270px;
+            background: rgba(13, 23, 45, 0.96);
+            border: 1px solid rgba(56, 189, 248, 0.5);
+            border-radius: 12px;
+            padding: 12px;
+            z-index: 70;
+            backdrop-filter: blur(14px);
+            display: none;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.9);
+        }
+        #searchModal.active { display: block; }
+        .search-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: white;
+            font-size: 0.78rem;
+            outline: none;
+            margin-bottom: 8px;
+        }
+        .search-results {
+            max-height: 150px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .search-item {
+            padding: 6px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            font-size: 0.72rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .search-item:hover { background: rgba(56, 189, 248, 0.25); color: #38bdf8; }
+
         /* شريط التحكم في السرعة سفلي */
         .speed-hud-panel {
             position: fixed;
             bottom: 20px;
             left: 50%;
             transform: translateX(-50%);
-            z-index: 50;
+            z-index: 60;
             background: rgba(15, 23, 42, 0.85);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            padding: 10px 20px;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            padding: 8px 18px;
             border-radius: 30px;
             display: flex;
             align-items: center;
@@ -142,15 +196,15 @@
         }
 
         .speed-label {
-            font-size: 0.68rem;
-            letter-spacing: 2px;
+            font-size: 0.65rem;
+            letter-spacing: 1.5px;
             color: #94a3b8;
             font-weight: 700;
         }
 
         .speed-slider {
             -webkit-appearance: none;
-            width: 130px;
+            width: 120px;
             height: 4px;
             background: #1e293b;
             border-radius: 2px;
@@ -183,7 +237,7 @@
             position: fixed;
             inset: 0;
             z-index: 100;
-            background: radial-gradient(circle at center, rgba(4, 14, 34, 0.95) 0%, rgba(0, 0, 0, 0.99) 100%);
+            background: radial-gradient(circle at center, rgba(3, 15, 38, 0.96) 0%, rgba(0, 0, 0, 0.99) 100%);
             backdrop-filter: blur(16px);
             display: flex;
             flex-direction: column;
@@ -201,7 +255,7 @@
             pointer-events: none;
         }
 
-        .welcome-badge-top {
+        .welcome-badge {
             font-size: 0.75rem;
             letter-spacing: 6px;
             color: #38bdf8;
@@ -211,41 +265,40 @@
         }
 
         .welcome-title {
-            font-size: 2.6rem;
+            font-size: 2.5rem;
             font-weight: 900;
-            letter-spacing: 5px;
+            letter-spacing: 4px;
             color: #ffffff;
             text-shadow: 0 0 30px rgba(56, 189, 248, 0.8), 0 0 60px rgba(2, 132, 199, 0.6);
-            margin-bottom: 8px;
-            line-height: 1.1;
+            margin-bottom: 10px;
         }
 
         .welcome-desc {
-            font-size: 0.82rem;
+            font-size: 0.8rem;
             color: #94a3b8;
             letter-spacing: 2px;
             margin-bottom: 35px;
         }
 
         .tap-hint {
-            font-size: 0.75rem;
+            font-size: 0.72rem;
             letter-spacing: 3px;
             color: #ffffff;
-            border: 1px solid rgba(56, 189, 248, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.6);
             padding: 12px 28px;
             border-radius: 35px;
-            background: linear-gradient(135deg, rgba(2, 132, 199, 0.2), rgba(56, 189, 248, 0.3));
-            box-shadow: 0 0 25px rgba(56, 189, 248, 0.3);
+            background: linear-gradient(135deg, rgba(2, 132, 199, 0.25), rgba(56, 189, 248, 0.35));
+            box-shadow: 0 0 25px rgba(56, 189, 248, 0.4);
             animation: pulseHint 2s infinite alternate;
         }
 
         @keyframes pulseHint {
-            0% { transform: scale(0.97); box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
-            100% { transform: scale(1.04); box-shadow: 0 0 30px rgba(56, 189, 248, 0.7); }
+            0% { transform: scale(0.96); box-shadow: 0 0 15px rgba(56, 189, 248, 0.3); }
+            100% { transform: scale(1.04); box-shadow: 0 0 35px rgba(56, 189, 248, 0.8); }
         }
 
-        /* مسرح الفضاء 360 درجة */
-        #universeViewport {
+        /* مسرح الهولوغرام السيبراني والنظام الشمسي الأزرق */
+        #hologramViewport {
             position: fixed;
             inset: 0;
             z-index: 10;
@@ -256,6 +309,36 @@
             touch-action: none;
         }
 
+        .projector-base {
+            position: absolute;
+            bottom: 50px;
+            width: 220px;
+            height: 45px;
+            background: radial-gradient(ellipse at center, #38bdf8 0%, #0284c7 50%, transparent 80%);
+            border-radius: 50%;
+            box-shadow: 0 0 50px #38bdf8, 0 0 100px rgba(56, 189, 248, 0.8);
+            z-index: 12;
+            animation: basePulse 2s infinite alternate;
+        }
+
+        @keyframes basePulse {
+            0% { transform: scale(0.95); opacity: 0.8; }
+            100% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 70px #38bdf8, 0 0 120px #0284c7; }
+        }
+
+        .hologram-laser-beam {
+            position: absolute;
+            bottom: 60px;
+            width: 340px;
+            height: 280px;
+            background: linear-gradient(to top, rgba(56, 189, 248, 0.55) 0%, rgba(56, 189, 248, 0.04) 85%, transparent 100%);
+            clip-path: polygon(25% 100%, 75% 100%, 95% 0%, 5% 0%);
+            z-index: 11;
+            pointer-events: none;
+            filter: drop-shadow(0 0 25px #38bdf8);
+        }
+
+        /* النظام الشمسي 3D بمجسمات هولوغرام زرقاء متوهجة */
         .solar-system-3d {
             position: relative;
             width: 380px;
@@ -268,49 +351,46 @@
             transition: transform 0.05s linear;
         }
 
-        .sun-sphere {
+        .sun-sphere, .planet-sphere {
             position: absolute;
-            width: 68px;
-            height: 68px;
             border-radius: 50%;
-            background: radial-gradient(circle at 35% 35%, #fffef0 0%, #fef08a 22%, #f97316 58%, #c2410c 85%, #7c2d12 100%);
-            box-shadow: 0 0 65px #f59e0b, 0 0 130px #ea580c, inset -14px -14px 28px rgba(0,0,0,0.85);
-            z-index: 20;
             cursor: pointer;
             transform-style: preserve-3d;
-            transform: rotateZ(var(--inv-z, 0deg)) rotateX(var(--inv-x, -55deg));
-            transition: transform 0.2s;
+            background: radial-gradient(circle at 30% 30%, #93c5fd 0%, #0284c7 55%, #0369a1 100%) !important;
+            box-shadow: inset -6px -6px 16px rgba(0,0,0,0.95), 0 0 25px #38bdf8, 0 0 45px #0284c7 !important;
+            filter: drop-shadow(0 0 14px #38bdf8);
+            transition: filter 0.3s;
         }
 
-        .sun-sphere:hover {
-            transform: rotateZ(var(--inv-z, 0deg)) rotateX(var(--inv-x, -55deg)) scale(1.1);
+        .sun-sphere {
+            width: 72px;
+            height: 72px;
+            z-index: 20;
+            transform: rotateZ(var(--inv-z, 0deg)) rotateX(var(--inv-x, -55deg));
+            box-shadow: inset -10px -10px 22px rgba(0,0,0,0.9), 0 0 40px #38bdf8, 0 0 80px #0284c7 !important;
+        }
+
+        .sun-sphere:hover, .planet-sphere:hover {
+            filter: brightness(1.4) drop-shadow(0 0 20px #38bdf8);
         }
 
         .orbit {
             position: absolute;
             top: 50%;
             left: 50%;
-            border: 1px solid rgba(125, 211, 252, 0.22);
+            border: 1px dashed rgba(56, 189, 248, 0.4);
             border-radius: 50%;
             transform-style: preserve-3d;
             animation: orbitRotate linear infinite;
             animation-duration: var(--orbit-dur, 10s);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
         }
 
         .planet-sphere {
-            position: absolute;
             top: 0;
             left: 50%;
-            border-radius: 50%;
-            cursor: pointer;
-            transform-style: preserve-3d;
-            box-shadow: inset -6px -6px 14px rgba(0, 0, 0, 0.95), 0 0 15px rgba(255, 255, 255, 0.3);
             animation: planetBillboard linear infinite;
             animation-duration: var(--orbit-dur, 10s);
-        }
-
-        .planet-sphere:hover {
-            filter: brightness(1.35) drop-shadow(0 0 12px #38bdf8);
         }
 
         .planet-sphere::after {
@@ -320,40 +400,40 @@
             border-radius: 50%;
         }
 
-        /* إحداثيات وأحجام المدارات والكواكب */
+        /* أحجام وسرعات المدارات */
         .orb-mercure { width: 105px; height: 105px; --orbit-dur: calc(9s / var(--time-scale, 1)); }
-        .pl-mercure { width: 15px; height: 15px; background: radial-gradient(circle at 30% 30%, #e2e8f0, #64748b 55%, #1e293b 100%); --orbit-dur: calc(9s / var(--time-scale, 1)); }
+        .pl-mercure { width: 14px; height: 14px; --orbit-dur: calc(9s / var(--time-scale, 1)); }
 
         .orb-venus { width: 150px; height: 150px; --orbit-dur: calc(13s / var(--time-scale, 1)); }
-        .pl-venus { width: 20px; height: 20px; background: radial-gradient(circle at 30% 30%, #fef08a, #d97706 50%, #78350f 100%); --orbit-dur: calc(13s / var(--time-scale, 1)); }
+        .pl-venus { width: 18px; height: 18px; --orbit-dur: calc(13s / var(--time-scale, 1)); }
 
         .orb-terre { width: 200px; height: 200px; --orbit-dur: calc(18s / var(--time-scale, 1)); }
-        .pl-terre { width: 23px; height: 23px; background: radial-gradient(circle at 30% 30%, #60a5fa, #2563eb 42%, #15803d 72%, #020617 100%); box-shadow: inset -6px -6px 15px rgba(0,0,0,0.9), 0 0 16px rgba(56, 189, 248, 0.75); --orbit-dur: calc(18s / var(--time-scale, 1)); }
+        .pl-terre { width: 21px; height: 21px; box-shadow: inset -6px -6px 15px rgba(0,0,0,0.9), 0 0 30px #38bdf8 !important; --orbit-dur: calc(18s / var(--time-scale, 1)); }
 
         .orb-mars { width: 250px; height: 250px; --orbit-dur: calc(23s / var(--time-scale, 1)); }
-        .pl-mars { width: 18px; height: 18px; background: radial-gradient(circle at 30% 30%, #fca5a5, #dc2626 55%, #7f1d1d 100%); --orbit-dur: calc(23s / var(--time-scale, 1)); }
+        .pl-mars { width: 16px; height: 16px; --orbit-dur: calc(23s / var(--time-scale, 1)); }
 
         .orb-jupiter { width: 310px; height: 310px; --orbit-dur: calc(30s / var(--time-scale, 1)); }
-        .pl-jupiter { width: 34px; height: 34px; background: radial-gradient(circle at 30% 30%, #fed7aa, #ea580c 45%, #9a3412 75%, #431407 100%); --orbit-dur: calc(30s / var(--time-scale, 1)); }
+        .pl-jupiter { width: 32px; height: 32px; --orbit-dur: calc(30s / var(--time-scale, 1)); }
 
         .orb-saturne { width: 370px; height: 370px; --orbit-dur: calc(38s / var(--time-scale, 1)); }
-        .pl-saturne { width: 26px; height: 26px; background: radial-gradient(circle at 30% 30%, #fef9c3, #ca8a04 60%, #422006 100%); --orbit-dur: calc(38s / var(--time-scale, 1)); }
+        .pl-saturne { width: 25px; height: 25px; --orbit-dur: calc(38s / var(--time-scale, 1)); }
         .saturn-ring {
             position: absolute;
             top: 50%; left: 50%;
-            width: 58px; height: 18px;
-            border: 4.5px solid rgba(234, 179, 8, 0.9);
+            width: 54px; height: 16px;
+            border: 3.5px solid rgba(56, 189, 248, 0.9);
             border-radius: 50%;
             transform: translate(-50%, -50%) rotate(-18deg);
-            box-shadow: 0 0 14px rgba(250, 204, 21, 0.75);
+            box-shadow: 0 0 15px #38bdf8;
             pointer-events: none;
         }
 
         .orb-uranus { width: 425px; height: 425px; --orbit-dur: calc(46s / var(--time-scale, 1)); }
-        .pl-uranus { width: 21px; height: 21px; background: radial-gradient(circle at 30% 30%, #99f6e4, #0d9488 60%, #042f2e 100%); --orbit-dur: calc(46s / var(--time-scale, 1)); }
+        .pl-uranus { width: 20px; height: 20px; --orbit-dur: calc(46s / var(--time-scale, 1)); }
 
         .orb-neptune { width: 475px; height: 475px; --orbit-dur: calc(55s / var(--time-scale, 1)); }
-        .pl-neptune { width: 21px; height: 21px; background: radial-gradient(circle at 30% 30%, #93c5fd, #1d4ed8 60%, #091338 100%); --orbit-dur: calc(55s / var(--time-scale, 1)); }
+        .pl-neptune { width: 20px; height: 20px; --orbit-dur: calc(55s / var(--time-scale, 1)); }
 
         @keyframes orbitRotate {
             0% { transform: translate(-50%, -50%) rotateZ(0deg); }
@@ -365,17 +445,17 @@
             100% { transform: translate(-50%, -50%) rotateZ(-360deg) rotateZ(var(--inv-z, 0deg)) rotateX(var(--inv-x, -55deg)); }
         }
 
-        /* واجهة الموسوعة والمعلومات الفلكية */
+        /* واجهة الموسوعة والمعلومات */
         #encyclopediaOverlay {
             position: fixed;
             inset: 0;
             z-index: 80;
             background: rgba(2, 6, 18, 0.92);
-            backdrop-filter: blur(18px);
+            backdrop-filter: blur(16px);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 18px;
+            padding: 16px;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.4s ease, visibility 0.4s ease;
@@ -388,16 +468,16 @@
 
         .enc-info-panel {
             width: 55%;
-            height: 92%;
+            height: 90%;
             background: linear-gradient(160deg, rgba(13, 23, 45, 0.97), rgba(3, 8, 18, 0.99));
             border: 1px solid rgba(56, 189, 248, 0.45);
             border-left: 4px solid #38bdf8;
-            border-radius: 16px;
-            padding: 20px 18px;
+            border-radius: 14px;
+            padding: 18px 15px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95);
             transform: translateX(-40px);
             transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
             overflow-y: auto;
@@ -417,13 +497,10 @@
             letter-spacing: 2px;
             cursor: pointer;
             margin-bottom: 12px;
-            padding: 6px 0;
-            transition: color 0.2s;
         }
-        .back-arrow:hover { color: #ffffff; }
 
         .enc-planet-name {
-            font-size: 1.7rem;
+            font-size: 1.65rem;
             font-weight: 900;
             letter-spacing: 2.5px;
             text-transform: uppercase;
@@ -462,7 +539,7 @@
             display: flex;
             justify-content: space-between;
             font-size: 0.7rem;
-            padding: 6px 10px;
+            padding: 5px 8px;
             background: rgba(255, 255, 255, 0.04);
             border-radius: 6px;
         }
@@ -477,7 +554,7 @@
         }
 
         .enc-planet-showcase {
-            width: 42%;
+            width: 43%;
             height: 100%;
             display: flex;
             justify-content: center;
@@ -492,22 +569,23 @@
         }
 
         .big-3d-sphere {
-            width: 165px;
-            height: 165px;
+            width: 155px;
+            height: 155px;
             border-radius: 50%;
             position: relative;
-            box-shadow: inset -22px -22px 45px rgba(0, 0, 0, 0.96), 0 0 50px rgba(56, 189, 248, 0.4);
+            background: radial-gradient(circle at 30% 30%, #93c5fd 0%, #0284c7 55%, #0369a1 100%);
+            box-shadow: inset -20px -20px 42px rgba(0, 0, 0, 0.96), 0 0 50px rgba(56, 189, 248, 0.8);
             animation: floatSphere 4s ease-in-out infinite alternate;
         }
 
         .big-saturn-ring {
             position: absolute;
             top: 50%; left: 50%;
-            width: 280px; height: 75px;
-            border: 14px solid rgba(234, 179, 8, 0.9);
+            width: 260px; height: 70px;
+            border: 13px solid rgba(56, 189, 248, 0.9);
             border-radius: 50%;
             transform: translate(-50%, -50%) rotate(-20deg);
-            box-shadow: 0 0 35px rgba(250, 204, 21, 0.75);
+            box-shadow: 0 0 30px #38bdf8;
             display: none;
         }
 
@@ -515,72 +593,28 @@
             0% { transform: translateY(-8px); }
             100% { transform: translateY(8px); }
         }
-
-        /* نافذة البحث المتقدم */
-        #searchModal {
-            position: fixed;
-            top: 70px;
-            right: 15px;
-            width: 280px;
-            background: rgba(13, 23, 45, 0.95);
-            border: 1px solid rgba(56, 189, 248, 0.4);
-            border-radius: 12px;
-            padding: 12px;
-            z-index: 60;
-            backdrop-filter: blur(14px);
-            display: none;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
-        }
-        #searchModal.active { display: block; }
-        .search-input {
-            width: 100%;
-            background: rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(56, 189, 248, 0.3);
-            border-radius: 8px;
-            padding: 8px 12px;
-            color: white;
-            font-size: 0.8rem;
-            outline: none;
-            margin-bottom: 8px;
-        }
-        .search-results {
-            max-height: 150px;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 4px;
-        }
-        .search-item {
-            padding: 6px 10px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 6px;
-            font-size: 0.75rem;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .search-item:hover { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
     </style>
 </head>
 <body>
 
-    <div class="space-bg"></div>
+    <div class="cyber-bg"></div>
+    <div class="cyber-grid"></div>
     <div class="stars-layer-1" id="starsLayer1"></div>
     <div class="stars-layer-2" id="starsLayer2"></div>
-    <div class="stars-layer-3" id="starsLayer3"></div>
 
-    <!-- لوحة التحكم العلوية الشاملة -->
+    <!-- لوحة التحكم العلوية -->
     <div class="hud-top-bar">
-        <div class="hud-brand">ROTATE X • UNIVERSE</div>
+        <div class="hud-brand">ROTATE X • SCI-FI UNIVERSE</div>
         <div class="hud-controls-group">
             <button class="hud-btn" onclick="toggleSearchModal()">🔍 بحث</button>
             <button class="hud-btn" onclick="toggleAudioFX()">🔊 صوت</button>
-            <button class="hud-btn" onclick="launchAR()">🌍 واقع معزز</button>
+            <button class="hud-btn" onclick="launchAR()">🌍 AR غرفتي</button>
         </div>
     </div>
 
     <!-- نافذة البحث -->
     <div id="searchModal">
-        <input type="text" class="search-input" id="planetSearchInput" placeholder="ابحث عن كوكب أو نجم..." oninput="filterPlanets(this.value)">
+        <input type="text" class="search-input" id="planetSearchInput" placeholder="ابحث عن كوكب..." oninput="filterPlanets(this.value)">
         <div class="search-results" id="searchResults"></div>
     </div>
 
@@ -602,16 +636,19 @@
         style="display: none;">
     </model-viewer>
 
-    <!-- شاشة الترحيب السنيمائية -->
+    <!-- شاشة الترحيب -->
     <div id="welcomeScreen" onclick="enterUniverse()">
-        <div class="welcome-badge-top">360° INTERACTIVE SPACE SYSTEM</div>
-        <h1 class="welcome-title">ROTATE X<br>ULTIMATE UNIVERSE</h1>
-        <p class="welcome-desc">Explore the solar system in immersive 3D & True AR</p>
-        <div class="tap-hint">TOUCH TO START EXPLORATION</div>
+        <div class="welcome-badge">SCI-FI HOLOGRAM PROJECTION SYSTEM</div>
+        <h1 class="welcome-title">ROTATE X</h1>
+        <p class="welcome-desc">360° Cyber Solar System & Encyclopedia</p>
+        <div class="tap-hint">TOUCH TO ACTIVATE HOLOGRAM</div>
     </div>
 
-    <!-- مسرح الفضاء الكامل والتفاعل بالنقر والسحب -->
-    <div id="universeViewport">
+    <!-- مسرح الهولوغرام الفضائي -->
+    <div id="hologramViewport">
+        <div class="projector-base"></div>
+        <div class="hologram-laser-beam"></div>
+
         <div class="solar-system-3d" id="solarSystem">
             <div class="sun-sphere" onclick="openPlanet('Soleil')"></div>
 
@@ -630,7 +667,7 @@
         </div>
     </div>
 
-    <!-- واجهة الموسوعة والمعلومات -->
+    <!-- واجهة الموسوعة الفلكية -->
     <div id="encyclopediaOverlay">
         <div class="enc-info-panel">
             <div>
@@ -660,70 +697,51 @@
     </div>
 
     <script>
-        // قاعدة البيانات الفلكية الشاملة
         const encyclopediaData = {
             "Soleil": {
                 type: "ÉTOILE • NAINE JAUNE",
                 diam: "1 392 700 km", dist: "0 km (Centre)", orbit: "230 M d'années", temp: "5 500 °C", moons: "8 planètes",
-                desc: "L'étoile centrale et massive du Système solaire. Elle représente 99,86 % de la masse totale du système et génère son énergie par fusion nucléaire.",
-                bg: "radial-gradient(circle at 35% 35%, #fffef0 0%, #fef08a 25%, #f97316 60%, #c2410c 85%, #7c2d12 100%)",
-                glow: "0 0 65px rgba(249, 115, 22, 0.85)"
+                desc: "L'étoile centrale et massive du Système solaire. Elle représente 99,86 % de la masse totale du système et génère son énergie par fusion nucléaire."
             },
             "Mercure": {
                 type: "PLANÈTE TELLURIQUE",
                 diam: "4 879 km", dist: "57,9 M km", orbit: "88 jours", temp: "167 °C", moons: "0",
-                desc: "La planète la plus proche du Soleil et la plus petite du système solaire. Sa surface rocheuse subit des variations de température extrêmes.",
-                bg: "radial-gradient(circle at 30% 30%, #e2e8f0, #64748b 55%, #1e293b 100%)",
-                glow: "0 0 40px rgba(148, 163, 184, 0.45)"
+                desc: "La planète la plus proche du Soleil et la plus petite du système solaire. Sa surface rocheuse subit des variations de température extrêmes."
             },
             "Vénus": {
                 type: "PLANÈTE TELLURIQUE",
                 diam: "12 104 km", dist: "108,2 M km", orbit: "225 jours", temp: "464 °C", moons: "0",
-                desc: "La planète la plus chaude du Système solaire. Son épaisse atmosphère de dioxyde de carbone crée un effet de serre incontrôlable.",
-                bg: "radial-gradient(circle at 30% 30%, #fef08a, #d97706 50%, #78350f 100%)",
-                glow: "0 0 45px rgba(245, 158, 11, 0.55)"
+                desc: "La planète la plus chaude du Système solaire. Son épaisse atmosphère de dioxyde de carbone crée un effet de serre incontrôlable."
             },
             "Terre": {
                 type: "PLANÈTE TELLURIQUE",
                 diam: "12 742 km", dist: "149,6 M km", orbit: "365,25 jours", temp: "15 °C", moons: "1 (La Lune)",
-                desc: "Notre foyer cosmique, la seule planète connue pour abriter la vie, caractérisée par une abondance d'eau liquide et une atmosphère protectrice.",
-                bg: "radial-gradient(circle at 30% 30%, #60a5fa, #2563eb 42%, #15803d 72%, #020617 100%)",
-                glow: "0 0 50px rgba(56, 189, 248, 0.75)"
+                desc: "Notre foyer cosmique, la seule planète connue pour abriter la vie, caractérisée par une abondance d'eau liquide et une atmosphère protectrice."
             },
             "Mars": {
                 type: "PLANÈTE TELLURIQUE",
                 diam: "6 779 km", dist: "227,9 M km", orbit: "687 jours", temp: "-63 °C", moons: "2 (Phobos, Déimos)",
-                desc: "La planète rouge, fascinante pour ses paysages désertiques riches en oxyde de fer, ses calottes polaires et ses immenses canyons.",
-                bg: "radial-gradient(circle at 30% 30%, #fca5a5, #dc2626 55%, #7f1d1d 100%)",
-                glow: "0 0 45px rgba(220, 38, 38, 0.55)"
+                desc: "La planète rouge, fascinante pour ses paysages désertiques riches en oxyde de fer, ses calottes polaires et ses immenses canyons."
             },
             "Jupiter": {
                 type: "GÉANTE GAZEUSE",
                 diam: "139 820 km", dist: "778,5 M km", orbit: "11,86 ans", temp: "-110 °C", moons: "95",
-                desc: "La géante du système solaire. Ses bandes nuageuses spectaculaires et sa Grande Tache Rouge témoignent d'une météo hors du commun.",
-                bg: "radial-gradient(circle at 30% 30%, #fed7aa, #ea580c 45%, #9a3412 75%, #431407 100%)",
-                glow: "0 0 50px rgba(234, 88, 12, 0.6)"
+                desc: "La géante du système solaire. Ses bandes nuageuses spectaculaires et sa Grande Tache Rouge témoignent d'une météo hors du commun."
             },
             "Saturne": {
                 type: "GÉANTE GAZEUSE",
                 diam: "116 460 km", dist: "1,43 Md km", orbit: "29,4 ans", temp: "-140 °C", moons: "146",
-                desc: "Célèbre pour son système d'anneaux planétaires majestueux formés de blocs de glace pure et de poussières cosmiques.",
-                bg: "radial-gradient(circle at 30% 30%, #fef9c3, #ca8a04 60%, #422006 100%)",
-                glow: "0 0 50px rgba(234, 179, 8, 0.6)"
+                desc: "Célèbre pour son système d'anneaux planétaires majestueux formés de blocs de glace pure et de poussières cosmiques."
             },
             "Uranus": {
                 type: "GÉANTE DE GLACE",
                 diam: "50 724 km", dist: "2,87 Md km", orbit: "84 ans", temp: "-195 °C", moons: "28",
-                desc: "Une planète singulière de couleur cyan, caractérisée par une inclinaison axiale extrême qui la fait littéralement rouler sur son orbite.",
-                bg: "radial-gradient(circle at 30% 30%, #99f6e4, #0d9488 60%, #042f2e 100%)",
-                glow: "0 0 45px rgba(20, 184, 166, 0.55)"
+                desc: "Une planète singulière de couleur cyan, caractérisée par une inclinaison axiale extrême qui la fait littéralement rouler sur son orbite."
             },
             "Neptune": {
                 type: "GÉANTE DE GLACE",
                 diam: "49 244 km", dist: "4,5 Md km", orbit: "165 ans", temp: "-200 °C", moons: "16",
-                desc: "Un monde lointain, sombre et balayé par les vents les plus violents et supersoniques enregistrés dans tout le Système solaire.",
-                bg: "radial-gradient(circle at 30% 30%, #93c5fd, #1d4ed8 60%, #091338 100%)",
-                glow: "0 0 45px rgba(37, 99, 235, 0.55)"
+                desc: "Un monde lointain, sombre et balayé par les vents les plus violents et supersoniques enregistrés dans tout le Système solaire."
             }
         };
 
@@ -732,17 +750,16 @@
             playAmbientSound();
         }
 
-        // تحكم في سرعة المدارات
+        // التحكم في سرعة المدارات
         function changeSpeed(val) {
             document.documentElement.style.setProperty('--time-scale', val);
         }
 
         // نظام التدوير 360 درجة عبر اللمس والفأرة
-        const viewport = document.getElementById("universeViewport");
+        const viewport = document.getElementById("hologramViewport");
         const solarSystem = document.getElementById("solarSystem");
         const stars1 = document.getElementById("starsLayer1");
         const stars2 = document.getElementById("starsLayer2");
-        const stars3 = document.getElementById("starsLayer3");
 
         let rotX = 55;
         let rotZ = 0;
@@ -787,20 +804,19 @@
         function updateRotation(dx, dy) {
             rotZ += dx * 0.45;
             rotX -= dy * 0.35;
-            if (rotX < 10) rotX = 10;
-            if (rotX > 82) rotX = 82;
+            if (rotX < 15) rotX = 15;
+            if (rotX > 80) rotX = 80;
 
             solarSystem.style.transform = `rotateX(${rotX}deg) rotateZ(${rotZ}deg)`;
             
             document.documentElement.style.setProperty('--inv-x', `${-rotX}deg`);
             document.documentElement.style.setProperty('--inv-z', `${-rotZ}deg`);
             
-            stars1.style.transform = `translate(${rotZ * 0.2}px, ${rotX * 0.3}px)`;
-            stars2.style.transform = `translate(${rotZ * 0.4}px, ${rotX * 0.5}px)`;
-            stars3.style.transform = `translate(${rotZ * 0.6}px, ${rotX * 0.8}px)`;
+            stars1.style.transform = `translate(${rotZ * 0.25}px, ${rotX * 0.4}px)`;
+            stars2.style.transform = `translate(${rotZ * 0.45}px, ${rotX * 0.7}px)`;
         }
 
-        // فتح نافذة الموسوعة الفلكية
+        // فتح نافذة الموسوعة عند النقر على أي كوكب
         function openPlanet(name) {
             if (moved) return;
             playClickSound();
@@ -816,10 +832,6 @@
             document.getElementById("encMoons").textContent = data.moons;
             document.getElementById("encDesc").textContent = data.desc;
 
-            const bigSphere = document.getElementById("bigSphere");
-            bigSphere.style.background = data.bg;
-            bigSphere.style.boxShadow = `inset -22px -22px 45px rgba(0, 0, 0, 0.96), ${data.glow}`;
-
             document.getElementById("bigSaturnRing").style.display = (name === "Saturne") ? "block" : "none";
             document.getElementById("encyclopediaOverlay").classList.add("active");
         }
@@ -829,7 +841,7 @@
             document.getElementById("encyclopediaOverlay").classList.remove("active");
         }
 
-        // تشغيل الواقع المعزز الحقيقي في الغرفة
+        // تفعيل الواقع المعزز في الغرفة عبر زر AR غرفتي
         function launchAR() {
             playClickSound();
             const modelViewer = document.getElementById("arModelViewer");
@@ -838,7 +850,7 @@
             }
         }
 
-        // نظام البحث المتطور
+        // نظام البحث
         function toggleSearchModal() {
             playClickSound();
             const modal = document.getElementById("searchModal");
@@ -866,7 +878,7 @@
             });
         }
 
-        // محرك أصوات الفضاء السيبراني باستخدام Web Audio API
+        // نظام الأصوات التفاعلية عبر Web Audio API
         let audioCtx = null;
         let isAudioOn = false;
         function toggleAudioFX() {
@@ -883,10 +895,10 @@
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = "sine";
-                osc.frequency.setValueAtTime(580, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.08);
-                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                osc.frequency.setValueAtTime(600, audioCtx.currentTime);
+                osc.frequency.exponentialRampYToValueAtTime ? osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.08) : osc.frequency.linearRampToValueAtTime(900, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start();
@@ -900,13 +912,13 @@
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.type = "triangle";
-                osc.frequency.setValueAtTime(55, audioCtx.currentTime);
-                gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
-                gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 2);
+                osc.frequency.setValueAtTime(50, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.015, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 2.5);
                 osc.connect(gain);
                 gain.connect(audioCtx.destination);
                 osc.start();
-                osc.stop(audioCtx.currentTime + 2);
+                osc.stop(audioCtx.currentTime + 2.5);
             } catch(e){}
         }
     </script>
