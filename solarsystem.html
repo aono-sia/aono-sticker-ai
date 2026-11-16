@@ -23,63 +23,61 @@
             position: relative;
         }
 
-        /* كاميرا التليفون الحية لوضع الهولوغرام في الواقع المعزز */
+        /* كاميرا التليفون الحية في الخلفية الحقيقية */
         #cameraStream {
             position: fixed;
             inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: 0;
+            z-index: 1; /* تأكيد ظهور الكاميرا في الواجهة الخلفية عند التفعيل */
             display: none;
         }
 
+        /* الخلفية الفضائية العادية */
         .space-bg {
             position: fixed;
             inset: 0;
             background: radial-gradient(circle at 50% 50%, #061127 0%, #02040a 60%, #000000 100%);
-            z-index: 1;
-            transition: opacity 0.5s ease;
+            z-index: 2;
+            transition: opacity 0.4s ease;
         }
 
-        .stars-layer-1 {
+        .stars-layer-1, .stars-layer-2 {
             position: fixed;
             inset: -50%;
             width: 200%;
             height: 200%;
+            z-index: 3;
+            pointer-events: none;
+            transition: opacity 0.4s ease;
+        }
+
+        .stars-layer-1 {
             background-image: 
                 radial-gradient(1px 1px at 30px 50px, #ffffff, transparent),
                 radial-gradient(1.5px 1.5px at 160px 200px, #38bdf8, transparent),
                 radial-gradient(1px 1px at 290px 120px, #fde047, transparent),
                 radial-gradient(2px 2px at 370px 280px, #ffffff, transparent);
             background-size: 320px 320px;
-            z-index: 2;
-            pointer-events: none;
-            transition: transform 0.08s ease-out, opacity 0.5s ease;
         }
 
         .stars-layer-2 {
-            position: fixed;
-            inset: -50%;
-            width: 200%;
-            height: 200%;
             background-image: 
                 radial-gradient(1.2px 1.2px at 100px 150px, #ffffff, transparent),
                 radial-gradient(1.8px 1.8px at 250px 70px, #a855f7, transparent),
                 radial-gradient(1px 1px at 50px 320px, #38bdf8, transparent);
             background-size: 450px 450px;
             opacity: 0.6;
-            z-index: 2;
-            pointer-events: none;
-            transition: transform 0.12s ease-out, opacity 0.5s ease;
         }
 
-        /* وضع الهولوغرام النشط (تتوارى الخلفية وتظهر الكاميرا مع تأثير النيون) */
+        /* عند تفعيل وضع الهولوغرام، تختفي الخلفية السوداء نهائياً لتظهر كاميرا التليفون بوضوح */
         .ar-mode .space-bg, .ar-mode .stars-layer-1, .ar-mode .stars-layer-2 {
-            opacity: 0.15;
+            opacity: 0;
+            pointer-events: none;
         }
 
-        /* زر الهولوغرام العائم في أعلى الشاشة */
+        /* زر الهولوغرام العائم */
         .ar-trigger-btn {
             position: fixed;
             top: 15px;
@@ -171,7 +169,7 @@
             100% { transform: scale(1.04); box-shadow: 0 0 30px rgba(56, 189, 248, 0.7); }
         }
 
-        /* مسرح الفضاء الكامل 360 درجة */
+        /* مسرح الفضاء 360 درجة */
         #universeViewport {
             position: fixed;
             inset: 0;
@@ -183,10 +181,10 @@
             touch-action: none;
         }
 
-        /* قاعدة الهولوغرام الضوئية وشعاع النيون (تظهر عند تفعيل الهولوغرام) */
+        /* قاعدة وشعاع الهولوغرام */
         .hologram-projector-pad {
             position: absolute;
-            bottom: 40px;
+            bottom: 35px;
             width: 220px;
             height: 40px;
             background: radial-gradient(ellipse at center, #38bdf8 0%, #0284c7 50%, transparent 80%);
@@ -205,10 +203,10 @@
 
         .hologram-beam {
             position: absolute;
-            bottom: 50px;
+            bottom: 45px;
             width: 340px;
             height: 280px;
-            background: linear-gradient(to top, rgba(56, 189, 248, 0.4) 0%, rgba(56, 189, 248, 0.02) 85%, transparent 100%);
+            background: linear-gradient(to top, rgba(56, 189, 248, 0.45) 0%, rgba(56, 189, 248, 0.02) 85%, transparent 100%);
             clip-path: polygon(28% 100%, 72% 100%, 95% 0%, 5% 0%);
             display: none;
             z-index: 11;
@@ -227,7 +225,7 @@
             align-items: center;
         }
 
-        /* الشمس المكورة 100% */
+        /* الشمس الكروية المجسمة 100% */
         .sun-sphere {
             position: absolute;
             width: 68px;
@@ -252,7 +250,7 @@
             animation: orbitRotate linear infinite;
         }
 
-        /* الكواكب مكورة 100% (Spheres) */
+        /* الكواكب مكورة ومجسمة 3D بالكامل */
         .planet-sphere {
             position: absolute;
             top: 0;
@@ -315,7 +313,7 @@
             100% { transform: translate(-50%, -50%) rotateZ(-360deg) rotateZ(var(--inv-z, 0deg)) rotateX(var(--inv-x, -55deg)); }
         }
 
-        /* واجهة الموسوعة والمعلومات */
+        /* واجهة الموسوعة */
         #encyclopediaOverlay {
             position: fixed;
             inset: 0;
@@ -467,14 +465,13 @@
 </head>
 <body>
 
-    <!-- بث الكاميرا الحية للهولوغرام الواقع المعزز -->
-    <video id="cameraStream" autoplay playsinline></video>
+    <!-- الكاميرا الحية لتظهر في الخلفية الحقيقية بوضوح -->
+    <video id="cameraStream" autoplay playsinline muted></video>
 
     <div class="space-bg"></div>
     <div class="stars-layer-1" id="starsLayer1"></div>
     <div class="stars-layer-2" id="starsLayer2"></div>
 
-    <!-- زر تشغيل وإطفاء الهولوغرام -->
     <button class="ar-trigger-btn" id="arBtn" onclick="toggleARHologram()">🌐 HOLOGRAM</button>
 
     <!-- شاشة الترحيب -->
@@ -508,7 +505,7 @@
         </div>
     </div>
 
-    <!-- واجهة الموسوعة والكوكب في الجنب -->
+    <!-- واجهة الموسوعة -->
     <div id="encyclopediaOverlay">
         <div class="enc-info-panel">
             <div>
@@ -694,7 +691,6 @@
             document.getElementById("encyclopediaOverlay").classList.remove("active");
         }
 
-        // تشغيل الكاميرا وإيقافها للهولوغرام
         let arActive = false;
         async function toggleARHologram() {
             const videoElem = document.getElementById("cameraStream");
@@ -713,14 +709,16 @@
                         video: { facingMode: "environment" }
                     });
                     videoElem.srcObject = stream;
+                    await videoElem.play();
                     videoElem.style.display = "block";
                 } catch (err) {
                     try {
                         const fallbackStream = await navigator.mediaDevices.getUserMedia({ video: true });
                         videoElem.srcObject = fallbackStream;
+                        await videoElem.play();
                         videoElem.style.display = "block";
                     } catch (e) {
-                        console.log("Hologram mode active with cyber background");
+                        console.log("Camera access not available, showing AR hologram stage.");
                     }
                 }
             } else {
