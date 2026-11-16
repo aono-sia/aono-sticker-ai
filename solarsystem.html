@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assia Universe 360° • AR Pro</title>
+    <title>Assia Universe 360° • Ultra Realistic AR</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,7 @@
         }
 
         body {
-            background-color: #010308;
+            background-color: #010206;
             color: #f8fafc;
             min-height: 100vh;
             display: flex;
@@ -23,7 +23,6 @@
             overflow-x: hidden;
         }
 
-        /* كاميرا التليفون الحية لوضع الهولوغرام بدون أخطاء */
         #cameraStream {
             position: fixed;
             inset: 0;
@@ -37,7 +36,7 @@
         .space-bg {
             position: fixed;
             inset: 0;
-            background: radial-gradient(ellipse at 50% 30%, #081b3a 0%, #020617 70%, #000000 100%);
+            background: radial-gradient(ellipse at 50% 30%, #06142e 0%, #02040a 70%, #000000 100%);
             z-index: -4;
             transition: opacity 0.5s;
         }
@@ -46,10 +45,10 @@
             position: fixed;
             inset: 0;
             background-image: 
-                radial-gradient(1.5px 1.5px at 20px 40px, #ffffff, transparent),
-                radial-gradient(1.5px 1.5px at 140px 180px, #38bdf8, transparent),
-                radial-gradient(2px 2px at 240px 100px, #fde047, transparent);
-            background-size: 300px 220px;
+                radial-gradient(1.5px 1.5px at 15px 35px, #ffffff, transparent),
+                radial-gradient(2px 2px at 130px 160px, #38bdf8, transparent),
+                radial-gradient(1.5px 1.5px at 250px 80px, #fde047, transparent);
+            background-size: 280px 200px;
             z-index: -3;
         }
 
@@ -60,7 +59,7 @@
             justify-content: space-between;
             align-items: center;
             padding: 8px 12px;
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.85);
             border: 1px solid rgba(56, 189, 248, 0.4);
             border-radius: 12px;
             backdrop-filter: blur(12px);
@@ -86,7 +85,7 @@
             box-shadow: 0 0 15px rgba(56, 189, 248, 0.7);
         }
 
-        /* مسرح 360 درجة وتأثير الهولوغرام المتطور */
+        /* مسرح الكون 360 درجة */
         .universe-stage {
             position: relative;
             width: 100%;
@@ -105,21 +104,16 @@
                 linear-gradient(90deg, rgba(56, 189, 248, 0.06) 1px, transparent 1px);
             background-size: 100% 100%, 30px 30px, 30px 30px;
             margin-bottom: 10px;
-            transition: all 0.4s ease;
             touch-action: none;
         }
 
-        .ar-mode .space-bg, .ar-mode .stars {
-            opacity: 0.08;
-        }
-
+        .ar-mode .space-bg, .ar-mode .stars { opacity: 0.05; }
         .ar-mode .universe-stage {
             border: 2px solid #38bdf8;
-            background: rgba(2, 13, 30, 0.2);
-            box-shadow: 0 0 45px rgba(56, 189, 248, 0.8);
+            background: rgba(2, 13, 30, 0.15);
+            box-shadow: 0 0 50px rgba(56, 189, 248, 0.85);
         }
 
-        /* قاعدة جهاز الهولوغرام الضوئي السيبراني */
         .hologram-projector-pad {
             position: absolute;
             bottom: -2px;
@@ -130,17 +124,8 @@
             box-shadow: 0 0 30px #38bdf8, 0 0 60px rgba(56, 189, 248, 0.9);
             display: none;
             z-index: 5;
-            animation: padGlow 2s infinite alternate;
         }
-
-        .ar-mode .hologram-projector-pad {
-            display: block;
-        }
-
-        @keyframes padGlow {
-            0% { transform: scale(0.95); opacity: 0.85; box-shadow: 0 0 25px #38bdf8; }
-            100% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 40px #38bdf8, 0 0 80px #0284c7; }
-        }
+        .ar-mode .hologram-projector-pad { display: block; }
 
         .hologram-beam {
             position: absolute;
@@ -153,12 +138,9 @@
             z-index: 4;
             pointer-events: none;
         }
+        .ar-mode .hologram-beam { display: block; }
 
-        .ar-mode .hologram-beam {
-            display: block;
-        }
-
-        /* الكواكب والمدارات 3D */
+        /* الكواكب بتركيبات واقعية ثلاثية الأبعاد */
         .solar-plane {
             position: relative;
             width: 340px;
@@ -170,34 +152,33 @@
             align-items: center;
         }
 
+        /* شمس واقعية ملتهبة */
         .sun-3d {
             position: absolute;
-            width: 50px;
-            height: 50px;
-            background: radial-gradient(circle at 35% 35%, #ffffff 5%, #fde047 30%, #f59e0b 65%, #b45309 100%);
+            width: 54px;
+            height: 54px;
+            background: radial-gradient(circle at 35% 35%, #fffbf0 0%, #fde047 30%, #f97316 65%, #c2410c 90%, #7c2d12 100%);
             border-radius: 50%;
             transform: rotateX(-55deg);
-            box-shadow: 0 0 35px #fbbf24, 0 0 70px #f59e0b;
+            box-shadow: 0 0 40px #fbbf24, 0 0 80px #f97316, inset -8px -8px 20px rgba(0,0,0,0.7);
             z-index: 15;
             animation: sunPulse 3s infinite alternate;
         }
 
         @keyframes sunPulse {
-            0% { box-shadow: 0 0 30px #fbbf24; }
+            0% { box-shadow: 0 0 35px #fbbf24, 0 0 70px #f97316; }
             100% { box-shadow: 0 0 50px #fef08a, 0 0 100px #ea580c; }
         }
 
         .orbit-ring {
             position: absolute;
-            border: 1px solid rgba(125, 211, 252, 0.35);
+            border: 1px solid rgba(125, 211, 252, 0.3);
             border-radius: 50%;
             transform-style: preserve-3d;
             animation: orbitSpin linear infinite;
         }
 
-        .paused .orbit-ring, .paused .planet-3d {
-            animation-play-state: paused !important;
-        }
+        .paused .orbit-ring, .paused .planet-3d { animation-play-state: paused !important; }
 
         .planet-3d {
             position: absolute;
@@ -207,40 +188,66 @@
             cursor: pointer;
             transform-style: preserve-3d;
             animation: counterSpin linear infinite;
-            box-shadow: inset -3px -3px 6px rgba(0, 0, 0, 0.9), 0 0 12px rgba(255, 255, 255, 0.6);
+            box-shadow: inset -4px -4px 8px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.4);
         }
 
+        /* تكتشرات واقعية لكل كوكب */
         .orb-1 { width: 72px; height: 72px; animation-duration: 6s; }
-        .pl-mercure { width: 10px; height: 10px; background: radial-gradient(circle at 30% 30%, #e2e8f0, #475569); }
+        .pl-mercure { 
+            width: 11px; height: 11px; 
+            background: radial-gradient(circle at 30% 30%, #cbd5e1, #64748b 60%, #334155 100%);
+        }
 
         .orb-2 { width: 104px; height: 104px; animation-duration: 9s; }
-        .pl-venus { width: 13px; height: 13px; background: radial-gradient(circle at 30% 30%, #fef08a, #b45309); }
+        .pl-venus { 
+            width: 14px; height: 14px; 
+            background: radial-gradient(circle at 30% 30%, #fef08a, #eab308 50%, #9a3412 100%);
+        }
 
         .orb-3 { width: 140px; height: 140px; animation-duration: 13s; }
-        .pl-terre { width: 15px; height: 15px; background: radial-gradient(circle at 30% 30%, #7dd3fc, #2563eb 55%, #1e3a8a); }
+        .pl-terre { 
+            width: 16px; height: 16px; 
+            background: radial-gradient(circle at 30% 30%, #60a5fa, #2563eb 45%, #15803d 70%, #0f172a 100%);
+        }
 
         .orb-4 { width: 176px; height: 176px; animation-duration: 17s; }
-        .pl-mars { width: 12px; height: 12px; background: radial-gradient(circle at 30% 30%, #fca5a5, #dc2626); }
+        .pl-mars { 
+            width: 13px; height: 13px; 
+            background: radial-gradient(circle at 30% 30%, #fca5a5, #dc2626 60%, #7f1d1d 100%);
+        }
 
         .orb-5 { width: 218px; height: 218px; animation-duration: 25s; }
-        .pl-jupiter { width: 22px; height: 22px; background: linear-gradient(180deg, #fed7aa 0%, #c2410c 30%, #9a3412 100%); }
+        .pl-jupiter { 
+            width: 24px; height: 24px; 
+            background: repeating-linear-gradient(0deg, #9a3412, #ea580c 4px, #fed7aa 8px, #c2410c 12px);
+        }
 
         .orb-6 { width: 262px; height: 262px; animation-duration: 33s; }
-        .pl-saturne { width: 18px; height: 18px; background: radial-gradient(circle at 30% 30%, #fef9c3, #ca8a04); }
+        .pl-saturne { 
+            width: 20px; height: 20px; 
+            background: radial-gradient(circle at 30% 30%, #fef08a, #ca8a04 80%, #713f12 100%);
+        }
         .saturn-rings {
             position: absolute;
             top: 50%; left: 50%;
-            width: 36px; height: 11px;
-            border: 3px solid rgba(253, 224, 71, 0.85);
+            width: 42px; height: 13px;
+            border: 3.5px solid rgba(234, 179, 8, 0.85);
             border-radius: 50%;
             transform: translate(-50%, -50%) rotate(-18deg);
+            box-shadow: 0 0 8px rgba(250, 204, 21, 0.6);
         }
 
         .orb-7 { width: 300px; height: 300px; animation-duration: 43s; }
-        .pl-uranus { width: 14px; height: 14px; background: radial-gradient(circle at 30% 30%, #99f6e4, #0d9488); }
+        .pl-uranus { 
+            width: 15px; height: 15px; 
+            background: radial-gradient(circle at 30% 30%, #5eead4, #0d9488 70%, #134e4a 100%);
+        }
 
         .orb-8 { width: 334px; height: 334px; animation-duration: 53s; }
-        .pl-neptune { width: 14px; height: 14px; background: radial-gradient(circle at 30% 30%, #60a5fa, #1d4ed8); }
+        .pl-neptune { 
+            width: 15px; height: 15px; 
+            background: radial-gradient(circle at 30% 30%, #93c5fd, #2563eb 60%, #1e3a8a 100%);
+        }
 
         @keyframes orbitSpin {
             0% { transform: rotateZ(0deg); }
@@ -280,6 +287,7 @@
             box-shadow: 0 0 20px #38bdf8;
         }
 
+        /* البطاقة العلمية للبرزنتيشن */
         .encyclopedia-card {
             background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(7, 13, 28, 0.98));
             border: 1px solid rgba(56, 189, 248, 0.45);
@@ -302,11 +310,10 @@
         }
 
         .planet-3d-showcase {
-            width: 54px;
-            height: 54px;
+            width: 56px;
+            height: 56px;
             border-radius: 50%;
-            background: radial-gradient(circle at 30% 30%, #7dd3fc, #2563eb 55%, #0f172a 95%);
-            box-shadow: inset -8px -8px 16px rgba(0, 0, 0, 0.85), 0 0 18px rgba(56, 189, 248, 0.5);
+            box-shadow: inset -6px -6px 14px rgba(0, 0, 0, 0.9), 0 0 20px rgba(56, 189, 248, 0.5);
             flex-shrink: 0;
         }
 
@@ -503,49 +510,49 @@
                 cat: "Planète Tellurique • 1re du Soleil",
                 desc: "La planète la plus proche du Soleil et la plus petite du système solaire. Sa surface rocheuse est criblée de cratères.",
                 dist: "57,9 millions km", orbit: "88 jours", temp: "167 °C", moons: "0 satellite", diam: "4 879 km", part: "Sans atmosphère",
-                bg: "radial-gradient(circle at 30% 30%, #e2e8f0, #64748b 60%, #0f172a 95%)", glow: "rgba(203, 213, 225, 0.5)"
+                bg: "radial-gradient(circle at 30% 30%, #cbd5e1, #64748b 60%, #334155 100%)"
             },
             "Vénus": {
                 cat: "Planète Tellurique • 2e du Soleil",
                 desc: "La planète la plus chaude du système solaire en raison d'un effet de serre extrême piégeant la chaleur.",
                 dist: "108,2 millions km", orbit: "225 jours", temp: "464 °C", moons: "0 satellite", diam: "12 104 km", part: "Effet de serre",
-                bg: "radial-gradient(circle at 30% 30%, #fef08a, #d97706 60%, #451a03 95%)", glow: "rgba(251, 191, 36, 0.5)"
+                bg: "radial-gradient(circle at 30% 30%, #fef08a, #eab308 50%, #9a3412 100%)"
             },
             "Terre": {
                 cat: "Planète Tellurique • 3e du Soleil",
                 desc: "Notre planète d'origine, la seule connue dans l'univers à abriter la vie grâce à ses vastes océans d'eau liquide.",
                 dist: "149,6 millions km", orbit: "365,25 jours", temp: "15 °C", moons: "1 (La Lune)", diam: "12 742 km", part: "Eau liquide & Vie",
-                bg: "radial-gradient(circle at 30% 30%, #7dd3fc, #2563eb 55%, #0f172a 95%)", glow: "rgba(56, 189, 248, 0.5)"
+                bg: "radial-gradient(circle at 30% 30%, #60a5fa, #2563eb 45%, #15803d 70%, #0f172a 100%)"
             },
             "Mars": {
                 cat: "Planète Tellurique • 4e du Soleil",
                 desc: "Surnommée la planète rouge à cause de l'oxyde de fer. Elle abrite le volcan géant Olympus Mons.",
                 dist: "227,9 millions km", orbit: "687 jours", temp: "-65 °C", moons: "2 (Phobos, Déimos)", diam: "6 779 km", part: "Sol riche en fer",
-                bg: "radial-gradient(circle at 30% 30%, #fca5a5, #dc2626 60%, #450a0a 95%)", glow: "rgba(239, 68, 68, 0.5)"
+                bg: "radial-gradient(circle at 30% 30%, #fca5a5, #dc2626 60%, #7f1d1d 100%)"
             },
             "Jupiter": {
                 cat: "Géante Gazeuse • 5e du Soleil",
                 desc: "La plus grande planète du système solaire, célèbre pour sa Grande Tache Rouge, une tempête géante.",
                 dist: "778,5 millions km", orbit: "11,86 ans", temp: "-110 °C", moons: "95 satellites", diam: "139 820 km", part: "La plus massive",
-                bg: "linear-gradient(180deg, #fed7aa 0%, #c2410c 30%, #9a3412 75%, #270c02 100%)", glow: "rgba(251, 146, 60, 0.5)"
+                bg: "repeating-linear-gradient(0deg, #9a3412, #ea580c 4px, #fed7aa 8px, #c2410c 12px)"
             },
             "Saturne": {
                 cat: "Géante Gazeuse • 6e du Soleil",
                 desc: "Reconnaissable entre toutes grâce à son spectaculaire système d'anneaux brillants en glace.",
                 dist: "1,43 milliard km", orbit: "29,4 ans", temp: "-140 °C", moons: "146 satellites", diam: "116 460 km", part: "Anneaux de glace",
-                bg: "radial-gradient(circle at 30% 30%, #fef9c3, #ca8a04 60%, #422006 95%)", glow: "rgba(253, 224, 71, 0.5)"
+                bg: "radial-gradient(circle at 30% 30%, #fef08a, #ca8a04 80%, #713f12 100%)"
             },
             "Uranus": {
                 cat: "Géante de Glace • 7e du Soleil",
                 desc: "Une géante glacée bleu-vert dont l'axe de rotation est incliné à 98°, elle roule sur son orbite.",
                 dist: "2,87 milliards km", orbit: "84 ans", temp: "-195 °C", moons: "28 satellites", diam: "50 724 km", part: "Rotation couchée",
-                bg: "radial-gradient(circle at 30% 30%, #99f6e4, #0d9488 60%, #042f2e 95%)", glow: "rgba(45, 212, 191, 0.5)"
+                bg: "radial-gradient(circle at 30% 30%, #5eead4, #0d9488 70%, #134e4a 100%)"
             },
             "Neptune": {
                 cat: "Géante de Glace • 8e du Soleil",
                 desc: "La planète la plus éloignée, un monde sombre et glacial balayé par des vents supersoniques.",
                 dist: "4,5 milliards km", orbit: "165 ans", temp: "-200 °C", moons: "16 satellites", diam: "49 244 km", part: "Vents violents",
-                bg: "radial-gradient(circle at 30% 30%, #93c5fd, #1d4ed8 60%, #091338 95%)", glow: "rgba(59, 130, 246, 0.5)"
+                bg: "radial-gradient(circle at 30% 30%, #93c5fd, #2563eb 60%, #1e3a8a 100%)"
             }
         };
 
@@ -619,14 +626,15 @@
             document.getElementById("specDiam").textContent = data.diam;
             document.getElementById("specPart").textContent = data.part;
 
-            const sphere = document.getElementById("showcaseSphere");
-            sphere.style.background = data.bg;
-            sphere.style.boxShadow = `inset -8px -8px 16px rgba(0, 0, 0, 0.85), 0 0 20px ${data.glow}`;
+            document.getElementById("showcaseSphere").style.background = data.bg;
 
             document.querySelectorAll(".planet-btn").forEach(btn => {
                 btn.classList.toggle("active", btn.textContent === name);
             });
         }
+
+        // تعيين الأرض افتراضياً عند التحميل
+        selectPlanet("Terre");
 
         function toggleAnimation() {
             isPaused = !isPaused;
@@ -634,7 +642,6 @@
             document.getElementById("playPauseBtn").textContent = isPaused ? "▶ REPRENDRE" : "⏸ PAUSE";
         }
 
-        // تفعيل الكاميرا المرن (بدون قيود معقدة لتفادي الأخطاء)
         async function toggleARHologram() {
             const videoElem = document.getElementById("cameraStream");
             const arBtn = document.getElementById("arHologramBtn");
@@ -653,7 +660,6 @@
                     arBtn.textContent = "❌ QUITTER HOLOGRAM";
                     arBtn.classList.add("active-ar");
                 } catch (err) {
-                    // محاولة احتياطية بأي كاميرا متوفرة في حالة رفض الخلفية
                     try {
                         const fallbackStream = await navigator.mediaDevices.getUserMedia({ video: true });
                         videoElem.srcObject = fallbackStream;
@@ -662,7 +668,7 @@
                         arBtn.textContent = "❌ QUITTER HOLOGRAM";
                         arBtn.classList.add("active-ar");
                     } catch (fallbackErr) {
-                        alert("Impossible d'accéder à la caméra. Vérifie les autorisations du navigateur.");
+                        alert("Accès caméra refusé. Assure-toi d'ouvrir le site directement dans Google Chrome et d'autoriser la caméra dans les paramètres du site.");
                         arActive = false;
                     }
                 }
