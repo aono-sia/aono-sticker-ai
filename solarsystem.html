@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROTATE X • 360° Hologram AR Studio</title>
+    <title>ROTATE X • 360° AR Hologram Studio</title>
     <style>
         * {
             box-sizing: border-box;
@@ -23,14 +23,14 @@
             overflow-x: hidden;
         }
 
-        /* كاميرا التليفون الحية لوضع الهولوغرام في الواقع المعزز */
+        /* الكاميرا الحية تغطي الشاشة بالكامل لتشكل واقع الهولوغرام الحقيقي */
         #cameraStream {
             position: fixed;
             inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: -5;
+            z-index: -1;
             display: none;
         }
 
@@ -38,7 +38,7 @@
             position: fixed;
             inset: 0;
             background: radial-gradient(ellipse at 50% 30%, #030f24 0%, #01040a 70%, #000000 100%);
-            z-index: -4;
+            z-index: -2;
             transition: opacity 0.4s ease;
         }
 
@@ -86,7 +86,7 @@
             box-shadow: 0 0 15px rgba(56, 189, 248, 0.7);
         }
 
-        /* مسرح الهولوغرام السيبراني 360 درجة */
+        /* مسرح الهولوغرام الفضائي */
         .universe-stage {
             position: relative;
             width: 100%;
@@ -100,27 +100,27 @@
             border-radius: 16px;
             border: 1px solid rgba(56, 189, 248, 0.35);
             background: 
-                radial-gradient(circle at center, rgba(14, 165, 233, 0.18) 0%, transparent 75%),
-                linear-gradient(rgba(56, 189, 248, 0.06) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(56, 189, 248, 0.06) 1px, transparent 1px);
+                radial-gradient(circle at center, rgba(14, 165, 233, 0.15) 0%, transparent 75%),
+                linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
             background-size: 100% 100%, 30px 30px, 30px 30px;
             margin-bottom: 10px;
             touch-action: none;
             transition: all 0.4s ease;
         }
 
-        /* وضع الهولوغرام النشط (شبكة نيون وأشعة ضوئية تماماً مثل التصاور) */
-        .ar-mode .space-bg { opacity: 0.12; }
+        /* عند تفعيل الهولوغرام، تظهر الكاميرا في الخلفية بوضوح تام */
+        .ar-mode .space-bg, .ar-mode .stars { opacity: 0.15; }
         .ar-mode .universe-stage {
             border: 2px solid #38bdf8;
-            background: rgba(2, 18, 40, 0.25);
-            box-shadow: 0 0 60px rgba(56, 189, 248, 0.9), inset 0 0 30px rgba(56, 189, 248, 0.4);
+            background: rgba(2, 13, 30, 0.15);
+            box-shadow: 0 0 50px rgba(56, 189, 248, 0.9);
         }
 
-        /* قاعدة الهولوغرام الضوئية في الأسفل */
+        /* قاعدة الهولوغرام الضوئية التي يخرج منها العرض */
         .hologram-projector-pad {
             position: absolute;
-            bottom: 2px;
+            bottom: 4px;
             width: 170px;
             height: 30px;
             background: radial-gradient(ellipse at center, #38bdf8 0%, #0284c7 50%, #0f172a 100%);
@@ -137,13 +137,13 @@
             100% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 50px #38bdf8, 0 0 90px #0284c7; }
         }
 
-        /* الشعاع الضوئي المخروطي للهولوغرام (حزمة الضوء الصاعدة نحو الكواكب) */
+        /* الشعاع الضوئي الصاعد من الكاميرا/القاعدة */
         .hologram-beam {
             position: absolute;
             bottom: 15px;
             width: 310px;
             height: 240px;
-            background: linear-gradient(to top, rgba(56, 189, 248, 0.55) 0%, rgba(56, 189, 248, 0.05) 85%, transparent 100%);
+            background: linear-gradient(to top, rgba(56, 189, 248, 0.55) 0%, rgba(56, 189, 248, 0.03) 85%, transparent 100%);
             clip-path: polygon(30% 100%, 70% 100%, 94% 0%, 6% 0%);
             display: none;
             z-index: 4;
@@ -151,7 +151,7 @@
         }
         .ar-mode .hologram-beam { display: block; }
 
-        /* المستوى الفضائي 3D والكواكب المجسمة */
+        /* المستوى الفضائي 360 درجة */
         .solar-plane {
             position: relative;
             width: 340px;
@@ -163,22 +163,21 @@
             align-items: center;
         }
 
-        /* الشمس الضخمة الملتهبة في المركز */
+        /* الشمس الكروية المجسمة الضخمة */
         .sun-3d {
             position: absolute;
-            width: 65px;
-            height: 65px;
+            width: 58px;
+            height: 58px;
             background: radial-gradient(circle at 35% 35%, #fffbf0 0%, #fde047 25%, #f97316 60%, #c2410c 85%, #7c2d12 100%);
             border-radius: 50%;
-            transform: rotateX(-25deg);
-            box-shadow: 0 0 50px #fbbf24, 0 0 100px #f97316, inset -12px -12px 25px rgba(0,0,0,0.8);
+            box-shadow: 0 0 45px #fbbf24, 0 0 90px #f97316, inset -10px -10px 20px rgba(0,0,0,0.8);
             z-index: 15;
             animation: sunPulse 3s infinite alternate;
         }
 
         @keyframes sunPulse {
-            0% { box-shadow: 0 0 40px #fbbf24, 0 0 80px #f97316; }
-            100% { box-shadow: 0 0 60px #fef08a, 0 0 120px #ea580c; }
+            0% { box-shadow: 0 0 35px #fbbf24, 0 0 70px #f97316; }
+            100% { box-shadow: 0 0 50px #fef08a, 0 0 100px #ea580c; }
         }
 
         .orbit-ring {
@@ -191,59 +190,53 @@
 
         .paused .orbit-ring, .paused .planet-3d { animation-play-state: paused !important; }
 
-        /* الكواكب كُرات مجسمة وبارزة تماماً (Spheres 3D) */
+        /* الكواكب كُرات دائرية مجسمة حقيقية 100% بدون أي تسطح */
         .planet-3d {
             position: absolute;
-            top: 0;
+            top: 50%;
             left: 50%;
             border-radius: 50%;
             cursor: pointer;
-            transform-style: preserve-3d;
-            animation: counterSpin linear infinite;
+            transform: translate(-50%, -50%);
             box-shadow: inset -6px -6px 15px rgba(0, 0, 0, 0.95), 0 0 16px rgba(56, 189, 248, 0.6);
         }
 
-        .orb-1 { width: 80px; height: 80px; animation-duration: 7s; }
+        .orb-1 { width: 75px; height: 75px; animation-duration: 7s; }
         .pl-mercure { width: 14px; height: 14px; background: radial-gradient(circle at 30% 30%, #e2e8f0, #64748b 55%, #1e293b 100%); }
 
-        .orb-2 { width: 115px; height: 115px; animation-duration: 10s; }
+        .orb-2 { width: 110px; height: 110px; animation-duration: 10s; }
         .pl-venus { width: 18px; height: 18px; background: radial-gradient(circle at 30% 30%, #fef08a, #d97706 50%, #78350f 100%); }
 
-        .orb-3 { width: 155px; height: 155px; animation-duration: 14s; }
+        .orb-3 { width: 150px; height: 150px; animation-duration: 14s; }
         .pl-terre { width: 20px; height: 20px; background: radial-gradient(circle at 30% 30%, #93c5fd, #2563eb 45%, #15803d 75%, #020617 100%); }
 
-        .orb-4 { width: 195px; height: 195px; animation-duration: 19s; }
+        .orb-4 { width: 190px; height: 190px; animation-duration: 19s; }
         .pl-mars { width: 16px; height: 16px; background: radial-gradient(circle at 30% 30%, #fca5a5, #dc2626 55%, #7f1d1d 100%); }
 
-        .orb-5 { width: 240px; height: 240px; animation-duration: 26s; }
-        .pl-jupiter { width: 30px; height: 30px; background: radial-gradient(circle at 30% 30%, #fed7aa, #c2410c 50%, #431407 100%); }
+        .orb-5 { width: 235px; height: 235px; animation-duration: 26s; }
+        .pl-jupiter { width: 28px; height: 28px; background: radial-gradient(circle at 30% 30%, #fed7aa, #c2410c 50%, #431407 100%); }
 
-        .orb-6 { width: 290px; height: 290px; animation-duration: 34s; }
-        .pl-saturne { width: 24px; height: 24px; background: radial-gradient(circle at 30% 30%, #fef9c3, #ca8a04 60%, #422006 100%); }
+        .orb-6 { width: 280px; height: 280px; animation-duration: 34s; }
+        .pl-saturne { width: 22px; height: 22px; background: radial-gradient(circle at 30% 30%, #fef9c3, #ca8a04 60%, #422006 100%); }
         .saturn-rings {
             position: absolute;
             top: 50%; left: 50%;
-            width: 52px; height: 16px;
-            border: 4px solid rgba(234, 179, 8, 0.9);
+            width: 48px; height: 15px;
+            border: 3.5px solid rgba(234, 179, 8, 0.9);
             border-radius: 50%;
             transform: translate(-50%, -50%) rotate(-18deg);
-            box-shadow: 0 0 12px rgba(250, 204, 21, 0.85);
+            box-shadow: 0 0 10px rgba(250, 204, 21, 0.85);
         }
 
-        .orb-7 { width: 330px; height: 330px; animation-duration: 44s; }
+        .orb-7 { width: 320px; height: 320px; animation-duration: 44s; }
         .pl-uranus { width: 18px; height: 18px; background: radial-gradient(circle at 30% 30%, #99f6e4, #0d9488 60%, #042f2e 100%); }
 
-        .orb-8 { width: 370px; height: 370px; animation-duration: 54s; }
+        .orb-8 { width: 360px; height: 360px; animation-duration: 54s; }
         .pl-neptune { width: 18px; height: 18px; background: radial-gradient(circle at 30% 30%, #93c5fd, #1d4ed8 60%, #091338 100%); }
 
         @keyframes orbitSpin {
             0% { transform: rotateZ(0deg); }
             100% { transform: rotateZ(360deg); }
-        }
-
-        @keyframes counterSpin {
-            0% { transform: translate(-50%, -50%) rotateZ(0deg) rotateX(-25deg); }
-            100% { transform: translate(-50%, -50%) rotateZ(-360deg) rotateX(-25deg); }
         }
 
         .control-bar {
@@ -274,7 +267,6 @@
             box-shadow: 0 0 20px #38bdf8;
         }
 
-        /* البطاقة العلمية الفخمة */
         .encyclopedia-card {
             background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(7, 13, 28, 0.98));
             border: 1px solid rgba(56, 189, 248, 0.45);
@@ -404,7 +396,7 @@
 </head>
 <body>
 
-    <!-- بث الكاميرا الحية للهولوغرام الواقع المعزز -->
+    <!-- الكاميرا الحية تغطي الشاشة بالكامل عند تفعيل الهولوغرام -->
     <video id="cameraStream" autoplay playsinline></video>
 
     <div class="space-bg"></div>
@@ -416,7 +408,6 @@
     </header>
 
     <div class="universe-stage" id="universeStage">
-        <!-- قاعدة الإسقاط الضوئي وشعاع الهولوغرام -->
         <div class="hologram-projector-pad"></div>
         <div class="hologram-beam"></div>
 
@@ -548,7 +539,7 @@
         const buttonsGrid = document.getElementById("buttonsGrid");
         let isPaused = false;
         let arActive = false;
-        let rotateX = 25, rotateZ = 0;
+        let rotateX = 20, rotateZ = 0;
         let isDragging = false, startX = 0, startY = 0;
 
         const stage = document.getElementById("universeStage");
@@ -579,7 +570,7 @@
             rotateX -= deltaY * 0.3;
             
             if(rotateX < 5) rotateX = 5;
-            if(rotateX > 70) rotateX = 70;
+            if(rotateX > 60) rotateX = 60;
             
             plane.style.transform = `rotateX(${rotateX}deg) rotateZ(${rotateZ}deg)`;
             startX = x; startY = y;
@@ -623,7 +614,7 @@
             document.getElementById("playPauseBtn").textContent = isPaused ? "▶ REPRENDRE" : "⏸ PAUSE";
         }
 
-        // تشغيل كاميرا الواقع المعزز والهولوغرام بسلاسة تامة بدون أخطاء مزعجة
+        // تشغيل الكاميرا الخلفية الحقيقية وتفعيل وضع الواقع المعزز AR
         async function toggleARHologram() {
             const videoElem = document.getElementById("cameraStream");
             const arBtn = document.getElementById("arHologramBtn");
@@ -648,7 +639,7 @@
                         videoElem.srcObject = fallbackStream;
                         videoElem.style.display = "block";
                     } catch (fallbackErr) {
-                        // وضع الهولوغرام السيبراني الافتراضي يشتغل بسحر فخم بدون إظهار أي رسالة خطأ
+                        // في حالة حظر المتصفح، يشتغل الهولوغرام السيبراني الافتراضي بسلاسة بدون أي إزعاج
                     }
                 }
             } else {
