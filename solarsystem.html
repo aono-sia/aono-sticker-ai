@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Assia Hologram Universe AR</title>
+    <title>Assia Universe 360° • AR Pro</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,17 +13,17 @@
         }
 
         body {
-            background-color: #010409;
+            background-color: #010308;
             color: #f8fafc;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 12px 10px 40px;
+            padding: 10px 10px 40px;
             overflow-x: hidden;
         }
 
-        /* كاميرا التليفون الحية لوضع الهولوغرام */
+        /* كاميرا التليفون الحية لوضع الهولوغرام بدون أخطاء */
         #cameraStream {
             position: fixed;
             inset: 0;
@@ -34,23 +34,22 @@
             display: none;
         }
 
-        /* خلفية الفضاء الافتراضية */
         .space-bg {
             position: fixed;
             inset: 0;
-            background: radial-gradient(ellipse at 50% 30%, #0a192f 0%, #020617 70%, #000000 100%);
+            background: radial-gradient(ellipse at 50% 30%, #081b3a 0%, #020617 70%, #000000 100%);
             z-index: -4;
-            transition: opacity 0.4s;
+            transition: opacity 0.5s;
         }
 
         .stars {
             position: fixed;
             inset: 0;
             background-image: 
-                radial-gradient(1.5px 1.5px at 25px 40px, #ffffff, transparent),
-                radial-gradient(1.5px 1.5px at 120px 180px, #38bdf8, transparent),
-                radial-gradient(2px 2px at 220px 90px, #fde047, transparent);
-            background-size: 320px 240px;
+                radial-gradient(1.5px 1.5px at 20px 40px, #ffffff, transparent),
+                radial-gradient(1.5px 1.5px at 140px 180px, #38bdf8, transparent),
+                radial-gradient(2px 2px at 240px 100px, #fde047, transparent);
+            background-size: 300px 220px;
             z-index: -3;
         }
 
@@ -61,8 +60,8 @@
             justify-content: space-between;
             align-items: center;
             padding: 8px 12px;
-            background: rgba(15, 23, 42, 0.75);
-            border: 1px solid rgba(56, 189, 248, 0.35);
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(56, 189, 248, 0.4);
             border-radius: 12px;
             backdrop-filter: blur(12px);
             margin-bottom: 10px;
@@ -84,73 +83,72 @@
             border-radius: 6px;
             background: linear-gradient(135deg, #0284c7, #38bdf8);
             color: #fff;
-            box-shadow: 0 0 12px rgba(56, 189, 248, 0.6);
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.7);
         }
 
-        /* مسرح النظام الشمسي 3D وتأثير الهولوغرام */
+        /* مسرح 360 درجة وتأثير الهولوغرام المتطور */
         .universe-stage {
             position: relative;
             width: 100%;
             max-width: 410px;
-            height: 280px;
+            height: 275px;
             display: flex;
             justify-content: center;
             align-items: center;
             perspective: 1000px;
             overflow: visible;
             border-radius: 16px;
-            border: 1px solid rgba(56, 189, 248, 0.3);
+            border: 1px solid rgba(56, 189, 248, 0.35);
             background: 
-                radial-gradient(circle at center, rgba(14, 165, 233, 0.15) 0%, transparent 70%),
-                linear-gradient(rgba(56, 189, 248, 0.05) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(56, 189, 248, 0.05) 1px, transparent 1px);
+                radial-gradient(circle at center, rgba(14, 165, 233, 0.18) 0%, transparent 75%),
+                linear-gradient(rgba(56, 189, 248, 0.06) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.06) 1px, transparent 1px);
             background-size: 100% 100%, 30px 30px, 30px 30px;
             margin-bottom: 10px;
             transition: all 0.4s ease;
+            touch-action: none;
         }
 
-        /* وضع الهولوغرام AR: ظهور قاعدة الإسقاط والشعاع الضوئي */
         .ar-mode .space-bg, .ar-mode .stars {
-            opacity: 0.1; /* إخفاء الفضاء تدريجياً لتبان العالم الحقيقي عبر الكاميرا */
+            opacity: 0.08;
         }
 
         .ar-mode .universe-stage {
             border: 2px solid #38bdf8;
-            background: rgba(2, 13, 30, 0.25);
-            box-shadow: 0 0 40px rgba(56, 189, 248, 0.7);
+            background: rgba(2, 13, 30, 0.2);
+            box-shadow: 0 0 45px rgba(56, 189, 248, 0.8);
         }
 
-        /* قاعدة جهاز الهولوغرام السيبراني (Projector Pad) وأشعة الضوء */
+        /* قاعدة جهاز الهولوغرام الضوئي السيبراني */
         .hologram-projector-pad {
             position: absolute;
-            bottom: 0;
-            width: 140px;
-            height: 24px;
+            bottom: -2px;
+            width: 150px;
+            height: 26px;
             background: radial-gradient(ellipse at center, #38bdf8 0%, #0284c7 50%, #0f172a 100%);
             border-radius: 50%;
-            box-shadow: 0 0 25px #38bdf8, 0 0 50px rgba(56, 189, 248, 0.8);
+            box-shadow: 0 0 30px #38bdf8, 0 0 60px rgba(56, 189, 248, 0.9);
             display: none;
             z-index: 5;
-            animation: padPulse 2s infinite alternate;
+            animation: padGlow 2s infinite alternate;
         }
 
         .ar-mode .hologram-projector-pad {
             display: block;
         }
 
-        @keyframes padPulse {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            100% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 35px #38bdf8, 0 0 70px #0284c7; }
+        @keyframes padGlow {
+            0% { transform: scale(0.95); opacity: 0.85; box-shadow: 0 0 25px #38bdf8; }
+            100% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 40px #38bdf8, 0 0 80px #0284c7; }
         }
 
-        /* الشعاع الضوئي المخروطي (Hologram Light Beam) */
         .hologram-beam {
             position: absolute;
-            bottom: 12px;
-            width: 280px;
-            height: 220px;
-            background: linear-gradient(to top, rgba(56, 189, 248, 0.4) 0%, rgba(56, 189, 248, 0.03) 80%, transparent 100%);
-            clip-path: polygon(35% 100%, 65% 100%, 90% 0%, 10% 0%);
+            bottom: 10px;
+            width: 290px;
+            height: 230px;
+            background: linear-gradient(to top, rgba(56, 189, 248, 0.45) 0%, rgba(56, 189, 248, 0.04) 85%, transparent 100%);
+            clip-path: polygon(32% 100%, 68% 100%, 92% 0%, 8% 0%);
             display: none;
             z-index: 4;
             pointer-events: none;
@@ -158,47 +156,40 @@
 
         .ar-mode .hologram-beam {
             display: block;
-            animation: beamFlicker 3s infinite alternate;
         }
 
-        @keyframes beamFlicker {
-            0% { opacity: 0.7; }
-            100% { opacity: 1; }
-        }
-
-        /* كواكب النظام الشمسي 3D ودوران 360 درجة */
+        /* الكواكب والمدارات 3D */
         .solar-plane {
             position: relative;
             width: 340px;
             height: 340px;
             transform-style: preserve-3d;
-            transform: rotateX(58deg);
+            transform: rotateX(55deg) rotateZ(0deg);
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: transform 0.5s ease;
         }
 
         .sun-3d {
             position: absolute;
-            width: 48px;
-            height: 48px;
+            width: 50px;
+            height: 50px;
             background: radial-gradient(circle at 35% 35%, #ffffff 5%, #fde047 30%, #f59e0b 65%, #b45309 100%);
             border-radius: 50%;
-            transform: rotateX(-58deg);
-            box-shadow: 0 0 30px #fbbf24, 0 0 65px #f59e0b;
+            transform: rotateX(-55deg);
+            box-shadow: 0 0 35px #fbbf24, 0 0 70px #f59e0b;
             z-index: 15;
             animation: sunPulse 3s infinite alternate;
         }
 
         @keyframes sunPulse {
-            0% { box-shadow: 0 0 25px #fbbf24; }
-            100% { box-shadow: 0 0 45px #fef08a, 0 0 90px #ea580c; }
+            0% { box-shadow: 0 0 30px #fbbf24; }
+            100% { box-shadow: 0 0 50px #fef08a, 0 0 100px #ea580c; }
         }
 
         .orbit-ring {
             position: absolute;
-            border: 1px solid rgba(125, 211, 252, 0.3);
+            border: 1px solid rgba(125, 211, 252, 0.35);
             border-radius: 50%;
             transform-style: preserve-3d;
             animation: orbitSpin linear infinite;
@@ -219,7 +210,6 @@
             box-shadow: inset -3px -3px 6px rgba(0, 0, 0, 0.9), 0 0 12px rgba(255, 255, 255, 0.6);
         }
 
-        /* مسارات المدارات بدقة 360 */
         .orb-1 { width: 72px; height: 72px; animation-duration: 6s; }
         .pl-mercure { width: 10px; height: 10px; background: radial-gradient(circle at 30% 30%, #e2e8f0, #475569); }
 
@@ -258,11 +248,10 @@
         }
 
         @keyframes counterSpin {
-            0% { transform: translate(-50%, -50%) rotateZ(0deg) rotateX(-58deg); }
-            100% { transform: translate(-50%, -50%) rotateZ(-360deg) rotateX(-58deg); }
+            0% { transform: translate(-50%, -50%) rotateZ(0deg) rotateX(-55deg); }
+            100% { transform: translate(-50%, -50%) rotateZ(-360deg) rotateX(-55deg); }
         }
 
-        /* أزرار التحكم والهولوغرام */
         .control-bar {
             width: 100%;
             max-width: 410px;
@@ -274,7 +263,7 @@
 
         .action-btn {
             flex: 1;
-            background: rgba(56, 189, 248, 0.2);
+            background: rgba(56, 189, 248, 0.22);
             border: 1px solid #38bdf8;
             color: #fff;
             padding: 9px;
@@ -288,10 +277,9 @@
 
         .action-btn.active-ar {
             background: #0284c7;
-            box-shadow: 0 0 18px #38bdf8;
+            box-shadow: 0 0 20px #38bdf8;
         }
 
-        /* البطاقة العلمية التفاعلية */
         .encyclopedia-card {
             background: linear-gradient(145deg, rgba(15, 23, 42, 0.95), rgba(7, 13, 28, 0.98));
             border: 1px solid rgba(56, 189, 248, 0.45);
@@ -422,7 +410,6 @@
 </head>
 <body>
 
-    <!-- فيديو كاميرا التليفون الحية -->
     <video id="cameraStream" autoplay playsinline></video>
 
     <div class="space-bg"></div>
@@ -430,12 +417,10 @@
 
     <header>
         <span class="brand">ASSIA UNIVERSE • 360° AR</span>
-        <span class="scope-badge">HOLO-PAD</span>
+        <span class="scope-badge">PRO</span>
     </header>
 
-    <!-- مسرح النظام الشمسي 3D مع منصة الهولوغرام الضوئية -->
     <div class="universe-stage" id="universeStage">
-        <!-- قاعدة الهولوغرام النيون وأشعة الضوء -->
         <div class="hologram-projector-pad"></div>
         <div class="hologram-beam"></div>
 
@@ -457,13 +442,11 @@
         </div>
     </div>
 
-    <!-- شريط التحكم وزر الهولوغرام -->
     <div class="control-bar">
         <button class="action-btn" id="playPauseBtn" onclick="toggleAnimation()">⏸ PAUSE</button>
         <button class="action-btn" id="arHologramBtn" onclick="toggleARHologram()">🌐 PROJECTION HOLOGRAM</button>
     </div>
 
-    <!-- البطاقة العلمية -->
     <div class="encyclopedia-card" id="encCard">
         <div class="enc-top">
             <div class="planet-3d-showcase" id="showcaseSphere"></div>
@@ -570,10 +553,9 @@
         let isPaused = false;
         let arActive = false;
 
-        // متغيرات الدوران الحر 360 درجة عبر اللمس أو الماوس
         let isDragging = false;
         let startX = 0, startY = 0;
-        let rotateX = 58, rotateZ = 0;
+        let rotateX = 55, rotateZ = 0;
 
         const stage = document.getElementById("universeStage");
         const plane = document.getElementById("solarPlane");
@@ -584,10 +566,10 @@
 
         stage.addEventListener("touchstart", (e) => {
             if(e.touches.length === 1) startDrag(e.touches[0].clientX, e.touches[0].clientY);
-        });
+        }, {passive: true});
         stage.addEventListener("touchmove", (e) => {
             if(e.touches.length === 1) onDrag(e.touches[0].clientX, e.touches[0].clientY);
-        });
+        }, {passive: true});
         window.addEventListener("touchend", stopDrag);
 
         function startDrag(x, y) {
@@ -603,11 +585,10 @@
             rotateZ += deltaX * 0.5;
             rotateX -= deltaY * 0.3;
             
-            // قيد زوايا الدوران باش يبقى المنظور واقعي 3D
             if(rotateX < 10) rotateX = 10;
-            if(rotateX < 85) {
-                plane.style.transform = `rotateX(${rotateX}deg) rotateZ(${rotateZ}deg)`;
-            }
+            if(rotateX > 85) rotateX = 85;
+            
+            plane.style.transform = `rotateX(${rotateX}deg) rotateZ(${rotateZ}deg)`;
             startX = x;
             startY = y;
         }
@@ -653,7 +634,7 @@
             document.getElementById("playPauseBtn").textContent = isPaused ? "▶ REPRENDRE" : "⏸ PAUSE";
         }
 
-        // تفعيل كاميرا الهولوغرام الحية مع قاعدة الإسقاط الضوئي
+        // تفعيل الكاميرا المرن (بدون قيود معقدة لتفادي الأخطاء)
         async function toggleARHologram() {
             const videoElem = document.getElementById("cameraStream");
             const arBtn = document.getElementById("arHologramBtn");
@@ -664,17 +645,26 @@
             if (arActive) {
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({
-                        video: { facingMode: { exact: "environment" } }
-                    }).catch(() => navigator.mediaDevices.getUserMedia({ video: true }));
-                    
+                        video: { facingMode: "environment" }
+                    });
                     videoElem.srcObject = stream;
                     videoElem.style.display = "block";
                     bodyElem.classList.add("ar-mode");
                     arBtn.textContent = "❌ QUITTER HOLOGRAM";
                     arBtn.classList.add("active-ar");
                 } catch (err) {
-                    alert("Erreur d'accès à la caméra. Vérifie les permissions.");
-                    arActive = false;
+                    // محاولة احتياطية بأي كاميرا متوفرة في حالة رفض الخلفية
+                    try {
+                        const fallbackStream = await navigator.mediaDevices.getUserMedia({ video: true });
+                        videoElem.srcObject = fallbackStream;
+                        videoElem.style.display = "block";
+                        bodyElem.classList.add("ar-mode");
+                        arBtn.textContent = "❌ QUITTER HOLOGRAM";
+                        arBtn.classList.add("active-ar");
+                    } catch (fallbackErr) {
+                        alert("Impossible d'accéder à la caméra. Vérifie les autorisations du navigateur.");
+                        arActive = false;
+                    }
                 }
             } else {
                 const stream = videoElem.srcObject;
