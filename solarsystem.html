@@ -23,17 +23,22 @@
             position: relative;
         }
 
+        /* الكاميرا الحية في الخلفية الحقيقية بـ Z-Index مضبوط */
         #cameraStream {
             position: fixed;
             inset: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: 1;
+            z-index: -1;
             display: none;
         }
+        body.ar-mode #cameraStream {
+            display: block;
+            z-index: 5;
+        }
 
-        /* خلفية الفضاء الافتراضي الفاخرة للبديل السيبراني */
+        /* الخلفية الفضائية الأساسية */
         .space-bg {
             position: fixed;
             inset: 0;
@@ -70,12 +75,15 @@
             opacity: 0.6;
         }
 
-        /* وضع الهولوغرام السيبراني المتوهج */
-        .ar-mode .space-bg {
-            background: radial-gradient(circle at 50% 50%, #022347 0%, #010c1c 70%, #000000 100%);
+        /* عند تفعيل الهولوغرام، تختفي النجوم والخلفية السوداء كلياً لتظهر الكاميرا بوضوح */
+        body.ar-mode .space-bg, 
+        body.ar-mode .stars-layer-1, 
+        body.ar-mode .stars-layer-2 {
+            display: none;
         }
-        .ar-mode .solar-system-3d {
-            filter: drop-shadow(0 0 30px #38bdf8) brightness(1.35);
+
+        body.ar-mode .solar-system-3d {
+            filter: drop-shadow(0 0 35px #38bdf8) brightness(1.35);
         }
 
         .ar-controls {
@@ -198,7 +206,7 @@
             z-index: 12;
             animation: padPulse 2s infinite alternate;
         }
-        .ar-mode .hologram-projector-pad { display: block; }
+        body.ar-mode .hologram-projector-pad { display: block; }
 
         @keyframes padPulse {
             0% { transform: scale(0.95); opacity: 0.8; }
@@ -216,7 +224,7 @@
             z-index: 11;
             pointer-events: none;
         }
-        .ar-mode .hologram-beam { display: block; }
+        body.ar-mode .hologram-beam { display: block; }
 
         .solar-system-3d {
             position: relative;
@@ -467,7 +475,7 @@
 </head>
 <body>
 
-    <!-- الكاميرا الحية مع نظام ذكي لتجنب تعطل التطبيق -->
+    <!-- الكاميرا الحية للهولوغرام -->
     <video id="cameraStream" autoplay playsinline muted></video>
 
     <div class="space-bg"></div>
@@ -625,15 +633,6 @@
             startX = e.clientX; startY = e.clientY;
         });
 
-        window.addEventListener("mousemove", (e) => {
-            if (!isDragging) return;
-            const dx = e.clientX - startX;
-            const dy = e.clientY - startY;
-            if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
-            updateRotation(dx, dy);
-            startX = e.clientX; startY = e.clientY;
-        });
-
         window.addEventListener("mouseup", () => { isDragging = false; });
 
         viewport.addEventListener("touchstart", (e) => {
@@ -695,7 +694,7 @@
             document.getElementById("encyclopediaOverlay").classList.remove("active");
         }
 
-        // نظام ذكي وآمن لتشغيل الكاميرا أو الانتقال لوضع الهولوغرام السيبراني الفاخر تلقائياً
+        // تشغيل الكاميرا الحقيقية بطلب إذن صريح وواضح
         let arActive = false;
         async function toggleARHologram() {
             const videoElem = document.getElementById("cameraStream");
@@ -705,10 +704,10 @@
             arActive = !arActive;
 
             if (arActive) {
-                arBtn.textContent = "⌛ CONNECTING...";
+                arBtn.textContent = "⌛ WAITING PERMISSION...";
                 
                 try {
-                    // محاولة فتح الكاميرا
+                    // طلب الكاميرا الخلفية مباشرة
                     const stream = await navigator.mediaDevices.getUserMedia({
                         video: { facingMode: "environment" },
                         audio: false
@@ -716,18 +715,15 @@
 
                     videoElem.srcObject = stream;
                     await videoElem.play();
-                    videoElem.style.display = "block";
                     
                     bodyElem.classList.add("ar-mode");
                     arBtn.textContent = "❌ QUIT HOLOGRAM";
                     arBtn.classList.add("active");
 
                 } catch (err) {
-                    // إخفاء رسالة الخطأ المزعجة وتفعيل وضع الهولوغرام السيبراني الفاخر مباشرةً كبديل فنان 100%
-                    videoElem.style.display = "none";
-                    bodyElem.classList.add("ar-mode");
-                    arBtn.textContent = "❌ QUIT HOLOGRAM";
-                    arBtn.classList.add("active");
+                    arActive = false;
+                    arBtn.textContent = "🌐 HOLOGRAM";
+                    alert("المرجو السماح لمتصفح الهاتف بالوصول إلى الكاميرا من إعدادات المتصفح لكي يعمل الهولوغرام الحقيقي.");
                 }
             } else {
                 const stream = videoElem.srcObject;
@@ -736,7 +732,6 @@
                 }
                 videoElem.pause();
                 videoElem.srcObject = null;
-                videoElem.style.display = "none";
                 
                 bodyElem.classList.remove("ar-mode");
                 arBtn.textContent = "🌐 HOLOGRAM";
