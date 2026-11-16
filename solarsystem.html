@@ -30,7 +30,7 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            z-index: 1; /* تأكيد ظهور الكاميرا في الواجهة الخلفية عند التفعيل */
+            z-index: 1;
             display: none;
         }
 
@@ -71,7 +71,7 @@
             opacity: 0.6;
         }
 
-        /* عند تفعيل وضع الهولوغرام، تختفي الخلفية السوداء نهائياً لتظهر كاميرا التليفون بوضوح */
+        /* عند تفعيل الهولوغرام، تختفي الخلفية لتظهر الكاميرا بوضوح */
         .ar-mode .space-bg, .ar-mode .stars-layer-1, .ar-mode .stars-layer-2 {
             opacity: 0;
             pointer-events: none;
@@ -465,7 +465,7 @@
 </head>
 <body>
 
-    <!-- الكاميرا الحية لتظهر في الخلفية الحقيقية بوضوح -->
+    <!-- الكاميرا الحية مع طلب إذن الاتصال المباشر -->
     <video id="cameraStream" autoplay playsinline muted></video>
 
     <div class="space-bg"></div>
@@ -691,6 +691,7 @@
             document.getElementById("encyclopediaOverlay").classList.remove("active");
         }
 
+        // دالة الاتصال المباشر والآمن بكاميرا التليفون لتفعيل الواقع المعزز AR
         let arActive = false;
         async function toggleARHologram() {
             const videoElem = document.getElementById("cameraStream");
@@ -700,33 +701,49 @@
             arActive = !arActive;
 
             if (arActive) {
-                bodyElem.classList.add("ar-mode");
-                arBtn.textContent = "❌ QUIT HOLOGRAM";
-                arBtn.classList.add("active");
-
+                arBtn.textContent = "⌛ CONNECTING...";
+                
                 try {
-                    const stream = await navigator.mediaDevices.getUserMedia({
-                        video: { facingMode: "environment" }
-                    });
+                    // طلب الكاميرا الخلفية كخيار أول، وإلا الكاميرا المتاحة
+                    const constraints = {
+                        video: {
+                            facingMode: { ideal: "environment" },
+                            width: { ideal: 1280 },
+                            height: { ideal: 720 }
+                        },
+                        audio: false
+                    };
+
+                    let stream;
+                    try {
+                        stream = await navigator.mediaDevices.getUserMedia(constraints);
+                    } catch (e) {
+                        // خيار احتياطي في حالة عدم دعم الكاميرا الخلفية بالمعايير المحددة
+                        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                    }
+
                     videoElem.srcObject = stream;
                     await videoElem.play();
                     videoElem.style.display = "block";
+                    
+                    bodyElem.classList.add("ar-mode");
+                    arBtn.textContent = "❌ QUIT HOLOGRAM";
+                    arBtn.classList.add("active");
+
                 } catch (err) {
-                    try {
-                        const fallbackStream = await navigator.mediaDevices.getUserMedia({ video: true });
-                        videoElem.srcObject = fallbackStream;
-                        await videoElem.play();
-                        videoElem.style.display = "block";
-                    } catch (e) {
-                        console.log("Camera access not available, showing AR hologram stage.");
-                    }
+                    arActive = false;
+                    arBtn.textContent = "🌐 HOLOGRAM";
+                    alert("لم يتم العثور على إذن الكاميرا أو أن متصفحك يمنع تشغيلها. يرجى السماح بالصلاحيات من إعدادات المتصفح.");
                 }
             } else {
                 const stream = videoElem.srcObject;
                 if (stream) {
                     stream.getTracks().forEach(track => track.stop());
                 }
+                videoElem.pause();
+                videoElem.srcObject = null;
                 videoElem.style.display = "none";
+                
                 bodyElem.classList.remove("ar-mode");
                 arBtn.textContent = "🌐 HOLOGRAM";
                 arBtn.classList.remove("active");
