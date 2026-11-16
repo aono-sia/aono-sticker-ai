@@ -3,7 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ROTATE X • 360° AR Hologram Universe</title>
+    <title>ROTATE X • Ultimate 360° AR Hologram Universe & Encyclopedia</title>
+    <!-- استدعاء محرك الواقع المعزز الرسمي من جوجل -->
+    <script type="module" src="https://unpkg.com/@model-viewer/public@v3.4.0/dist/model-viewer.min.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -23,21 +25,6 @@
             position: relative;
         }
 
-        /* الكاميرا الحية في الخلفية الحقيقية بـ Z-Index مضبوط */
-        #cameraStream {
-            position: fixed;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: -1;
-            display: none;
-        }
-        body.ar-mode #cameraStream {
-            display: block;
-            z-index: 5;
-        }
-
         /* الخلفية الفضائية الأساسية */
         .space-bg {
             position: fixed;
@@ -47,14 +34,13 @@
             transition: opacity 0.4s ease;
         }
 
-        .stars-layer-1, .stars-layer-2 {
+        .stars-layer-1, .stars-layer-2, .stars-layer-3 {
             position: fixed;
             inset: -50%;
             width: 200%;
             height: 200%;
             z-index: 3;
             pointer-events: none;
-            transition: opacity 0.4s ease;
         }
 
         .stars-layer-1 {
@@ -75,29 +61,50 @@
             opacity: 0.6;
         }
 
-        /* عند تفعيل الهولوغرام، تختفي النجوم والخلفية السوداء كلياً لتظهر الكاميرا بوضوح */
-        body.ar-mode .space-bg, 
-        body.ar-mode .stars-layer-1, 
-        body.ar-mode .stars-layer-2 {
-            display: none;
+        .stars-layer-3 {
+            background-image: 
+                radial-gradient(0.8px 0.8px at 80px 200px, #38bdf8, transparent),
+                radial-gradient(1.5px 1.5px at 300px 100px, #ffffff, transparent);
+            background-size: 600px 600px;
+            opacity: 0.4;
         }
 
-        body.ar-mode .solar-system-3d {
-            filter: drop-shadow(0 0 35px #38bdf8) brightness(1.35);
-        }
-
-        .ar-controls {
+        /* لوحة التحكم العلوية والجانبية */
+        .hud-top-bar {
             position: fixed;
             top: 15px;
+            left: 15px;
             right: 15px;
-            z-index: 40;
+            z-index: 50;
             display: flex;
-            gap: 6px;
+            justify-content: space-between;
+            align-items: center;
+            pointer-events: none;
         }
 
-        .ar-trigger-btn {
+        .hud-brand {
+            font-size: 0.85rem;
+            font-weight: 900;
+            letter-spacing: 3px;
+            color: #38bdf8;
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
+            background: rgba(15, 23, 42, 0.75);
+            padding: 8px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            backdrop-filter: blur(10px);
+            pointer-events: auto;
+        }
+
+        .hud-controls-group {
+            display: flex;
+            gap: 8px;
+            pointer-events: auto;
+        }
+
+        .hud-btn {
             background: rgba(15, 23, 42, 0.85);
-            border: 1px solid #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.5);
             color: #38bdf8;
             padding: 8px 14px;
             border-radius: 20px;
@@ -106,23 +113,78 @@
             letter-spacing: 1.5px;
             backdrop-filter: blur(10px);
             cursor: pointer;
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.4);
-            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+            transition: all 0.3s ease;
         }
 
-        .ar-trigger-btn.active {
+        .hud-btn:hover, .hud-btn.active {
             background: #0284c7;
             color: #ffffff;
             box-shadow: 0 0 25px #38bdf8;
         }
 
-        /* شاشة الترحيب */
+        /* شريط التحكم في السرعة سفلي */
+        .speed-hud-panel {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 50;
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            padding: 10px 20px;
+            border-radius: 30px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+        }
+
+        .speed-label {
+            font-size: 0.68rem;
+            letter-spacing: 2px;
+            color: #94a3b8;
+            font-weight: 700;
+        }
+
+        .speed-slider {
+            -webkit-appearance: none;
+            width: 130px;
+            height: 4px;
+            background: #1e293b;
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .speed-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: #38bdf8;
+            cursor: pointer;
+            box-shadow: 0 0 10px #38bdf8;
+        }
+
+        /* عارض الواقع المعزز المخفي */
+        model-viewer {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 5;
+            background: transparent;
+            pointer-events: none;
+        }
+
+        /* شاشة الترحيب السينمائية */
         #welcomeScreen {
             position: fixed;
             inset: 0;
             z-index: 100;
-            background: radial-gradient(circle at center, rgba(4, 14, 34, 0.92) 0%, rgba(0, 0, 0, 0.98) 100%);
-            backdrop-filter: blur(12px);
+            background: radial-gradient(circle at center, rgba(4, 14, 34, 0.95) 0%, rgba(0, 0, 0, 0.99) 100%);
+            backdrop-filter: blur(16px);
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -149,7 +211,7 @@
         }
 
         .welcome-title {
-            font-size: 2.8rem;
+            font-size: 2.6rem;
             font-weight: 900;
             letter-spacing: 5px;
             color: #ffffff;
@@ -162,7 +224,7 @@
             font-size: 0.82rem;
             color: #94a3b8;
             letter-spacing: 2px;
-            margin-bottom: 40px;
+            margin-bottom: 35px;
         }
 
         .tap-hint {
@@ -182,7 +244,7 @@
             100% { transform: scale(1.04); box-shadow: 0 0 30px rgba(56, 189, 248, 0.7); }
         }
 
-        /* مسرح الفضاء */
+        /* مسرح الفضاء 360 درجة */
         #universeViewport {
             position: fixed;
             inset: 0;
@@ -194,38 +256,6 @@
             touch-action: none;
         }
 
-        .hologram-projector-pad {
-            position: absolute;
-            bottom: 35px;
-            width: 220px;
-            height: 40px;
-            background: radial-gradient(ellipse at center, #38bdf8 0%, #0284c7 50%, transparent 80%);
-            border-radius: 50%;
-            box-shadow: 0 0 50px #38bdf8, 0 0 100px rgba(56, 189, 248, 0.8);
-            display: none;
-            z-index: 12;
-            animation: padPulse 2s infinite alternate;
-        }
-        body.ar-mode .hologram-projector-pad { display: block; }
-
-        @keyframes padPulse {
-            0% { transform: scale(0.95); opacity: 0.8; }
-            100% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 70px #38bdf8, 0 0 120px #0284c7; }
-        }
-
-        .hologram-beam {
-            position: absolute;
-            bottom: 45px;
-            width: 340px;
-            height: 280px;
-            background: linear-gradient(to top, rgba(56, 189, 248, 0.5) 0%, rgba(56, 189, 248, 0.03) 85%, transparent 100%);
-            clip-path: polygon(28% 100%, 72% 100%, 95% 0%, 5% 0%);
-            display: none;
-            z-index: 11;
-            pointer-events: none;
-        }
-        body.ar-mode .hologram-beam { display: block; }
-
         .solar-system-3d {
             position: relative;
             width: 380px;
@@ -235,7 +265,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            transition: filter 0.4s ease;
+            transition: transform 0.05s linear;
         }
 
         .sun-sphere {
@@ -249,6 +279,11 @@
             cursor: pointer;
             transform-style: preserve-3d;
             transform: rotateZ(var(--inv-z, 0deg)) rotateX(var(--inv-x, -55deg));
+            transition: transform 0.2s;
+        }
+
+        .sun-sphere:hover {
+            transform: rotateZ(var(--inv-z, 0deg)) rotateX(var(--inv-x, -55deg)) scale(1.1);
         }
 
         .orbit {
@@ -259,6 +294,7 @@
             border-radius: 50%;
             transform-style: preserve-3d;
             animation: orbitRotate linear infinite;
+            animation-duration: var(--orbit-dur, 10s);
         }
 
         .planet-sphere {
@@ -270,6 +306,11 @@
             transform-style: preserve-3d;
             box-shadow: inset -6px -6px 14px rgba(0, 0, 0, 0.95), 0 0 15px rgba(255, 255, 255, 0.3);
             animation: planetBillboard linear infinite;
+            animation-duration: var(--orbit-dur, 10s);
+        }
+
+        .planet-sphere:hover {
+            filter: brightness(1.35) drop-shadow(0 0 12px #38bdf8);
         }
 
         .planet-sphere::after {
@@ -279,23 +320,24 @@
             border-radius: 50%;
         }
 
-        .orb-mercure { width: 105px; height: 105px; animation-duration: 9s; }
-        .pl-mercure { width: 15px; height: 15px; background: radial-gradient(circle at 30% 30%, #e2e8f0, #64748b 55%, #1e293b 100%); animation-duration: 9s; }
+        /* إحداثيات وأحجام المدارات والكواكب */
+        .orb-mercure { width: 105px; height: 105px; --orbit-dur: calc(9s / var(--time-scale, 1)); }
+        .pl-mercure { width: 15px; height: 15px; background: radial-gradient(circle at 30% 30%, #e2e8f0, #64748b 55%, #1e293b 100%); --orbit-dur: calc(9s / var(--time-scale, 1)); }
 
-        .orb-venus { width: 150px; height: 150px; animation-duration: 13s; }
-        .pl-venus { width: 20px; height: 20px; background: radial-gradient(circle at 30% 30%, #fef08a, #d97706 50%, #78350f 100%); animation-duration: 13s; }
+        .orb-venus { width: 150px; height: 150px; --orbit-dur: calc(13s / var(--time-scale, 1)); }
+        .pl-venus { width: 20px; height: 20px; background: radial-gradient(circle at 30% 30%, #fef08a, #d97706 50%, #78350f 100%); --orbit-dur: calc(13s / var(--time-scale, 1)); }
 
-        .orb-terre { width: 200px; height: 200px; animation-duration: 18s; }
-        .pl-terre { width: 23px; height: 23px; background: radial-gradient(circle at 30% 30%, #60a5fa, #2563eb 42%, #15803d 72%, #020617 100%); box-shadow: inset -6px -6px 15px rgba(0,0,0,0.9), 0 0 16px rgba(56, 189, 248, 0.75); animation-duration: 18s; }
+        .orb-terre { width: 200px; height: 200px; --orbit-dur: calc(18s / var(--time-scale, 1)); }
+        .pl-terre { width: 23px; height: 23px; background: radial-gradient(circle at 30% 30%, #60a5fa, #2563eb 42%, #15803d 72%, #020617 100%); box-shadow: inset -6px -6px 15px rgba(0,0,0,0.9), 0 0 16px rgba(56, 189, 248, 0.75); --orbit-dur: calc(18s / var(--time-scale, 1)); }
 
-        .orb-mars { width: 250px; height: 250px; animation-duration: 23s; }
-        .pl-mars { width: 18px; height: 18px; background: radial-gradient(circle at 30% 30%, #fca5a5, #dc2626 55%, #7f1d1d 100%); animation-duration: 23s; }
+        .orb-mars { width: 250px; height: 250px; --orbit-dur: calc(23s / var(--time-scale, 1)); }
+        .pl-mars { width: 18px; height: 18px; background: radial-gradient(circle at 30% 30%, #fca5a5, #dc2626 55%, #7f1d1d 100%); --orbit-dur: calc(23s / var(--time-scale, 1)); }
 
-        .orb-jupiter { width: 310px; height: 310px; animation-duration: 30s; }
-        .pl-jupiter { width: 34px; height: 34px; background: radial-gradient(circle at 30% 30%, #fed7aa, #ea580c 45%, #9a3412 75%, #431407 100%); animation-duration: 30s; }
+        .orb-jupiter { width: 310px; height: 310px; --orbit-dur: calc(30s / var(--time-scale, 1)); }
+        .pl-jupiter { width: 34px; height: 34px; background: radial-gradient(circle at 30% 30%, #fed7aa, #ea580c 45%, #9a3412 75%, #431407 100%); --orbit-dur: calc(30s / var(--time-scale, 1)); }
 
-        .orb-saturne { width: 370px; height: 370px; animation-duration: 38s; }
-        .pl-saturne { width: 26px; height: 26px; background: radial-gradient(circle at 30% 30%, #fef9c3, #ca8a04 60%, #422006 100%); animation-duration: 38s; }
+        .orb-saturne { width: 370px; height: 370px; --orbit-dur: calc(38s / var(--time-scale, 1)); }
+        .pl-saturne { width: 26px; height: 26px; background: radial-gradient(circle at 30% 30%, #fef9c3, #ca8a04 60%, #422006 100%); --orbit-dur: calc(38s / var(--time-scale, 1)); }
         .saturn-ring {
             position: absolute;
             top: 50%; left: 50%;
@@ -307,11 +349,11 @@
             pointer-events: none;
         }
 
-        .orb-uranus { width: 425px; height: 425px; animation-duration: 46s; }
-        .pl-uranus { width: 21px; height: 21px; background: radial-gradient(circle at 30% 30%, #99f6e4, #0d9488 60%, #042f2e 100%); animation-duration: 46s; }
+        .orb-uranus { width: 425px; height: 425px; --orbit-dur: calc(46s / var(--time-scale, 1)); }
+        .pl-uranus { width: 21px; height: 21px; background: radial-gradient(circle at 30% 30%, #99f6e4, #0d9488 60%, #042f2e 100%); --orbit-dur: calc(46s / var(--time-scale, 1)); }
 
-        .orb-neptune { width: 475px; height: 475px; animation-duration: 55s; }
-        .pl-neptune { width: 21px; height: 21px; background: radial-gradient(circle at 30% 30%, #93c5fd, #1d4ed8 60%, #091338 100%); animation-duration: 55s; }
+        .orb-neptune { width: 475px; height: 475px; --orbit-dur: calc(55s / var(--time-scale, 1)); }
+        .pl-neptune { width: 21px; height: 21px; background: radial-gradient(circle at 30% 30%, #93c5fd, #1d4ed8 60%, #091338 100%); --orbit-dur: calc(55s / var(--time-scale, 1)); }
 
         @keyframes orbitRotate {
             0% { transform: translate(-50%, -50%) rotateZ(0deg); }
@@ -323,17 +365,17 @@
             100% { transform: translate(-50%, -50%) rotateZ(-360deg) rotateZ(var(--inv-z, 0deg)) rotateX(var(--inv-x, -55deg)); }
         }
 
-        /* واجهة الموسوعة */
+        /* واجهة الموسوعة والمعلومات الفلكية */
         #encyclopediaOverlay {
             position: fixed;
             inset: 0;
-            z-index: 50;
-            background: rgba(2, 6, 18, 0.9);
-            backdrop-filter: blur(16px);
+            z-index: 80;
+            background: rgba(2, 6, 18, 0.92);
+            backdrop-filter: blur(18px);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 16px;
+            padding: 18px;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.4s ease, visibility 0.4s ease;
@@ -346,16 +388,16 @@
 
         .enc-info-panel {
             width: 55%;
-            height: 90%;
-            background: linear-gradient(160deg, rgba(13, 23, 45, 0.96), rgba(3, 8, 18, 0.99));
+            height: 92%;
+            background: linear-gradient(160deg, rgba(13, 23, 45, 0.97), rgba(3, 8, 18, 0.99));
             border: 1px solid rgba(56, 189, 248, 0.45);
             border-left: 4px solid #38bdf8;
-            border-radius: 14px;
-            padding: 18px 15px;
+            border-radius: 16px;
+            padding: 20px 18px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.95);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95);
             transform: translateX(-40px);
             transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
             overflow-y: auto;
@@ -376,10 +418,12 @@
             cursor: pointer;
             margin-bottom: 12px;
             padding: 6px 0;
+            transition: color 0.2s;
         }
+        .back-arrow:hover { color: #ffffff; }
 
         .enc-planet-name {
-            font-size: 1.65rem;
+            font-size: 1.7rem;
             font-weight: 900;
             letter-spacing: 2.5px;
             text-transform: uppercase;
@@ -418,7 +462,7 @@
             display: flex;
             justify-content: space-between;
             font-size: 0.7rem;
-            padding: 5px 8px;
+            padding: 6px 10px;
             background: rgba(255, 255, 255, 0.04);
             border-radius: 6px;
         }
@@ -433,7 +477,7 @@
         }
 
         .enc-planet-showcase {
-            width: 43%;
+            width: 42%;
             height: 100%;
             display: flex;
             justify-content: center;
@@ -448,22 +492,22 @@
         }
 
         .big-3d-sphere {
-            width: 155px;
-            height: 155px;
+            width: 165px;
+            height: 165px;
             border-radius: 50%;
             position: relative;
-            box-shadow: inset -20px -20px 42px rgba(0, 0, 0, 0.96), 0 0 45px rgba(56, 189, 248, 0.4);
+            box-shadow: inset -22px -22px 45px rgba(0, 0, 0, 0.96), 0 0 50px rgba(56, 189, 248, 0.4);
             animation: floatSphere 4s ease-in-out infinite alternate;
         }
 
         .big-saturn-ring {
             position: absolute;
             top: 50%; left: 50%;
-            width: 260px; height: 70px;
-            border: 13px solid rgba(234, 179, 8, 0.9);
+            width: 280px; height: 75px;
+            border: 14px solid rgba(234, 179, 8, 0.9);
             border-radius: 50%;
             transform: translate(-50%, -50%) rotate(-20deg);
-            box-shadow: 0 0 30px rgba(250, 204, 21, 0.7);
+            box-shadow: 0 0 35px rgba(250, 204, 21, 0.75);
             display: none;
         }
 
@@ -471,34 +515,103 @@
             0% { transform: translateY(-8px); }
             100% { transform: translateY(8px); }
         }
+
+        /* نافذة البحث المتقدم */
+        #searchModal {
+            position: fixed;
+            top: 70px;
+            right: 15px;
+            width: 280px;
+            background: rgba(13, 23, 45, 0.95);
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            border-radius: 12px;
+            padding: 12px;
+            z-index: 60;
+            backdrop-filter: blur(14px);
+            display: none;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+        }
+        #searchModal.active { display: block; }
+        .search-input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 8px;
+            padding: 8px 12px;
+            color: white;
+            font-size: 0.8rem;
+            outline: none;
+            margin-bottom: 8px;
+        }
+        .search-results {
+            max-height: 150px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        .search-item {
+            padding: 6px 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        .search-item:hover { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
     </style>
 </head>
 <body>
 
-    <!-- الكاميرا الحية للهولوغرام -->
-    <video id="cameraStream" autoplay playsinline muted></video>
-
     <div class="space-bg"></div>
     <div class="stars-layer-1" id="starsLayer1"></div>
     <div class="stars-layer-2" id="starsLayer2"></div>
+    <div class="stars-layer-3" id="starsLayer3"></div>
 
-    <div class="ar-controls">
-        <button class="ar-trigger-btn" id="arBtn" onclick="toggleARHologram()">🌐 HOLOGRAM</button>
+    <!-- لوحة التحكم العلوية الشاملة -->
+    <div class="hud-top-bar">
+        <div class="hud-brand">ROTATE X • UNIVERSE</div>
+        <div class="hud-controls-group">
+            <button class="hud-btn" onclick="toggleSearchModal()">🔍 بحث</button>
+            <button class="hud-btn" onclick="toggleAudioFX()">🔊 صوت</button>
+            <button class="hud-btn" onclick="launchAR()">🌍 واقع معزز</button>
+        </div>
     </div>
 
-    <!-- شاشة الترحيب -->
+    <!-- نافذة البحث -->
+    <div id="searchModal">
+        <input type="text" class="search-input" id="planetSearchInput" placeholder="ابحث عن كوكب أو نجم..." oninput="filterPlanets(this.value)">
+        <div class="search-results" id="searchResults"></div>
+    </div>
+
+    <!-- شريط التحكم في السرعة سفلي -->
+    <div class="speed-hud-panel">
+        <span class="speed-label">سرعة المدارات</span>
+        <input type="range" class="speed-slider" min="0.2" max="5" step="0.2" value="1" oninput="changeSpeed(this.value)">
+    </div>
+
+    <!-- عارض الواقع المعزز الرسمي من جوجل -->
+    <model-viewer 
+        id="arModelViewer"
+        src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" 
+        ar 
+        ar-modes="scene-viewer quick-look webxr" 
+        camera-controls 
+        auto-rotate 
+        shadow-intensity="1"
+        style="display: none;">
+    </model-viewer>
+
+    <!-- شاشة الترحيب السنيمائية -->
     <div id="welcomeScreen" onclick="enterUniverse()">
-        <div class="welcome-badge-top">360° INTERACTIVE SPACE</div>
-        <h1 class="welcome-title">WELCOME TO<br>ROTATE X</h1>
-        <p class="welcome-desc">Immersive interactive 3D space experience</p>
+        <div class="welcome-badge-top">360° INTERACTIVE SPACE SYSTEM</div>
+        <h1 class="welcome-title">ROTATE X<br>ULTIMATE UNIVERSE</h1>
+        <p class="welcome-desc">Explore the solar system in immersive 3D & True AR</p>
         <div class="tap-hint">TOUCH TO START EXPLORATION</div>
     </div>
 
-    <!-- مسرح الفضاء الكامل -->
+    <!-- مسرح الفضاء الكامل والتفاعل بالنقر والسحب -->
     <div id="universeViewport">
-        <div class="hologram-projector-pad"></div>
-        <div class="hologram-beam"></div>
-
         <div class="solar-system-3d" id="solarSystem">
             <div class="sun-sphere" onclick="openPlanet('Soleil')"></div>
 
@@ -517,7 +630,7 @@
         </div>
     </div>
 
-    <!-- واجهة الموسوعة -->
+    <!-- واجهة الموسوعة والمعلومات -->
     <div id="encyclopediaOverlay">
         <div class="enc-info-panel">
             <div>
@@ -547,6 +660,7 @@
     </div>
 
     <script>
+        // قاعدة البيانات الفلكية الشاملة
         const encyclopediaData = {
             "Soleil": {
                 type: "ÉTOILE • NAINE JAUNE",
@@ -615,12 +729,20 @@
 
         function enterUniverse() {
             document.getElementById("welcomeScreen").classList.add("hidden");
+            playAmbientSound();
         }
 
+        // تحكم في سرعة المدارات
+        function changeSpeed(val) {
+            document.documentElement.style.setProperty('--time-scale', val);
+        }
+
+        // نظام التدوير 360 درجة عبر اللمس والفأرة
         const viewport = document.getElementById("universeViewport");
         const solarSystem = document.getElementById("solarSystem");
-        const starsLayer1 = document.getElementById("starsLayer1");
-        const starsLayer2 = document.getElementById("starsLayer2");
+        const stars1 = document.getElementById("starsLayer1");
+        const stars2 = document.getElementById("starsLayer2");
+        const stars3 = document.getElementById("starsLayer3");
 
         let rotX = 55;
         let rotZ = 0;
@@ -630,6 +752,15 @@
 
         viewport.addEventListener("mousedown", (e) => {
             isDragging = true; moved = false;
+            startX = e.clientX; startY = e.clientY;
+        });
+
+        window.addEventListener("mousemove", (e) => {
+            if (!isDragging) return;
+            const dx = e.clientX - startX;
+            const dy = e.clientY - startY;
+            if (Math.abs(dx) > 3 || Math.abs(dy) > 3) moved = true;
+            updateRotation(dx, dy);
             startX = e.clientX; startY = e.clientY;
         });
 
@@ -664,12 +795,15 @@
             document.documentElement.style.setProperty('--inv-x', `${-rotX}deg`);
             document.documentElement.style.setProperty('--inv-z', `${-rotZ}deg`);
             
-            starsLayer1.style.transform = `translate(${rotZ * 0.25}px, ${rotX * 0.4}px)`;
-            starsLayer2.style.transform = `translate(${rotZ * 0.45}px, ${rotX * 0.7}px)`;
+            stars1.style.transform = `translate(${rotZ * 0.2}px, ${rotX * 0.3}px)`;
+            stars2.style.transform = `translate(${rotZ * 0.4}px, ${rotX * 0.5}px)`;
+            stars3.style.transform = `translate(${rotZ * 0.6}px, ${rotX * 0.8}px)`;
         }
 
+        // فتح نافذة الموسوعة الفلكية
         function openPlanet(name) {
             if (moved) return;
+            playClickSound();
             const data = encyclopediaData[name];
             if (!data) return;
 
@@ -684,59 +818,96 @@
 
             const bigSphere = document.getElementById("bigSphere");
             bigSphere.style.background = data.bg;
-            bigSphere.style.boxShadow = `inset -20px -20px 42px rgba(0, 0, 0, 0.96), ${data.glow}`;
+            bigSphere.style.boxShadow = `inset -22px -22px 45px rgba(0, 0, 0, 0.96), ${data.glow}`;
 
             document.getElementById("bigSaturnRing").style.display = (name === "Saturne") ? "block" : "none";
             document.getElementById("encyclopediaOverlay").classList.add("active");
         }
 
         function closePlanet() {
+            playClickSound();
             document.getElementById("encyclopediaOverlay").classList.remove("active");
         }
 
-        // تشغيل الكاميرا الحقيقية بطلب إذن صريح وواضح
-        let arActive = false;
-        async function toggleARHologram() {
-            const videoElem = document.getElementById("cameraStream");
-            const arBtn = document.getElementById("arBtn");
-            const bodyElem = document.body;
-
-            arActive = !arActive;
-
-            if (arActive) {
-                arBtn.textContent = "⌛ WAITING PERMISSION...";
-                
-                try {
-                    // طلب الكاميرا الخلفية مباشرة
-                    const stream = await navigator.mediaDevices.getUserMedia({
-                        video: { facingMode: "environment" },
-                        audio: false
-                    });
-
-                    videoElem.srcObject = stream;
-                    await videoElem.play();
-                    
-                    bodyElem.classList.add("ar-mode");
-                    arBtn.textContent = "❌ QUIT HOLOGRAM";
-                    arBtn.classList.add("active");
-
-                } catch (err) {
-                    arActive = false;
-                    arBtn.textContent = "🌐 HOLOGRAM";
-                    alert("المرجو السماح لمتصفح الهاتف بالوصول إلى الكاميرا من إعدادات المتصفح لكي يعمل الهولوغرام الحقيقي.");
-                }
-            } else {
-                const stream = videoElem.srcObject;
-                if (stream) {
-                    stream.getTracks().forEach(track => track.stop());
-                }
-                videoElem.pause();
-                videoElem.srcObject = null;
-                
-                bodyElem.classList.remove("ar-mode");
-                arBtn.textContent = "🌐 HOLOGRAM";
-                arBtn.classList.remove("active");
+        // تشغيل الواقع المعزز الحقيقي في الغرفة
+        function launchAR() {
+            playClickSound();
+            const modelViewer = document.getElementById("arModelViewer");
+            if (modelViewer) {
+                modelViewer.activateAR();
             }
+        }
+
+        // نظام البحث المتطور
+        function toggleSearchModal() {
+            playClickSound();
+            const modal = document.getElementById("searchModal");
+            modal.classList.toggle("active");
+            if (modal.classList.contains("active")) {
+                filterPlanets("");
+            }
+        }
+
+        function filterPlanets(query) {
+            const container = document.getElementById("searchResults");
+            container.innerHTML = "";
+            const keys = Object.keys(encyclopediaData);
+            const filtered = keys.filter(k => k.toLowerCase().includes(query.toLowerCase()));
+            
+            filtered.forEach(name => {
+                const item = document.createElement("div");
+                item.className = "search-item";
+                item.textContent = name;
+                item.onclick = () => {
+                    toggleSearchModal();
+                    openPlanet(name);
+                };
+                container.appendChild(item);
+            });
+        }
+
+        // محرك أصوات الفضاء السيبراني باستخدام Web Audio API
+        let audioCtx = null;
+        let isAudioOn = false;
+        function toggleAudioFX() {
+            isAudioOn = !isAudioOn;
+            playClickSound();
+            const btn = event.target;
+            btn.classList.toggle("active", isAudioOn);
+        }
+
+        function playClickSound() {
+            if (!isAudioOn) return;
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = "sine";
+                osc.frequency.setValueAtTime(580, audioCtx.currentTime);
+                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.08);
+                gain.gain.setValueAtTime(0.08, audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 0.08);
+            } catch (e) {}
+        }
+
+        function playAmbientSound() {
+            try {
+                if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = "triangle";
+                osc.frequency.setValueAtTime(55, audioCtx.currentTime);
+                gain.gain.setValueAtTime(0.02, audioCtx.currentTime);
+                gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 2);
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start();
+                osc.stop(audioCtx.currentTime + 2);
+            } catch(e){}
         }
     </script>
 </body>
