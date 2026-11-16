@@ -3,9 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>ROTATE X • Ultimate Sci-Fi Hologram Solar System & Encyclopedia</title>
-    <!-- استدعاء محرك الواقع المعزز الرسمي من جوجل -->
-    <script type="module" src="https://unpkg.com/@model-viewer/public@v3.4.0/dist/model-viewer.min.js"></script>
+    <title>ROTATE X • Ultimate Sci-Fi Hologram Universe & Encyclopedia</title>
+    
+    <!-- ================================================================= -->
+    <!-- STYLES & CYBERNETIC DESIGN SYSTEM (CSS)                           -->
+    <!-- ================================================================= -->
     <style>
         * {
             box-sizing: border-box;
@@ -17,7 +19,7 @@
         }
 
         body {
-            background-color: #000208;
+            background-color: #000207;
             color: #ffffff;
             width: 100vw;
             height: 100vh;
@@ -25,7 +27,7 @@
             position: relative;
         }
 
-        /* خلفية الفضاء السيبراني وشبكة الأرضية المتحركة */
+        /* 1. Arrière-plan spatial et grille cybernétique */
         .cyber-bg {
             position: fixed;
             inset: 0;
@@ -53,6 +55,7 @@
             100% { transform: perspective(600px) rotateX(65deg) translateY(45px); }
         }
 
+        /* 2. Étoiles et poussière cosmique dynamique */
         .stars-layer-1, .stars-layer-2 {
             position: fixed;
             inset: -50%;
@@ -75,11 +78,11 @@
             background-image: 
                 radial-gradient(1.2px 1.2px at 100px 150px, #ffffff, transparent),
                 radial-gradient(1.8px 1.8px at 250px 70px, #38bdf8, transparent);
-            background-size: 450px 450px;
+            background-size: 45px 450px;
             opacity: 0.5;
         }
 
-        /* لوحة التحكم العلوية الشاملة (HUD) */
+        /* 3. Barre de contrôle HUD supérieure */
         .hud-top-bar {
             position: fixed;
             top: 15px;
@@ -98,7 +101,7 @@
             letter-spacing: 2.5px;
             color: #38bdf8;
             text-shadow: 0 0 15px rgba(56, 189, 248, 0.6);
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.85);
             padding: 8px 14px;
             border-radius: 20px;
             border: 1px solid rgba(56, 189, 248, 0.4);
@@ -133,7 +136,7 @@
             box-shadow: 0 0 25px #38bdf8;
         }
 
-        /* نافذة البحث المتطور */
+        /* 4. Fenêtre de recherche avancée */
         #searchModal {
             position: fixed;
             top: 70px;
@@ -177,7 +180,7 @@
         }
         .search-item:hover { background: rgba(56, 189, 248, 0.25); color: #38bdf8; }
 
-        /* شريط التحكم في السرعة سفلي */
+        /* 5. Panneau de contrôle de vitesse inférieur */
         .speed-hud-panel {
             position: fixed;
             bottom: 20px;
@@ -221,18 +224,7 @@
             box-shadow: 0 0 10px #38bdf8;
         }
 
-        /* عارض الواقع المعزز المخفي */
-        model-viewer {
-            position: fixed;
-            inset: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 5;
-            background: transparent;
-            pointer-events: none;
-        }
-
-        /* شاشة الترحيب السينمائية */
+        /* 6. Écran d'accueil cinématographique */
         #welcomeScreen {
             position: fixed;
             inset: 0;
@@ -297,7 +289,7 @@
             100% { transform: scale(1.04); box-shadow: 0 0 35px rgba(56, 189, 248, 0.8); }
         }
 
-        /* مسرح الهولوغرام السيبراني والنظام الشمسي الأزرق */
+        /* 7. Scène Holographique (Effet de projection depuis le téléphone) */
         #hologramViewport {
             position: fixed;
             inset: 0;
@@ -311,7 +303,7 @@
 
         .projector-base {
             position: absolute;
-            bottom: 50px;
+            bottom: 35px;
             width: 220px;
             height: 45px;
             background: radial-gradient(ellipse at center, #38bdf8 0%, #0284c7 50%, transparent 80%);
@@ -328,17 +320,17 @@
 
         .hologram-laser-beam {
             position: absolute;
-            bottom: 60px;
+            bottom: 45px;
             width: 340px;
-            height: 280px;
-            background: linear-gradient(to top, rgba(56, 189, 248, 0.55) 0%, rgba(56, 189, 248, 0.04) 85%, transparent 100%);
+            height: 300px;
+            background: linear-gradient(to top, rgba(56, 189, 248, 0.6) 0%, rgba(56, 189, 248, 0.04) 85%, transparent 100%);
             clip-path: polygon(25% 100%, 75% 100%, 95% 0%, 5% 0%);
             z-index: 11;
             pointer-events: none;
             filter: drop-shadow(0 0 25px #38bdf8);
         }
 
-        /* النظام الشمسي 3D بمجسمات هولوغرام زرقاء متوهجة */
+        /* 8. Système Solaire 3D Holo-Blue */
         .solar-system-3d {
             position: relative;
             width: 380px;
@@ -400,7 +392,7 @@
             border-radius: 50%;
         }
 
-        /* أحجام وسرعات المدارات */
+        /* Tailles et vitesses orbitales des planètes */
         .orb-mercure { width: 105px; height: 105px; --orbit-dur: calc(9s / var(--time-scale, 1)); }
         .pl-mercure { width: 14px; height: 14px; --orbit-dur: calc(9s / var(--time-scale, 1)); }
 
@@ -445,7 +437,7 @@
             100% { transform: translate(-50%, -50%) rotateZ(-360deg) rotateZ(var(--inv-z, 0deg)) rotateX(var(--inv-x, -55deg)); }
         }
 
-        /* واجهة الموسوعة والمعلومات */
+        /* 9. Interface Encyclopédie (Panneau d'informations) */
         #encyclopediaOverlay {
             position: fixed;
             inset: 0;
@@ -597,54 +589,44 @@
 </head>
 <body>
 
+    <!-- ================================================================= -->
+    <!-- STRUCTURE & HTML ELEMENTS                                         -->
+    <!-- ================================================================= -->
     <div class="cyber-bg"></div>
     <div class="cyber-grid"></div>
     <div class="stars-layer-1" id="starsLayer1"></div>
     <div class="stars-layer-2" id="starsLayer2"></div>
 
-    <!-- لوحة التحكم العلوية -->
+    <!-- Barre HUD Supérieure -->
     <div class="hud-top-bar">
         <div class="hud-brand">ROTATE X • SCI-FI UNIVERSE</div>
         <div class="hud-controls-group">
-            <button class="hud-btn" onclick="toggleSearchModal()">🔍 بحث</button>
-            <button class="hud-btn" onclick="toggleAudioFX()">🔊 صوت</button>
-            <button class="hud-btn" onclick="launchAR()">🌍 AR غرفتي</button>
+            <button class="hud-btn" onclick="toggleSearchModal()">🔍 Recherche</button>
+            <button class="hud-btn" onclick="toggleAudioFX()">🔊 Audio</button>
         </div>
     </div>
 
-    <!-- نافذة البحث -->
+    <!-- Modal de Recherche -->
     <div id="searchModal">
-        <input type="text" class="search-input" id="planetSearchInput" placeholder="ابحث عن كوكب..." oninput="filterPlanets(this.value)">
+        <input type="text" class="search-input" id="planetSearchInput" placeholder="Rechercher une planète..." oninput="filterPlanets(this.value)">
         <div class="search-results" id="searchResults"></div>
     </div>
 
-    <!-- شريط التحكم في السرعة سفلي -->
+    <!-- Panneau de Vitesse Inférieur -->
     <div class="speed-hud-panel">
-        <span class="speed-label">سرعة المدارات</span>
+        <span class="speed-label">Vitesse Orbitale</span>
         <input type="range" class="speed-slider" min="0.2" max="5" step="0.2" value="1" oninput="changeSpeed(this.value)">
     </div>
 
-    <!-- عارض الواقع المعزز الرسمي من جوجل -->
-    <model-viewer 
-        id="arModelViewer"
-        src="https://modelviewer.dev/shared-assets/models/Astronaut.glb" 
-        ar 
-        ar-modes="scene-viewer quick-look webxr" 
-        camera-controls 
-        auto-rotate 
-        shadow-intensity="1"
-        style="display: none;">
-    </model-viewer>
-
-    <!-- شاشة الترحيب -->
+    <!-- Écran d'Accueil -->
     <div id="welcomeScreen" onclick="enterUniverse()">
-        <div class="welcome-badge">SCI-FI HOLOGRAM PROJECTION SYSTEM</div>
+        <div class="welcome-badge">SYSTEME HOLOGRAPHIQUE SCI-FI</div>
         <h1 class="welcome-title">ROTATE X</h1>
-        <p class="welcome-desc">360° Cyber Solar System & Encyclopedia</p>
-        <div class="tap-hint">TOUCH TO ACTIVATE HOLOGRAM</div>
+        <p class="welcome-desc">Projection 360° du Système Solaire & Encyclopédie</p>
+        <div class="tap-hint">TOUCHEZ POUR ACTIVER L'HOLOGRAPHIE</div>
     </div>
 
-    <!-- مسرح الهولوغرام الفضائي -->
+    <!-- Scène Holographique Principale (Projection depuis le téléphone) -->
     <div id="hologramViewport">
         <div class="projector-base"></div>
         <div class="hologram-laser-beam"></div>
@@ -667,15 +649,15 @@
         </div>
     </div>
 
-    <!-- واجهة الموسوعة الفلكية -->
+    <!-- Encyclopédie Interactive (Panneau d'informations) -->
     <div id="encyclopediaOverlay">
         <div class="enc-info-panel">
             <div>
-                <div class="back-arrow" onclick="closePlanet()">← RETOUR AU SYSTÈME</div>
+                <div class="back-arrow" onclick="closePlanet()">← RETOUR AU SYSTEME</div>
                 <div class="enc-planet-name" id="encName">MARS</div>
-                <div class="enc-planet-type" id="encType">PLANÈTE TELLURIQUE</div>
+                <div class="enc-planet-type" id="encType">PLANETE TELLURIQUE</div>
                 
-                <div class="enc-section-label">ENCYCLOPEDIA DATA</div>
+                <div class="enc-section-label">DONNEES ENCYCLOPEDIQUES</div>
                 <div class="enc-table">
                     <div class="enc-row"><span>Diamètre équatorial</span><strong id="encDiam">6 792 km</strong></div>
                     <div class="enc-row"><span>Distance du Soleil</span><strong id="encDist">228 M km</strong></div>
@@ -696,50 +678,54 @@
         </div>
     </div>
 
+    <!-- ================================================================= -->
+    <!-- LOGIC, DATA & INTERACTIONS (JAVASCRIPT)                           -->
+    <!-- ================================================================= -->
     <script>
+        // Base de données complète de l'encyclopédie
         const encyclopediaData = {
             "Soleil": {
-                type: "ÉTOILE • NAINE JAUNE",
+                type: "ETOILE • NAINE JAUNE",
                 diam: "1 392 700 km", dist: "0 km (Centre)", orbit: "230 M d'années", temp: "5 500 °C", moons: "8 planètes",
                 desc: "L'étoile centrale et massive du Système solaire. Elle représente 99,86 % de la masse totale du système et génère son énergie par fusion nucléaire."
             },
             "Mercure": {
-                type: "PLANÈTE TELLURIQUE",
+                type: "PLANETE TELLURIQUE",
                 diam: "4 879 km", dist: "57,9 M km", orbit: "88 jours", temp: "167 °C", moons: "0",
                 desc: "La planète la plus proche du Soleil et la plus petite du système solaire. Sa surface rocheuse subit des variations de température extrêmes."
             },
             "Vénus": {
-                type: "PLANÈTE TELLURIQUE",
+                type: "PLANETE TELLURIQUE",
                 diam: "12 104 km", dist: "108,2 M km", orbit: "225 jours", temp: "464 °C", moons: "0",
                 desc: "La planète la plus chaude du Système solaire. Son épaisse atmosphère de dioxyde de carbone crée un effet de serre incontrôlable."
             },
             "Terre": {
-                type: "PLANÈTE TELLURIQUE",
+                type: "PLANETE TELLURIQUE",
                 diam: "12 742 km", dist: "149,6 M km", orbit: "365,25 jours", temp: "15 °C", moons: "1 (La Lune)",
                 desc: "Notre foyer cosmique, la seule planète connue pour abriter la vie, caractérisée par une abondance d'eau liquide et une atmosphère protectrice."
             },
             "Mars": {
-                type: "PLANÈTE TELLURIQUE",
+                type: "PLANETE TELLURIQUE",
                 diam: "6 779 km", dist: "227,9 M km", orbit: "687 jours", temp: "-63 °C", moons: "2 (Phobos, Déimos)",
                 desc: "La planète rouge, fascinante pour ses paysages désertiques riches en oxyde de fer, ses calottes polaires et ses immenses canyons."
             },
             "Jupiter": {
-                type: "GÉANTE GAZEUSE",
+                type: "GEANTE GAZEUSE",
                 diam: "139 820 km", dist: "778,5 M km", orbit: "11,86 ans", temp: "-110 °C", moons: "95",
                 desc: "La géante du système solaire. Ses bandes nuageuses spectaculaires et sa Grande Tache Rouge témoignent d'une météo hors du commun."
             },
             "Saturne": {
-                type: "GÉANTE GAZEUSE",
+                type: "GEANTE GAZEUSE",
                 diam: "116 460 km", dist: "1,43 Md km", orbit: "29,4 ans", temp: "-140 °C", moons: "146",
                 desc: "Célèbre pour son système d'anneaux planétaires majestueux formés de blocs de glace pure et de poussières cosmiques."
             },
             "Uranus": {
-                type: "GÉANTE DE GLACE",
+                type: "GEANTE DE GLACE",
                 diam: "50 724 km", dist: "2,87 Md km", orbit: "84 ans", temp: "-195 °C", moons: "28",
                 desc: "Une planète singulière de couleur cyan, caractérisée par une inclinaison axiale extrême qui la fait littéralement rouler sur son orbite."
             },
             "Neptune": {
-                type: "GÉANTE DE GLACE",
+                type: "GEANTE DE GLACE",
                 diam: "49 244 km", dist: "4,5 Md km", orbit: "165 ans", temp: "-200 °C", moons: "16",
                 desc: "Un monde lointain, sombre et balayé par les vents les plus violents et supersoniques enregistrés dans tout le Système solaire."
             }
@@ -750,12 +736,12 @@
             playAmbientSound();
         }
 
-        // التحكم في سرعة المدارات
+        // Contrôle de la vitesse orbitale
         function changeSpeed(val) {
             document.documentElement.style.setProperty('--time-scale', val);
         }
 
-        // نظام التدوير 360 درجة عبر اللمس والفأرة
+        // Gestion de la rotation 360° par glissement tactile ou souris
         const viewport = document.getElementById("hologramViewport");
         const solarSystem = document.getElementById("solarSystem");
         const stars1 = document.getElementById("starsLayer1");
@@ -816,7 +802,7 @@
             stars2.style.transform = `translate(${rotZ * 0.45}px, ${rotX * 0.7}px)`;
         }
 
-        // فتح نافذة الموسوعة عند النقر على أي كوكب
+        // Ouverture de l'encyclopédie au clic sur une planète
         function openPlanet(name) {
             if (moved) return;
             playClickSound();
@@ -841,16 +827,7 @@
             document.getElementById("encyclopediaOverlay").classList.remove("active");
         }
 
-        // تفعيل الواقع المعزز في الغرفة عبر زر AR غرفتي
-        function launchAR() {
-            playClickSound();
-            const modelViewer = document.getElementById("arModelViewer");
-            if (modelViewer) {
-                modelViewer.activateAR();
-            }
-        }
-
-        // نظام البحث
+        // Gestion du modal de recherche
         function toggleSearchModal() {
             playClickSound();
             const modal = document.getElementById("searchModal");
@@ -878,7 +855,7 @@
             });
         }
 
-        // نظام الأصوات التفاعلية عبر Web Audio API
+        // Synthétiseur audio Web Audio API pour les effets sonores cybernétiques
         let audioCtx = null;
         let isAudioOn = false;
         function toggleAudioFX() {
@@ -896,7 +873,7 @@
                 const gain = audioCtx.createGain();
                 osc.type = "sine";
                 osc.frequency.setValueAtTime(600, audioCtx.currentTime);
-                osc.frequency.exponentialRampYToValueAtTime ? osc.frequency.exponentialRampToValueAtTime(900, audioCtx.currentTime + 0.08) : osc.frequency.linearRampToValueAtTime(900, audioCtx.currentTime + 0.08);
+                osc.frequency.linearRampToValueAtTime(900, audioCtx.currentTime + 0.08);
                 gain.gain.setValueAtTime(0.06, audioCtx.currentTime);
                 gain.gain.linearRampToValueAtTime(0.001, audioCtx.currentTime + 0.08);
                 osc.connect(gain);
