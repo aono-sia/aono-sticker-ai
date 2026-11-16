@@ -23,7 +23,7 @@
             position: relative;
         }
 
-        /* كاميرا التليفون الحية في الخلفية الحقيقية */
+        /* كاميرا التليفون الحية في الخلفية للواقع المعزز */
         #cameraStream {
             position: fixed;
             inset: 0;
@@ -34,7 +34,7 @@
             display: none;
         }
 
-        /* الخلفية الفضائية العادية */
+        /* الخلفية الفضائية الأساسية */
         .space-bg {
             position: fixed;
             inset: 0;
@@ -71,18 +71,25 @@
             opacity: 0.6;
         }
 
-        /* عند تفعيل الهولوغرام، تختفي الخلفية لتظهر الكاميرا بوضوح */
-        .ar-mode .space-bg, .ar-mode .stars-layer-1, .ar-mode .stars-layer-2 {
-            opacity: 0;
-            pointer-events: none;
+        /* عند تفعيل الهولوغرام، تظهر الكاميرا ويتحول النظام الشمسي إلى هولوغرام أزرق ساطع */
+        .ar-mode .space-bg {
+            opacity: 0.1;
+        }
+        .ar-mode .solar-system-3d {
+            filter: drop-shadow(0 0 25px #38bdf8) brightness(1.3);
         }
 
-        /* زر الهولوغرام العائم */
-        .ar-trigger-btn {
+        /* أزرار التحكم */
+        .ar-controls {
             position: fixed;
             top: 15px;
             right: 15px;
             z-index: 40;
+            display: flex;
+            gap: 6px;
+        }
+
+        .ar-trigger-btn {
             background: rgba(15, 23, 42, 0.85);
             border: 1px solid #38bdf8;
             color: #38bdf8;
@@ -181,7 +188,7 @@
             touch-action: none;
         }
 
-        /* قاعدة وشعاع الهولوغرام */
+        /* قاعدة وشعاع الهولوغرام السيبراني */
         .hologram-projector-pad {
             position: absolute;
             bottom: 35px;
@@ -206,7 +213,7 @@
             bottom: 45px;
             width: 340px;
             height: 280px;
-            background: linear-gradient(to top, rgba(56, 189, 248, 0.45) 0%, rgba(56, 189, 248, 0.02) 85%, transparent 100%);
+            background: linear-gradient(to top, rgba(56, 189, 248, 0.5) 0%, rgba(56, 189, 248, 0.03) 85%, transparent 100%);
             clip-path: polygon(28% 100%, 72% 100%, 95% 0%, 5% 0%);
             display: none;
             z-index: 11;
@@ -223,9 +230,9 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            transition: filter 0.4s ease;
         }
 
-        /* الشمس الكروية المجسمة 100% */
         .sun-sphere {
             position: absolute;
             width: 68px;
@@ -239,7 +246,6 @@
             transform: rotateZ(var(--inv-z, 0deg)) rotateX(var(--inv-x, -55deg));
         }
 
-        /* مدارات الكواكب */
         .orbit {
             position: absolute;
             top: 50%;
@@ -250,7 +256,6 @@
             animation: orbitRotate linear infinite;
         }
 
-        /* الكواكب مكورة ومجسمة 3D بالكامل */
         .planet-sphere {
             position: absolute;
             top: 0;
@@ -465,14 +470,16 @@
 </head>
 <body>
 
-    <!-- الكاميرا الحية مع طلب إذن الاتصال المباشر -->
+    <!-- الكاميرا الحية للهولوغرام -->
     <video id="cameraStream" autoplay playsinline muted></video>
 
     <div class="space-bg"></div>
     <div class="stars-layer-1" id="starsLayer1"></div>
     <div class="stars-layer-2" id="starsLayer2"></div>
 
-    <button class="ar-trigger-btn" id="arBtn" onclick="toggleARHologram()">🌐 HOLOGRAM</button>
+    <div class="ar-controls">
+        <button class="ar-trigger-btn" id="arBtn" onclick="toggleARHologram()">🌐 HOLOGRAM</button>
+    </div>
 
     <!-- شاشة الترحيب -->
     <div id="welcomeScreen" onclick="enterUniverse()">
@@ -691,7 +698,7 @@
             document.getElementById("encyclopediaOverlay").classList.remove("active");
         }
 
-        // دالة الاتصال المباشر والآمن بكاميرا التليفون لتفعيل الواقع المعزز AR
+        // تشغيل الكاميرا وتفعيل وضع الهولوغرام السيبراني فوق العالم الحقيقي
         let arActive = false;
         async function toggleARHologram() {
             const videoElem = document.getElementById("cameraStream");
@@ -704,22 +711,17 @@
                 arBtn.textContent = "⌛ CONNECTING...";
                 
                 try {
-                    // طلب الكاميرا الخلفية كخيار أول، وإلا الكاميرا المتاحة
-                    const constraints = {
-                        video: {
-                            facingMode: { ideal: "environment" },
-                            width: { ideal: 1280 },
-                            height: { ideal: 720 }
-                        },
-                        audio: false
-                    };
-
-                    let stream;
+                    let stream = null;
                     try {
-                        stream = await navigator.mediaDevices.getUserMedia(constraints);
-                    } catch (e) {
-                        // خيار احتياطي في حالة عدم دعم الكاميرا الخلفية بالمعايير المحددة
-                        stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: false });
+                        stream = await navigator.mediaDevices.getUserMedia({
+                            video: { facingMode: { exact: "environment" } },
+                            audio: false
+                        });
+                    } catch (err1) {
+                        stream = await navigator.mediaDevices.getUserMedia({
+                            video: true,
+                            audio: false
+                        });
                     }
 
                     videoElem.srcObject = stream;
@@ -733,7 +735,7 @@
                 } catch (err) {
                     arActive = false;
                     arBtn.textContent = "🌐 HOLOGRAM";
-                    alert("لم يتم العثور على إذن الكاميرا أو أن متصفحك يمنع تشغيلها. يرجى السماح بالصلاحيات من إعدادات المتصفح.");
+                    alert("تعذر الوصول إلى كاميرا الهاتف. تأكد من أن الموقع يعمل عبر رابط آمن HTTPS وأنك سمحت بصلاحيات الكاميرا.");
                 }
             } else {
                 const stream = videoElem.srcObject;
