@@ -1,323 +1,132 @@
+
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Rotate X - Hologram</title>
-    <style>
-        * { box-sizing: border-box; }
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000000;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        .view {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.4s ease;
-        }
-        .hidden {
-            opacity: 0;
-            pointer-events: none;
-            z-index: -10;
-        }
-
-        /* 1. الصفحة الأولى الأصلية */
-        #welcome-view {
-            background: radial-gradient(circle at center, #030b1e 0%, #000000 100%);
-            z-index: 10;
-            text-align: center;
-            padding: 20px;
-        }
-        .welcome-sub-top {
-            color: #00f3ff;
-            font-size: 13px;
-            letter-spacing: 3px;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            text-shadow: 0 0 10px rgba(0,243,255,0.6);
-        }
-        .welcome-title {
-            color: #ffffff;
-            font-size: 38px;
-            font-weight: 900;
-            letter-spacing: 4px;
-            line-height: 1.2;
-            margin: 0 0 15px 0;
-            text-shadow: 0 0 20px rgba(0,243,255,0.8), 0 0 40px rgba(0,85,255,0.5);
-        }
-        .welcome-desc {
-            color: rgba(255, 255, 255, 0.7);
-            font-size: 13px;
-            letter-spacing: 1px;
-            margin-bottom: 40px;
-            max-width: 300px;
-        }
-        .start-btn {
-            background: transparent;
-            color: #00f3ff;
-            border: 2px solid #00f3ff;
-            padding: 15px 30px;
-            border-radius: 35px;
-            font-size: 12px;
-            font-weight: bold;
-            letter-spacing: 2px;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.2);
-            text-transform: uppercase;
-        }
-
-        /* 2. الصفحة الرئيسية للهولوجرام */
-        #app-view {
-            z-index: 5;
-            background: #000;
-        }
-        #holo-canvas {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        .top-header {
-            position: absolute;
-            top: 15px;
-            width: 100%;
-            text-align: center;
-            z-index: 4;
-            pointer-events: none;
-        }
-        .top-header h1 {
-            color: #00f3ff;
-            font-size: 20px;
-            margin: 0;
-            letter-spacing: 3px;
-            text-shadow: 0 0 12px #00f3ff;
-            font-weight: 900;
-        }
-        .top-header p {
-            color: #ffd700;
-            font-size: 10px;
-            margin: 4px 0 0 0;
-            letter-spacing: 1.5px;
-            text-shadow: 0 0 8px #ffd700;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        .dropdown-container {
-            position: absolute;
-            top: 75px;
-            width: 100%;
-            text-align: center;
-            z-index: 4;
-        }
-        .menu-select {
-            background: rgba(0, 15, 30, 0.85);
-            color: #00f3ff;
-            border: 1.5px solid #00f3ff;
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: bold;
-            outline: none;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
-            cursor: pointer;
-        }
-
-        .bottom-ai-box {
-            position: absolute;
-            bottom: 25px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 88%;
-            max-width: 380px;
-            background: rgba(0, 10, 20, 0.85);
-            border: 1px solid #00f3ff;
-            border-radius: 14px;
-            padding: 10px;
-            text-align: center;
-            z-index: 4;
-            box-shadow: 0 0 20px rgba(0, 243, 255, 0.25);
-            backdrop-filter: blur(5px);
-        }
-        .bottom-ai-box h4 {
-            color: #ffd700;
-            margin: 0 0 4px 0;
-            font-size: 12px;
-            text-shadow: 0 0 6px #ffd700;
-        }
-        .bottom-ai-box p {
-            color: #ffffff;
-            margin: 0;
-            font-size: 13px;
-            font-weight: bold;
-            text-shadow: 0 0 8px #00f3ff;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rotate X</title>
+<style>
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: #000;
+  color: #65faff;
+  font-family: Arial, sans-serif;
+  overflow: hidden;
+}
+#welcome {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #000;
+  z-index: 5;
+  text-align: center;
+}
+h1 {
+  font-size: 48px;
+  letter-spacing: 8px;
+  text-shadow: 0 0 25px cyan;
+}
+p { letter-spacing: 2px; }
+button {
+  background: transparent;
+  border: 1px solid cyan;
+  color: cyan;
+  padding: 14px 25px;
+  margin-top: 25px;
+  cursor: pointer;
+}
+#scene {
+  width: 100vw;
+  height: 100vh;
+  display: block;
+}
+</style>
 </head>
 <body>
 
-    <div id="welcome-view" class="view">
-        <div class="welcome-sub-top">360° INTERACTIVE SPACE</div>
-        <h1 class="welcome-title">WELCOME<br>TO<br>ROTATE X</h1>
-        <p class="welcome-desc">Immersive interactive 3D space experience</p>
-        <button class="start-btn" id="startBtn">BUILD YOUR HOLOGRAM COMPANION</button>
-    </div>
+<div id="welcome">
+  <h1>ROTATE X</h1>
+  <p>Welcome to Rotate X</p>
+  <p>Build your own hologram companion</p>
+  <button onclick="start()">ENTER</button>
+</div>
 
-    <div id="app-view" class="view hidden">
-        <canvas id="holo-canvas"></canvas>
-        
-        <div class="top-header">
-            <h1>ROTATE X</h1>
-            <p>WELCOME TO ROTATE X • BUILD YOUR HOLOGRAM COMPANION</p>
-        </div>
+<canvas id="scene"></canvas>
 
-        <div class="dropdown-container">
-            <select id="modelSelect" class="menu-select">
-                <option value="earth">🌍 كوكب الأرض (سماوي نيون)</option>
-                <option value="torus">🪐 حلقة الطاقة المجرية</option>
-                <option value="crystal">💎 بلورة الأقمار الصناعية</option>
-            </select>
-        </div>
+<script type="module">
+import * as THREE from
+'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
 
-        <div class="bottom-ai-box">
-            <h4 id="aiTitle">Al Vision & Emotion Scanner 🤖</h4>
-            <p id="aiText">⭐ هدوء وإلهام تقني فريد من نوعه</p>
-        </div>
-    </div>
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x000000);
 
-    <script>
-        const welcomeView = document.getElementById('welcome-view');
-        const appView = document.getElementById('app-view');
+const camera = new THREE.PerspectiveCamera(
+  40, innerWidth / innerHeight, 0.1, 100
+);
+camera.position.z = 5;
 
-        document.getElementById('startBtn').addEventListener('click', () => {
-            welcomeView.classList.add('hidden');
-            appView.classList.remove('hidden');
-        });
+const renderer = new THREE.WebGLRenderer({
+  canvas: document.querySelector('#scene'),
+  antialias: true
+});
 
-        const canvas = document.getElementById('holo-canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height;
+renderer.setSize(innerWidth, innerHeight);
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
 
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
+scene.add(new THREE.AmbientLight(0xffffff, 1.5));
 
-        let vertices = [];
-        let edges = [];
+const light = new THREE.PointLight(0x00ffff, 30);
+light.position.set(2, 3, 4);
+scene.add(light);
 
-        function buildSphereGrid() {
-            vertices = [];
-            edges = [];
-            const lats = 14, longs = 20, r = 1.45;
+const companion = new THREE.Group();
+scene.add(companion);
 
-            for (let lat = 0; lat <= lats; lat++) {
-                const theta = (lat * Math.PI) / lats;
-                for (let lon = 0; lon < longs; lon++) {
-                    const phi = (lon * 2 * Math.PI) / longs;
-                    vertices.push({
-                        x: r * Math.cos(phi) * Math.sin(theta),
-                        y: r * Math.cos(theta),
-                        z: r * Math.sin(phi) * Math.sin(theta)
-                    });
-                }
-            }
+const material = new THREE.MeshBasicMaterial({
+  color: 0x45faff,
+  wireframe: true
+});
 
-            for (let lat = 0; lat < lats; lat++) {
-                for (let lon = 0; lon < longs; lon++) {
-                    const cur = lat * longs + lon;
-                    const nextLon = lat * longs + ((lon + 1) % longs);
-                    const nextLat = (lat + 1) * longs + lon;
-                    edges.push([cur, nextLon]);
-                    edges.push([cur, nextLat]);
-                }
-            }
-        }
+const head = new THREE.Mesh(
+  new THREE.SphereGeometry(0.6, 32, 32),
+  material
+);
+head.position.y = 1;
+companion.add(head);
 
-        buildSphereGrid();
+const body = new THREE.Mesh(
+  new THREE.CapsuleGeometry(0.4, 1, 8, 16),
+  material
+);
+body.position.y = -0.1;
+companion.add(body);
 
-        let rotY = 0, rotX = 0;
-        window.addEventListener('touchmove', (e) => {
-            const t = e.touches[0];
-            rotY = ((t.clientX / width) - 0.5) * 4;
-            rotX = ((t.clientY / height) - 0.5) * 4;
-        });
+function start() {
+  document.querySelector('#welcome').style.display = 'none';
+}
 
-        function animate() {
-            requestAnimationFrame(animate);
-            ctx.clearRect(0, 0, width, height);
+function animate() {
+  requestAnimationFrame(animate);
 
-            const cx = width / 2;
-            const cy = height / 2 + 10;
+  companion.rotation.y += 0.008;
+  companion.position.y =
+    Math.sin(Date.now() * 0.001) * 0.15;
 
-            rotY += 0.008;
-            const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
-            const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
-            const scale = Math.min(width, height) * 0.28;
+  renderer.render(scene, camera);
+}
 
-            ctx.beginPath();
-            ctx.arc(cx, cy, scale * 0.75, 0, Math.PI * 2);
-            ctx.fillStyle = "rgba(0, 100, 255, 0.2)";
-            ctx.fill();
-            ctx.strokeStyle = "rgba(0, 243, 255, 0.4)";
-            ctx.lineWidth = 1;
-            ctx.stroke();
+animate();
 
-            ctx.strokeStyle = "#00f3ff";
-            ctx.lineWidth = 1.2;
-            ctx.shadowBlur = 10;
-            ctx.shadowColor = "#00f3ff";
+window.addEventListener('resize', () => {
+  camera.aspect = innerWidth / innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(innerWidth, innerHeight);
+});
+</script>
 
-            const projected = vertices.map(v => {
-                let x1 = v.x * cosY - v.z * sinY;
-                let z1 = v.z * cosY + v.x * sinY;
-                let y2 = v.y * cosX - z1 * sinX;
-                return { x: cx + x1 * scale, y: cy + y2 * scale };
-            });
-
-            edges.forEach(e => {
-                const p1 = projected[e[0]];
-                const p2 = projected[e[1]];
-                if (p1 && p2) {
-                    ctx.beginPath();
-                    ctx.moveTo(p1.x, p1.y);
-                    ctx.lineTo(p2.x, p2.y);
-                    ctx.stroke();
-                }
-            });
-            ctx.shadowBlur = 0;
-        }
-        animate();
-
-        const aiMessages = [
-            "⭐ هدوء وإلهام تقني فريد من نوعه",
-            "✨ حالة تركيز فائقة وإبداع متوهج",
-            "🚀 طاقة تقنية عالية ومتميزة اليوم"
-        ];
-        let msgIdx = 0;
-        setInterval(() => {
-            document.getElementById('aiText').innerText = aiMessages[msgIdx];
-            msgIdx = (msgIdx + 1) % aiMessages.length;
-        }, 4000);
-    </script>
 </body>
-    </html>
-                
+</html>
