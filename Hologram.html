@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <title>Rotate X - Hologram Companion</title>
+    <title>Rotate X - Hologram</title>
     <style>
         * { box-sizing: border-box; }
         body, html {
@@ -12,7 +12,7 @@
             width: 100%;
             height: 100%;
             overflow: hidden;
-            background-color: #020408;
+            background-color: #000000;
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
@@ -26,7 +26,7 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            transition: opacity 0.5s ease;
+            transition: opacity 0.4s ease;
         }
         .hidden {
             opacity: 0;
@@ -34,9 +34,9 @@
             z-index: -10;
         }
 
-        /* الصفحة الأولى */
+        /* 1. الصفحة الأولى الأصلية */
         #welcome-view {
-            background: radial-gradient(circle at center, #05122c 0%, #000000 100%);
+            background: radial-gradient(circle at center, #030b1e 0%, #000000 100%);
             z-index: 10;
             text-align: center;
             padding: 20px;
@@ -47,11 +47,11 @@
             letter-spacing: 3px;
             margin-bottom: 15px;
             text-transform: uppercase;
-            text-shadow: 0 0 12px rgba(0,243,255,0.8);
+            text-shadow: 0 0 10px rgba(0,243,255,0.6);
         }
         .welcome-title {
             color: #ffffff;
-            font-size: 36px;
+            font-size: 38px;
             font-weight: 900;
             letter-spacing: 4px;
             line-height: 1.2;
@@ -59,33 +59,27 @@
             text-shadow: 0 0 20px rgba(0,243,255,0.8), 0 0 40px rgba(0,85,255,0.5);
         }
         .welcome-desc {
-            color: rgba(255, 255, 255, 0.75);
+            color: rgba(255, 255, 255, 0.7);
             font-size: 13px;
             letter-spacing: 1px;
             margin-bottom: 40px;
-            max-width: 310px;
+            max-width: 300px;
         }
         .start-btn {
-            background: rgba(0, 243, 255, 0.05);
+            background: transparent;
             color: #00f3ff;
             border: 2px solid #00f3ff;
-            padding: 16px 30px;
+            padding: 15px 30px;
             border-radius: 35px;
             font-size: 12px;
             font-weight: bold;
             letter-spacing: 2px;
             cursor: pointer;
-            box-shadow: 0 0 25px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.2);
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.4), inset 0 0 10px rgba(0, 243, 255, 0.2);
             text-transform: uppercase;
-            transition: all 0.2s ease;
-        }
-        .start-btn:active {
-            background: #00f3ff;
-            color: #000;
-            transform: scale(0.95);
         }
 
-        /* الصفحة الرئيسية */
+        /* 2. الصفحة الرئيسية للهولوجرام */
         #app-view {
             z-index: 5;
             background: #000;
@@ -98,137 +92,86 @@
             height: 100%;
             z-index: 1;
         }
-        .top-bar {
+
+        .top-header {
             position: absolute;
             top: 15px;
             width: 100%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0 15px;
+            text-align: center;
             z-index: 4;
+            pointer-events: none;
         }
-        .app-logo {
+        .top-header h1 {
             color: #00f3ff;
-            font-size: 18px;
-            font-weight: 900;
-            letter-spacing: 2px;
-            text-shadow: 0 0 10px #00f3ff;
+            font-size: 20px;
             margin: 0;
+            letter-spacing: 3px;
+            text-shadow: 0 0 12px #00f3ff;
+            font-weight: 900;
         }
-        .lang-select {
-            background: rgba(0, 15, 30, 0.85);
+        .top-header p {
             color: #ffd700;
-            border: 1px solid #ffd700;
-            padding: 5px 10px;
-            border-radius: 12px;
-            font-size: 11px;
+            font-size: 10px;
+            margin: 4px 0 0 0;
+            letter-spacing: 1.5px;
+            text-shadow: 0 0 8px #ffd700;
+            text-transform: uppercase;
             font-weight: bold;
-            outline: none;
         }
-        .search-container {
+
+        .dropdown-container {
             position: absolute;
-            top: 65px;
-            width: 90%;
-            max-width: 350px;
-            display: flex;
-            background: rgba(5, 15, 30, 0.85);
+            top: 75px;
+            width: 100%;
+            text-align: center;
+            z-index: 4;
+        }
+        .menu-select {
+            background: rgba(0, 15, 30, 0.85);
+            color: #00f3ff;
             border: 1.5px solid #00f3ff;
-            border-radius: 25px;
-            padding: 4px 6px 4px 12px;
-            box-shadow: 0 0 15px rgba(0, 243, 255, 0.3);
-            z-index: 4;
-            backdrop-filter: blur(5px);
-        }
-        .search-container input {
-            flex: 1;
-            background: transparent;
-            border: none;
-            color: #fff;
-            font-size: 12px;
+            padding: 6px 18px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: bold;
             outline: none;
-            text-align: right;
-        }
-        .search-container input::placeholder { color: rgba(255,255,255,0.5); }
-        .search-submit {
-            background: #00f3ff;
-            color: #000;
-            border: none;
-            border-radius: 18px;
-            padding: 6px 14px;
-            font-weight: bold;
-            font-size: 11px;
-            cursor: pointer;
-        }
-        .ai-nav-btn {
-            position: absolute;
-            bottom: 30px;
-            background: linear-gradient(135deg, #ffd700, #ff9900);
-            color: #000;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 25px;
-            font-weight: bold;
-            font-size: 12px;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.6);
-            z-index: 4;
+            box-shadow: 0 0 15px rgba(0, 243, 255, 0.4);
             cursor: pointer;
         }
 
-        /* صفحة الذكاء الاصطناعي المستقلة */
-        #ai-view {
-            background: #000;
-            z-index: 15;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 20px;
-        }
-        #ai-camera-feed {
+        .bottom-ai-box {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            z-index: 1;
-            transform: scaleX(-1);
-            filter: brightness(0.65);
-        }
-        .ai-header-box {
-            position: relative;
-            z-index: 3;
-            text-align: center;
-            background: rgba(0, 5, 15, 0.85);
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 88%;
+            max-width: 380px;
+            background: rgba(0, 10, 20, 0.85);
             border: 1px solid #00f3ff;
-            padding: 12px;
-            border-radius: 15px;
-            width: 100%;
-            max-width: 350px;
-            margin: 0 auto;
+            border-radius: 14px;
+            padding: 10px;
+            text-align: center;
+            z-index: 4;
+            box-shadow: 0 0 20px rgba(0, 243, 255, 0.25);
             backdrop-filter: blur(5px);
         }
-        .ai-header-box h3 { color: #ffd700; margin: 0 0 5px 0; font-size: 14px; }
-        .ai-header-box p { color: #fff; margin: 0; font-size: 13px; font-weight: bold; text-shadow: 0 0 8px #00f3ff; }
-        .close-ai-btn {
-            position: relative;
-            z-index: 3;
-            background: rgba(255, 0, 85, 0.85);
-            color: #fff;
-            border: none;
-            padding: 10px 25px;
-            border-radius: 20px;
-            font-weight: bold;
+        .bottom-ai-box h4 {
+            color: #ffd700;
+            margin: 0 0 4px 0;
             font-size: 12px;
-            cursor: pointer;
-            margin-bottom: 20px;
-            box-shadow: 0 0 15px rgba(255,0,85,0.6);
+            text-shadow: 0 0 6px #ffd700;
+        }
+        .bottom-ai-box p {
+            color: #ffffff;
+            margin: 0;
+            font-size: 13px;
+            font-weight: bold;
+            text-shadow: 0 0 8px #00f3ff;
         }
     </style>
 </head>
 <body>
 
-    <!-- الصفحة الأولى -->
     <div id="welcome-view" class="view">
         <div class="welcome-sub-top">360° INTERACTIVE SPACE</div>
         <h1 class="welcome-title">WELCOME<br>TO<br>ROTATE X</h1>
@@ -236,94 +179,37 @@
         <button class="start-btn" id="startBtn">BUILD YOUR HOLOGRAM COMPANION</button>
     </div>
 
-    <!-- الصفحة الرئيسية للهولوجرام -->
     <div id="app-view" class="view hidden">
         <canvas id="holo-canvas"></canvas>
         
-        <div class="top-bar">
-            <h2 class="app-logo">ROTATE X</h2>
-            <select class="lang-select" id="langSelect">
-                <option value="ar">العربية</option>
-                <option value="fr">Français</option>
-                <option value="en">English</option>
+        <div class="top-header">
+            <h1>ROTATE X</h1>
+            <p>WELCOME TO ROTATE X • BUILD YOUR HOLOGRAM COMPANION</p>
+        </div>
+
+        <div class="dropdown-container">
+            <select id="modelSelect" class="menu-select">
+                <option value="earth">🌍 كوكب الأرض (سماوي نيون)</option>
+                <option value="torus">🪐 حلقة الطاقة المجرية</option>
+                <option value="crystal">💎 بلورة الأقمار الصناعية</option>
             </select>
         </div>
 
-        <div class="search-container">
-            <input type="text" id="searchInput" placeholder="اكتب أي شيء فالدنيا (شمس، قلب، ذرة...)" />
-            <button class="search-submit" id="searchBtn">بحث</button>
+        <div class="bottom-ai-box">
+            <h4 id="aiTitle">Al Vision & Emotion Scanner 🤖</h4>
+            <p id="aiText">⭐ هدوء وإلهام تقني فريد من نوعه</p>
         </div>
-
-        <button class="ai-nav-btn" id="openAiBtn">🤖 قراءة المشاعر والوجه بالذكاء الاصطناعي</button>
-    </div>
-
-    <!-- صفحة الذكاء الاصطناعي المستقلة -->
-    <div id="ai-view" class="view hidden">
-        <video id="ai-camera-feed" autoplay playsinline muted></video>
-        <div style="height: 10px;"></div>
-        <div class="ai-header-box">
-            <h3>✨ AI Face & Emotion Companion</h3>
-            <p id="aiEmotionResult">جاري فحص تعابير وجهك وقراءة مشاعرك...</p>
-        </div>
-        <button class="close-ai-btn" id="closeAiBtn">✕ الرجوع للهولوجرام</button>
     </div>
 
     <script>
-        // مولد الصوت الغامض (يشتغل محلياً بدون إنترنت)
-        function playMysteriousSound() {
-            try {
-                const AudioCtx = window.AudioContext || window.webkitAudioContext;
-                const audioCtx = new AudioCtx();
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(80, audioCtx.currentTime);
-                osc.frequency.exponentialRampToValueAtTime(160, audioCtx.currentTime + 1.5);
-
-                gain.gain.setValueAtTime(0.001, audioCtx.currentTime);
-                gain.gain.exponentialRampToValueAtTime(0.2, audioCtx.currentTime + 0.3);
-                gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 2.0);
-
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start();
-                osc.stop(audioCtx.currentTime + 2.1);
-            } catch (e) {}
-        }
-
         const welcomeView = document.getElementById('welcome-view');
         const appView = document.getElementById('app-view');
-        const aiView = document.getElementById('ai-view');
 
         document.getElementById('startBtn').addEventListener('click', () => {
-            playMysteriousSound();
             welcomeView.classList.add('hidden');
             appView.classList.remove('hidden');
         });
 
-        const aiVideo = document.getElementById('ai-camera-feed');
-        let aiStream = null;
-
-        document.getElementById('openAiBtn').addEventListener('click', async () => {
-            playMysteriousSound();
-            appView.classList.add('hidden');
-            aiView.classList.remove('hidden');
-            try {
-                aiStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: 'user' }, audio: false });
-                aiVideo.srcObject = aiStream;
-            } catch (e) {
-                document.getElementById('aiEmotionResult').innerText = "وضع محاكاة المشاعر الذكية مفعل بنجاح.";
-            }
-        });
-
-        document.getElementById('closeAiBtn').addEventListener('click', () => {
-            if (aiStream) aiStream.getTracks().forEach(t => t.stop());
-            aiView.classList.add('hidden');
-            appView.classList.remove('hidden');
-        });
-
-        // محرك رسومات الهولوجرام 3D
         const canvas = document.getElementById('holo-canvas');
         const ctx = canvas.getContext('2d');
         let width, height;
@@ -337,60 +223,36 @@
 
         let vertices = [];
         let edges = [];
-        let shapeColor = "#00f3ff";
 
-        function generateShape(query) {
+        function buildSphereGrid() {
             vertices = [];
             edges = [];
-            const q = query.trim().toLowerCase();
+            const lats = 14, longs = 20, r = 1.45;
 
-            if (q.includes('قلب') || q.includes('heart')) {
-                shapeColor = "#ff2a6d";
-                for (let i = 0; i <= 20; i++) {
-                    const t = (i / 20) * Math.PI * 2;
-                    const x = 16 * Math.pow(Math.sin(t), 3);
-                    const y = -(13 * Math.cos(t) - 5 * Math.cos(2 * t) - 2 * Math.cos(3 * t) - Math.cos(4 * t));
-                    vertices.push({ x: x * 0.07, y: y * 0.07, z: 0 });
+            for (let lat = 0; lat <= lats; lat++) {
+                const theta = (lat * Math.PI) / lats;
+                for (let lon = 0; lon < longs; lon++) {
+                    const phi = (lon * 2 * Math.PI) / longs;
+                    vertices.push({
+                        x: r * Math.cos(phi) * Math.sin(theta),
+                        y: r * Math.cos(theta),
+                        z: r * Math.sin(phi) * Math.sin(theta)
+                    });
                 }
-                for (let i = 0; i < vertices.length - 1; i++) edges.push([i, i+1]);
-            } else {
-                shapeColor = "#00f3ff";
-                let hash = 0;
-                for (let i = 0; i < q.length; i++) hash += q.charCodeAt(i);
-                const lats = 12, longs = 16, r = 1.4;
-                for (let lat = 0; lat <= lats; lat++) {
-                    const theta = (lat * Math.PI) / lats;
-                    for (let lon = 0; lon < longs; lon++) {
-                        const phi = (lon * 2 * Math.PI) / longs;
-                        const mod = q === 'earth' || q === '' ? 1 : (1 + 0.1 * Math.sin(lat * (hash % 5 + 1)));
-                        vertices.push({
-                            x: r * mod * Math.cos(phi) * Math.sin(theta),
-                            y: r * mod * Math.cos(theta),
-                            z: r * mod * Math.sin(phi) * Math.sin(theta)
-                        });
-                    }
-                }
-                for (let lat = 0; lat < lats; lat++) {
-                    for (let lon = 0; lon < longs; lon++) {
-                        const cur = lat * longs + lon;
-                        const nextLon = lat * longs + ((lon + 1) % longs);
-                        const nextLat = (lat + 1) * longs + lon;
-                        edges.push([cur, nextLon]);
-                        edges.push([cur, nextLat]);
-                    }
+            }
+
+            for (let lat = 0; lat < lats; lat++) {
+                for (let lon = 0; lon < longs; lon++) {
+                    const cur = lat * longs + lon;
+                    const nextLon = lat * longs + ((lon + 1) % longs);
+                    const nextLat = (lat + 1) * longs + lon;
+                    edges.push([cur, nextLon]);
+                    edges.push([cur, nextLat]);
                 }
             }
         }
 
-        generateShape("earth");
-
-        document.getElementById('searchBtn').addEventListener('click', () => {
-            const val = document.getElementById('searchInput').value;
-            if (val) {
-                playMysteriousSound();
-                generateShape(val);
-            }
-        });
+        buildSphereGrid();
 
         let rotY = 0, rotX = 0;
         window.addEventListener('touchmove', (e) => {
@@ -404,17 +266,25 @@
             ctx.clearRect(0, 0, width, height);
 
             const cx = width / 2;
-            const cy = height / 2;
+            const cy = height / 2 + 10;
 
-            rotY += 0.01;
+            rotY += 0.008;
             const cosY = Math.cos(rotY), sinY = Math.sin(rotY);
             const cosX = Math.cos(rotX), sinX = Math.sin(rotX);
             const scale = Math.min(width, height) * 0.28;
 
-            ctx.strokeStyle = shapeColor;
-            ctx.lineWidth = 1.5;
-            ctx.shadowBlur = 12;
-            ctx.shadowColor = shapeColor;
+            ctx.beginPath();
+            ctx.arc(cx, cy, scale * 0.75, 0, Math.PI * 2);
+            ctx.fillStyle = "rgba(0, 100, 255, 0.2)";
+            ctx.fill();
+            ctx.strokeStyle = "rgba(0, 243, 255, 0.4)";
+            ctx.lineWidth = 1;
+            ctx.stroke();
+
+            ctx.strokeStyle = "#00f3ff";
+            ctx.lineWidth = 1.2;
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = "#00f3ff";
 
             const projected = vertices.map(v => {
                 let x1 = v.x * cosY - v.z * sinY;
@@ -438,16 +308,16 @@
         animate();
 
         const aiMessages = [
-            "✨ ابتسامة مشرقة — طاقتك مليئة بالإبداع اليوم!",
-            "🚀 تركيز عالي ومظهر تقني متميز!",
-            "💫 هدوء وإلهام رائع لجعل التطبيق أفضل!"
+            "⭐ هدوء وإلهام تقني فريد من نوعه",
+            "✨ حالة تركيز فائقة وإبداع متوهج",
+            "🚀 طاقة تقنية عالية ومتميزة اليوم"
         ];
         let msgIdx = 0;
         setInterval(() => {
-            document.getElementById('aiEmotionResult').innerText = aiMessages[msgIdx];
+            document.getElementById('aiText').innerText = aiMessages[msgIdx];
             msgIdx = (msgIdx + 1) % aiMessages.length;
         }, 4000);
     </script>
 </body>
-        </html>
-    
+    </html>
+                
