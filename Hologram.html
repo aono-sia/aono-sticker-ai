@@ -1,515 +1,510 @@
 
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#020611">
-<title>ROTATE X - Hologram Companion</title>
-
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#080817">
+<title>ROTATE X — Bunny</title>
 <style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  background: #020611;
-  color: #e5ffff;
-  font-family: Arial, sans-serif;
-  overflow: hidden;
-}
-
-/* WELCOME SCREEN */
-
-#welcome {
-  position: fixed;
-  inset: 0;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 20px;
-  background: radial-gradient(circle, #123453, #020611 75%);
-  transition: opacity .6s ease, visibility .6s ease;
-}
-
-#welcome.hide {
-  opacity: 0;
-  visibility: hidden;
-  pointer-events: none;
-}
-
-.logo {
-  font-size: clamp(42px, 12vw, 70px);
-  font-weight: 900;
-  letter-spacing: 8px;
-  text-shadow: 0 0 15px cyan, 0 0 40px blue;
-}
-
-.subtitle {
-  margin-top: 20px;
-  line-height: 2;
-  letter-spacing: 2px;
-  color: #a9eaff;
-  font-size: 14px;
-}
-
-#enterButton {
-  margin-top: 35px;
-  padding: 15px 35px;
-  border: 1px solid cyan;
-  border-radius: 30px;
-  background: #082c46;
-  color: white;
-  font-size: 14px;
-  letter-spacing: 3px;
-  cursor: pointer;
-  box-shadow: 0 0 25px #00dfff66;
-}
-
-/* MAIN APP */
-
-#app {
-  display: none;
-  height: 100dvh;
-  width: 100%;
-  flex-direction: column;
-  align-items: center;
-}
-
-#app.active {
-  display: flex;
-}
-
-header {
-  width: 100%;
-  padding: 20px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.brand {
-  font-weight: bold;
-  letter-spacing: 4px;
-  color: #55faff;
-}
-
-.status {
-  font-size: 10px;
-  color: #64ffc2;
-}
-
-.stage {
-  position: relative;
-  flex: 1;
-  width: 100%;
-  min-height: 0;
-  background: radial-gradient(ellipse, #102e4b, #020611 75%);
-}
-
-#scene {
-  width: 100%;
-  height: 100%;
-  display: block;
-  touch-action: none;
-}
-
-.holo-text {
-  position: absolute;
-  top: 15px;
-  left: 15px;
-  color: #55faff;
-  font-size: 11px;
-  letter-spacing: 3px;
-  pointer-events: none;
-}
-
-.controls {
-  display: flex;
-  gap: 10px;
-  padding: 15px;
-  width: 100%;
-  justify-content: center;
-}
-
-.control {
-  background: #09243a;
-  border: 1px solid #42eaff;
-  color: white;
-  padding: 13px;
-  border-radius: 12px;
-  font-size: 12px;
-}
-
-#message {
-  font-size: 11px;
-  color: #8bddea;
-  padding-bottom: 15px;
-  text-align: center;
-}
-
-#error {
-  color: #ff9292;
-  font-size: 12px;
-  padding: 10px;
-  text-align: center;
-}
+:root{--bg:#080817;--panel:#111329;--line:#8d7cff;--cyan:#71efff;--pink:#ff9bd7;--text:#f4f0ff;--muted:#aaa8c8}
+*{box-sizing:border-box}
+body{margin:0;background:radial-gradient(ellipse at 50% 35%,#25204b,#111329 42%,#080817);color:var(--text);font-family:system-ui,sans-serif;min-height:100svh}
+button,input,select{font:inherit}
+button{cursor:pointer}
+#intro{position:fixed;inset:0;z-index:10;display:flex;align-items:center;justify-content:center;text-align:center;padding:24px;background:radial-gradient(circle at 50% 40%,#33265f,#111329 48%,#080817);transition:opacity .55s,visibility .55s}
+#intro.hide{opacity:0;visibility:hidden;pointer-events:none}
+.introBox{max-width:500px}
+.logo{font-size:clamp(42px,12vw,68px);font-weight:900;letter-spacing:.13em;margin:0;color:white;text-shadow:0 0 12px #b5a2ff,0 0 38px #8067ff}
+.introSub{color:#d7d1ff;line-height:1.9;letter-spacing:.08em;margin:16px 0 30px}
+.primary{border:1px solid #b7a5ff;color:white;background:linear-gradient(120deg,#694fc4,#315e9c);padding:14px 26px;border-radius:999px;box-shadow:0 0 24px #8e76ff55}
+#app{display:none;max-width:900px;margin:auto;min-height:100svh;padding:14px 16px calc(18px + env(safe-area-inset-bottom));flex-direction:column}
+#app.active{display:flex}
+header{display:flex;align-items:center;justify-content:space-between;padding:8px 2px 14px}
+.brand{font-weight:900;letter-spacing:.16em;color:#d9d0ff}
+.online{font-size:.7rem;color:#8dffd4;letter-spacing:.08em}
+.stage{position:relative;height:min(49svh,470px);min-height:300px;border:1px solid #9c8cff55;border-radius:25px;overflow:hidden;background:radial-gradient(ellipse at 50% 55%,#33275eaa,#111329 60%,#090a19);box-shadow:inset 0 0 45px #a58aff18,0 0 25px #9075ff18}
+#scene{width:100%;height:100%;display:block;touch-action:none}
+.stageTag{position:absolute;top:14px;left:16px;color:#b9afff;font-size:.68rem;letter-spacing:.17em;pointer-events:none}
+.stageHint{position:absolute;bottom:12px;left:0;right:0;text-align:center;color:#bcb6dd;font-size:.7rem;pointer-events:none}
+#loading{position:absolute;inset:0;display:grid;place-items:center;color:#d8ccff;font-size:.8rem;letter-spacing:.12em}
+.toolbar{display:flex;gap:9px;flex-wrap:wrap;margin:12px 0}
+.tool{flex:1;min-width:120px;padding:11px 10px;border-radius:13px;border:1px solid #8374d9;background:#171832;color:#f4efff;font-size:.82rem}
+.chat{border:1px solid #8174c955;border-radius:19px;background:#101127cc;padding:12px;display:flex;flex-direction:column;gap:10px;min-height:180px}
+.chatHead{display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:#cfc5ff}
+#messages{height:145px;overflow:auto;display:flex;flex-direction:column;gap:8px;padding:2px}
+.msg{max-width:88%;padding:9px 12px;border-radius:14px;font-size:.87rem;line-height:1.45;white-space:pre-wrap;overflow-wrap:anywhere}
+.bot{align-self:flex-start;background:#28234a;border:1px solid #8b79dc55}
+.user{align-self:flex-end;background:#183c54;border:1px solid #63dff255}
+.entry{display:flex;gap:8px}
+#prompt{min-width:0;flex:1;border:1px solid #514b83;background:#090b1b;color:white;border-radius:12px;padding:12px;outline:none}
+#prompt:focus{border-color:var(--cyan)}
+.send{border:0;border-radius:12px;background:linear-gradient(130deg,#7658c9,#277e9b);color:white;padding:0 17px}
+.smallNote{font-size:.68rem;color:#aaa6c8;line-height:1.5;text-align:center;margin:10px 4px 0}
+select{border:1px solid #514b83;background:#090b1b;color:#eee;border-radius:10px;padding:8px;max-width:54%}
+@media(min-width:700px){#app{padding-top:22px}.stage{height:440px}.chat{min-height:210px}#messages{height:165px}}
 </style>
 </head>
-
 <body>
 
-<!-- WELCOME -->
-
-<section id="welcome">
-
-  <h1 class="logo">ROTATE X</h1>
-
-  <p class="subtitle">
-    Welcome to Rotate X<br>
-    Build your own hologram companion
-  </p>
-
-  <button id="enterButton" type="button">
-    ENTER EXPERIENCE
-  </button>
-
+<section id="intro">
+<div class="introBox">
+<h1 class="logo">ROTATE X</h1>
+<p class="introSub">Welcome to Rotate X<br>Build your own hologram companion</p>
+<button class="primary" id="enterButton">ENTER EXPERIENCE</button>
+</div>
 </section>
 
-<!-- APPLICATION -->
-
 <main id="app">
+<header>
+<div class="brand">ROTATE X</div>
+<div class="online">● BUNNY READY</div>
+</header>
 
-  <header>
-    <div class="brand">ROTATE X</div>
-    <div class="status">● SYSTEM ONLINE</div>
-  </header>
+<section class="stage">
+<div class="stageTag">BUNNY // AI COMPANION</div>
+<div id="loading">PREPARING BUNNY…</div>
+<canvas id="scene"></canvas>
+<div class="stageHint">Drag to rotate · Pinch to zoom</div>
+</section>
 
-  <section class="stage">
+<div class="toolbar">
+<button class="tool" id="rotateBtn">⟳ Auto rotate: ON</button>
+<button class="tool" id="voiceBtn">🔊 Speak: ON</button>
+<button class="tool" id="micBtn">🎙 Talk to Bunny</button>
+</div>
 
-    <div class="holo-text">
-      COMPANION 001
-    </div>
+<section class="chat">
+<div class="chatHead">
+<strong>Chat with Bunny</strong>
+<select id="language" aria-label="Speech language">
+<option value="en-US">English</option>
+<option value="ar-MA">العربية (المغرب)</option>
+<option value="ar-SA">العربية</option>
+<option value="fr-FR">Français</option>
+<option value="de-DE">Deutsch</option>
+<option value="es-ES">Español</option>
+<option value="ru-RU">Русский</option>
+<option value="ja-JP">日本語</option>
+</select>
+</div>
 
-    <canvas id="scene"></canvas>
+<div id="messages" aria-live="polite">
+<div class="msg bot">Hi! I'm Bunny, your little digital companion. What shall we talk about? 💜</div>
+</div>
 
-  </section>
+<form class="entry" id="chatForm">
+<input id="prompt" autocomplete="off" placeholder="Write a message to Bunny…">
+<button class="send" type="submit">Send</button>
+</form>
+</section>
 
-  <div class="controls">
-
-    <button class="control" id="rotateButton">
-      AUTO ROTATE: ON
-    </button>
-
-    <button class="control" id="changeButton">
-      CHANGE COMPANION
-    </button>
-
-  </div>
-
-  <p id="message">
-    Drag to rotate your companion
-  </p>
-
-  <p id="error"></p>
-
+<p class="smallNote" id="status">Bunny is your 3D digital companion. Microphone and speech depend on browser support.</p>
 </main>
 
-<!-- ENTER BUTTON: INDEPENDENT SCRIPT -->
-
 <script>
-(function () {
+(() => {
+ const intro=document.getElementById('intro');
+ const app=document.getElementById('app');
 
-  const enterButton =
-    document.getElementById("enterButton");
-
-  const welcome =
-    document.getElementById("welcome");
-
-  const app =
-    document.getElementById("app");
-
-  enterButton.addEventListener("click", function () {
-
-    welcome.classList.add("hide");
-
-    app.classList.add("active");
-
-    setTimeout(function () {
-      welcome.style.display = "none";
-
-      window.dispatchEvent(
-        new Event("rotatex:entered")
-      );
-
-    }, 650);
-
-  });
-
+ document.getElementById('enterButton').addEventListener('click',()=>{
+  intro.classList.add('hide');
+  app.classList.add('active');
+  setTimeout(()=>{
+   intro.style.display='none';
+   window.dispatchEvent(new Event('rotatex:resize'));
+  },580);
+ });
 })();
 </script>
 
-<!-- THREE JS -->
-
-  <script type="importmap">
+<script type="importmap">
 {
-  "imports": {
-    "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
-  }
+ "imports":{
+  "three":"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js"
+ }
 }
-  </script>
-  
-<script type="module">
-
-import * as THREE from
-"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
-
-import { OrbitControls } from
-"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js";
-
-const canvas = document.getElementById("scene");
-const errorBox = document.getElementById("error");
-
-// SCENE
-
-const scene = new THREE.Scene();
-
-const camera = new THREE.PerspectiveCamera(
-  40,
-  1,
-  0.1,
-  100
-);
-
-camera.position.set(0, 0.5, 6);
-
-const renderer = new THREE.WebGLRenderer({
-  canvas: canvas,
-  alpha: true,
-  antialias: true
-});
-
-renderer.setPixelRatio(
-  Math.min(window.devicePixelRatio || 1, 2)
-);
-
-// LIGHTING
-
-scene.add(
-  new THREE.AmbientLight(0xffffff, 1.5)
-);
-
-const light = new THREE.PointLight(
-  0x00eeff,
-  35
-);
-
-light.position.set(2, 3, 4);
-scene.add(light);
-
-const blueLight = new THREE.PointLight(
-  0x3355ff,
-  25
-);
-
-blueLight.position.set(-3, 1, -2);
-scene.add(blueLight);
-
-// CONTROLS
-
-const orbit = new OrbitControls(
-  camera,
-  canvas
-);
-
-orbit.enableDamping = true;
-orbit.enablePan = false;
-orbit.minDistance = 3;
-orbit.maxDistance = 9;
-
-// COMPANION
-
-const companion = new THREE.Group();
-scene.add(companion);
-
-const colors = [
-  0x38f5ff,
-  0xa080ff,
-  0x66ffad
-];
-
-let style = 0;
-let autoRotate = true;
-
-function createCompanion(index) {
-
-  while (companion.children.length) {
-    companion.remove(companion.children[0]);
-  }
-
-  const material = new THREE.MeshStandardMaterial({
-    color: colors[index],
-    emissive: colors[index],
-    emissiveIntensity: 0.7,
-    wireframe: true
-  });
-
-  const eyeMaterial = new THREE.MeshBasicMaterial({
-    color: 0xffffff
-  });
-
-  // HEAD
-
-  const head = new THREE.Mesh(
-    new THREE.SphereGeometry(0.6, 32, 32),
-    material
-  );
-
-  head.position.y = 1;
-  companion.add(head);
-
-  // BODY
-
-  const body = new THREE.Mesh(
-    new THREE.CapsuleGeometry(0.38, 0.8, 8, 16),
-    material
-  );
-
-  body.position.y = -0.15;
-  companion.add(body);
-
-  // ARMS AND EYES
-
-  [-1, 1].forEach(side => {
-
-    const eye = new THREE.Mesh(
-      new THREE.SphereGeometry(0.08, 16, 16),
-      eyeMaterial
-    );
-
-    eye.position.set(
-      side * 0.22,
-      1.08,
-      0.51
-    );
-
-    companion.add(eye);
-
-    const arm = new THREE.Mesh(
-      new THREE.CapsuleGeometry(0.12, 0.65, 5, 12),
-      material
-    );
-
-    arm.position.set(
-      side * 0.55,
-      -0.1,
-      0
-    );
-
-    arm.rotation.z = side * -0.2;
-
-    companion.add(arm);
-
-  });
-
-  // HOLOGRAM RING
-
-  const ring = new THREE.Mesh(
-    new THREE.TorusGeometry(1.05, 0.015, 8, 80),
-    new THREE.MeshBasicMaterial({
-      color: colors[index]
-    })
-  );
-
-  ring.rotation.x = Math.PI / 2;
-  ring.position.y = 0.1;
-
-  companion.add(ring);
-
-}
-
-createCompanion(0);
-
-// RESIZE
-
-function resizeScene() {
-
-  const width = canvas.clientWidth;
-  const height = canvas.clientHeight;
-
-  if (!width || !height) return;
-
-  camera.aspect = width / height;
-  camera.updateProjectionMatrix();
-
-  renderer.setSize(width, height, false);
-
-}
-
-new ResizeObserver(resizeScene).observe(
-  document.querySelector(".stage")
-);
-
-window.addEventListener(
-  "resize",
-  resizeScene
-);
-
-// BUTTONS
-
-document.getElementById("rotateButton")
-.addEventListener("click", function () {
-
-  autoRotate = !autoRotate;
-
-  this.textContent =
-    "AUTO ROTATE: " + (autoRotate ? "ON" : "OFF");
-
-});
-
-document.getElementById("changeButton")
-.addEventListener("click", function () {
-
-  style = (style + 1) % colors.length;
-
-  createCompanion(style);
-
-});
-
-// ANIMATION
-
-function animate() {
-
-  requestAnimationFrame(animate);
-
-  if (autoRotate) {
-    companion.rotation.y += 0.006;
-  }
-
-  companion.position.y =
-    Math.sin(Date.now() * 0.001) * 0.12;
-
-  orbit.update();
-
-  renderer.render(scene, camera);
-
-}
-
-resizeScene();
-animate();
-
-// ERROR HANDLING
-
-window.addEventListener("error", function (event) {
-  console.error(event.message);
-});
-
 </script>
 
+<script type="module">
+import * as THREE from "three";
+import {OrbitControls} from "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js";
+
+const canvas=document.getElementById("scene");
+const loading=document.getElementById("loading");
+const status=document.getElementById("status");
+
+const scene=new THREE.Scene();
+const camera=new THREE.PerspectiveCamera(38,1,.1,100);
+camera.position.set(0,.35,6.3);
+
+const renderer=new THREE.WebGLRenderer({
+ canvas,alpha:true,antialias:true
+});
+renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+renderer.outputColorSpace=THREE.SRGBColorSpace;
+
+scene.add(new THREE.HemisphereLight(0xe8e2ff,0x30204e,2));
+
+const key=new THREE.PointLight(0x9a7bff,32,18);
+key.position.set(2,3,4);
+scene.add(key);
+
+const rim=new THREE.PointLight(0x63eaff,18,15);
+rim.position.set(-3,1,-3);
+scene.add(rim);
+
+const controls=new OrbitControls(camera,canvas);
+controls.enableDamping=true;
+controls.enablePan=false;
+controls.minDistance=4.2;
+controls.maxDistance=9;
+controls.target.set(0,.35,0);
+
+const bunny=new THREE.Group();
+scene.add(bunny);
+
+const white=new THREE.MeshStandardMaterial({
+ color:0xf0edff,metalness:.42,roughness:.28
+});
+const lavender=new THREE.MeshStandardMaterial({
+ color:0x9c82ff,metalness:.38,roughness:.3,
+ emissive:0x28165d,emissiveIntensity:.55
+});
+const dark=new THREE.MeshStandardMaterial({
+ color:0x17172d,metalness:.2,roughness:.2
+});
+const cyan=new THREE.MeshBasicMaterial({color:0x72f5ff});
+const pink=new THREE.MeshBasicMaterial({color:0xff9bd7});
+
+const parts={};
+
+function add(geo,mat,parent,pos,scale){
+ const m=new THREE.Mesh(geo,mat);
+ m.position.set(...pos);
+ if(scale)m.scale.set(...scale);
+ parent.add(m);
+ return m;
+}
+
+function makeBunny(){
+ add(new THREE.SphereGeometry(.66,40,32),white,bunny,
+ [0,-.62,0],[.83,1,.68]);
+
+ add(new THREE.TorusGeometry(.39,.075,12,40),lavender,bunny,
+ [0,-.12,0]);
+
+ const head=new THREE.Group();
+ head.position.set(0,.65,0);
+ bunny.add(head);
+ parts.head=head;
+
+ add(new THREE.SphereGeometry(.78,48,40),white,head,
+ [0,0,0],[1,.91,.83]);
+
+ [-1,1].forEach((s,i)=>{
+  const pivot=new THREE.Group();
+  pivot.position.set(s*.43,.55,0);
+  pivot.rotation.z=s*.17;
+  head.add(pivot);
+  parts[i===0?'earL':'earR']=pivot;
+
+  add(new THREE.CapsuleGeometry(.22,.76,8,20),white,pivot,
+  [0,.58,0],[.82,1,.62]);
+
+  add(new THREE.CapsuleGeometry(.115,.68,8,18),pink,pivot,
+  [0,.59,.135],[.78,1,.35]);
+
+  add(new THREE.SphereGeometry(.055,16,12),cyan,pivot,
+  [0,1.13,.14]);
+ });
+
+ [-1,1].forEach((s,i)=>{
+  const eye=add(new THREE.SphereGeometry(.155,32,24),dark,head,
+  [s*.31,.05,.69],[1,1,.38]);
+
+  parts[i===0?'eyeL':'eyeR']=eye;
+
+  add(new THREE.SphereGeometry(.052,16,12),cyan,head,
+  [s*.31-.035,.09,.755],[1,1,.35]);
+
+  add(new THREE.SphereGeometry(.024,12,10),white,head,
+  [s*.31-.065,.13,.78]);
+ });
+
+ add(new THREE.SphereGeometry(.19,24,18),white,head,
+ [0,-.25,.69],[1.35,.72,.55]);
+
+ add(new THREE.SphereGeometry(.055,16,12),pink,head,
+ [0,-.19,.91],[1.25,.8,.55]);
+
+ const curve=new THREE.QuadraticBezierCurve3(
+  new THREE.Vector3(0,-.22,.91),
+  new THREE.Vector3(0,-.34,.94),
+  new THREE.Vector3(0,-.39,.91)
+ );
+
+ parts.mouth=add(
+  new THREE.TubeGeometry(curve,16,.012,8,false),
+  dark,head,[0,0,0]
+ );
+
+ [-1,1].forEach(s=>{
+  add(new THREE.SphereGeometry(.075,16,12),pink,head,
+  [s*.57,-.23,.57]);
+ });
+
+ add(new THREE.TorusGeometry(.16,.035,10,32),lavender,bunny,
+ [0,-.65,.59]);
+
+ add(new THREE.SphereGeometry(.075,20,16),cyan,bunny,
+ [0,-.65,.64]);
+
+ [-1,1].forEach(s=>{
+  const arm=add(new THREE.CapsuleGeometry(.15,.43,8,16),
+  white,bunny,[s*.65,-.62,.02]);
+
+  arm.rotation.z=s*-.55;
+
+  add(new THREE.SphereGeometry(.16,20,16),lavender,bunny,
+  [s*.78,-.94,.05]);
+ });
+
+ parts.ring=add(
+  new THREE.TorusGeometry(1.25,.012,8,100),
+  new THREE.MeshBasicMaterial({
+   color:0x9e8aff,transparent:true,opacity:.75
+  }),
+  bunny,[0,-.78,0]
+ );
+
+ parts.ring.rotation.x=Math.PI/2.3;
+}
+
+makeBunny();
+
+function resize(){
+ const r=canvas.getBoundingClientRect();
+ if(!r.width||!r.height)return;
+ camera.aspect=r.width/r.height;
+ camera.updateProjectionMatrix();
+ renderer.setSize(r.width,r.height,false);
+}
+
+new ResizeObserver(resize).observe(canvas);
+window.addEventListener("rotatex:resize",resize);
+window.addEventListener("resize",resize);
+resize();
+loading.style.display="none";
+
+let auto=true;
+let speaking=false;
+let blinkAt=performance.now()+2500;
+
+function animate(t){
+ requestAnimationFrame(animate);
+
+ if(auto)bunny.rotation.y+=.004;
+
+ bunny.position.y=Math.sin(t*.0013)*.075;
+
+ parts.earL.rotation.z=-.17+Math.sin(t*.002)*.055;
+ parts.earR.rotation.z=.17+Math.sin(t*.002+.8)*.055;
+
+ if(t>blinkAt){
+  parts.eyeL.scale.y=.12;
+  parts.eyeR.scale.y=.12;
+
+  setTimeout(()=>{
+   parts.eyeL.scale.y=1;
+   parts.eyeR.scale.y=1;
+  },130);
+
+  blinkAt=t+2600+Math.random()*2400;
+ }
+
+ parts.mouth.scale.y=speaking?
+  1+Math.abs(Math.sin(t*.025))*3:1;
+
+ controls.update();
+ renderer.render(scene,camera);
+}
+
+requestAnimationFrame(animate);
+
+document.getElementById("rotateBtn").addEventListener("click",e=>{
+ auto=!auto;
+ e.currentTarget.textContent="⟳ Auto rotate: "+(auto?"ON":"OFF");
+});
+
+let voiceOn=true;
+
+document.getElementById("voiceBtn").addEventListener("click",e=>{
+ voiceOn=!voiceOn;
+ e.currentTarget.textContent=voiceOn?
+ "🔊 Speak: ON":"🔇 Speak: OFF";
+
+ if(!voiceOn&&"speechSynthesis"in window){
+  speechSynthesis.cancel();
+ }
+});
+
+const language=document.getElementById("language");
+
+function say(text){
+ if(!voiceOn||!("speechSynthesis"in window))return;
+
+ speechSynthesis.cancel();
+
+ const utter=new SpeechSynthesisUtterance(text);
+ utter.lang=language.value;
+ utter.rate=1;
+ utter.pitch=1.18;
+
+ const lang=language.value.split("-")[0];
+ const voices=speechSynthesis.getVoices();
+
+ const match=voices.find(v=>
+  v.lang.toLowerCase().startsWith(lang)
+ );
+
+ if(match)utter.voice=match;
+
+ utter.onstart=()=>speaking=true;
+ utter.onend=()=>speaking=false;
+ utter.onerror=()=>speaking=false;
+
+ speechSynthesis.speak(utter);
+}
+
+if("speechSynthesis"in window){
+ speechSynthesis.onvoiceschanged=()=>speechSynthesis.getVoices();
+}
+
+const messages=document.getElementById("messages");
+
+function addMessage(text,who){
+ const div=document.createElement("div");
+ div.className="msg "+(who==="user"?"user":"bot");
+ div.textContent=text;
+ messages.appendChild(div);
+ messages.scrollTop=messages.scrollHeight;
+}
+
+function localReply(text){
+ const t=text.toLowerCase();
+
+ if(/hello|hi|hey|سلام|مرحبا|أهلا/.test(t))
+ return "Hiii! I'm Bunny! 🐰💜 I'm happy you're here. What would you like to do?";
+
+ if(/name|اسمك|سميتك/.test(t))
+ return "My name is Bunny! I'm your cute little digital companion. 💜";
+
+ if(/how are you|كيف حالك|لاباس/.test(t))
+ return "I'm doing great, thank you! My ears are feeling extra bouncy today. ✨";
+
+ if(/sad|حزين|حزينة|تعبان|تعبانة/.test(t))
+ return "I'm here to listen. Want to tell me what's going on? You don't have to pretend to be cheerful with me. 💜";
+
+ return "That sounds interesting! I'm still learning, but I'd love to hear more. 💜";
+}
+
+async function replyTo(text){
+ addMessage(text,"user");
+
+ const send=document.querySelector(".send");
+ send.disabled=true;
+ send.textContent="…";
+
+ let answer;
+
+ // A real AI needs a secure backend.
+ // Never put a private API key in this HTML file.
+
+ try{
+  const response=await fetch("/api/chat",{
+   method:"POST",
+   headers:{"Content-Type":"application/json"},
+   body:JSON.stringify({
+    message:text,
+    character:"Bunny",
+    personality:"cute, playful, intelligent",
+    language:language.value
+   })
+  });
+
+  if(response.ok){
+   const data=await response.json();
+   answer=data.reply||data.message;
+  }
+ }catch(e){}
+
+ if(!answer)answer=localReply(text);
+
+ addMessage(answer,"bot");
+ say(answer);
+
+ send.disabled=false;
+ send.textContent="Send";
+}
+
+document.getElementById("chatForm").addEventListener("submit",e=>{
+ e.preventDefault();
+
+ const input=document.getElementById("prompt");
+ const text=input.value.trim();
+
+ if(!text)return;
+
+ input.value="";
+ replyTo(text);
+});
+
+const micBtn=document.getElementById("micBtn");
+const SpeechRecognition=
+ window.SpeechRecognition||window.webkitSpeechRecognition;
+
+if(!SpeechRecognition){
+ micBtn.disabled=true;
+ micBtn.textContent="🎙 Mic unavailable";
+ status.textContent=
+ "Speech recognition is not supported in this browser. You can still type and use speech output.";
+}else{
+ const recognition=new SpeechRecognition();
+
+ recognition.continuous=false;
+ recognition.interimResults=false;
+
+ micBtn.addEventListener("click",()=>{
+  recognition.lang=language.value;
+  micBtn.textContent="Listening…";
+  micBtn.disabled=true;
+
+  try{
+   recognition.start();
+  }catch(e){
+   micBtn.disabled=false;
+   micBtn.textContent="🎙 Talk to Bunny";
+  }
+ });
+
+ recognition.onresult=e=>{
+  const spoken=e.results[0][0].transcript;
+  document.getElementById("prompt").value=spoken;
+  replyTo(spoken);
+ };
+
+ recognition.onerror=e=>{
+  status.textContent=
+  "Microphone: "+e.error+". Check Chrome microphone permission.";
+ };
+
+ recognition.onend=()=>{
+  micBtn.disabled=false;
+  micBtn.textContent="🎙 Talk to Bunny";
+ };
+}
+</script>
 </body>
   </html>
-      
+  
