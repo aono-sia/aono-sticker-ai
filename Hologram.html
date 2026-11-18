@@ -4,129 +4,443 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Rotate X</title>
+<meta name="theme-color" content="#020611">
+<title>ROTATE X | Hologram Companion</title>
+
 <style>
-* { box-sizing: border-box; }
-body {
+* {
   margin: 0;
-  background: #000;
-  color: #65faff;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: #020611;
+  color: #dffcff;
   font-family: Arial, sans-serif;
   overflow: hidden;
 }
+
 #welcome {
   position: fixed;
   inset: 0;
+  z-index: 10;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background: #000;
-  z-index: 5;
   text-align: center;
+  padding: 20px;
+  background:
+    radial-gradient(circle, #102d4c, #020611 70%);
+  transition: opacity .6s ease, visibility .6s ease;
 }
-h1 {
-  font-size: 48px;
-  letter-spacing: 8px;
-  text-shadow: 0 0 25px cyan;
+
+#welcome.hide {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
 }
-p { letter-spacing: 2px; }
-button {
-  background: transparent;
-  border: 1px solid cyan;
-  color: cyan;
-  padding: 14px 25px;
-  margin-top: 25px;
+
+.logo {
+  font-size: clamp(42px, 12vw, 70px);
+  font-weight: 900;
+  letter-spacing: 9px;
+  color: #e5ffff;
+  text-shadow:
+    0 0 10px #00eaff,
+    0 0 35px #008cff;
+}
+
+.subtitle {
+  margin-top: 20px;
+  line-height: 2;
+  letter-spacing: 2px;
+  color: #a9eaff;
+  font-size: 14px;
+}
+
+#enterButton {
+  margin-top: 35px;
+  padding: 15px 38px;
+  border: 1px solid #4df5ff;
+  border-radius: 30px;
+  background: #082c46;
+  color: white;
+  font-size: 15px;
+  letter-spacing: 3px;
+  cursor: pointer;
+  box-shadow: 0 0 20px #00cfff66;
+}
+
+#enterButton:active {
+  transform: scale(.96);
+}
+
+#app {
+  display: none;
+  height: 100dvh;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+#app.active {
+  display: flex;
+}
+
+header {
+  width: 100%;
+  padding: 22px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.brand {
+  font-weight: bold;
+  letter-spacing: 4px;
+  color: #5dfaff;
+}
+
+.status {
+  font-size: 10px;
+  color: #64ffc2;
+}
+
+#scene {
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  display: block;
+  touch-action: none;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  padding: 20px;
+  width: 100%;
+  justify-content: center;
+}
+
+.control {
+  background: #09243a;
+  border: 1px solid #42eaff;
+  color: white;
+  padding: 13px 18px;
+  border-radius: 12px;
   cursor: pointer;
 }
-#scene {
-  width: 100vw;
-  height: 100vh;
-  display: block;
+
+#message {
+  color: #76eaff;
+  font-size: 12px;
+  padding: 5px 15px 15px;
+  text-align: center;
 }
 </style>
 </head>
+
 <body>
 
-<div id="welcome">
-  <h1>ROTATE X</h1>
-  <p>Welcome to Rotate X</p>
-  <p>Build your own hologram companion</p>
-  <button onclick="start()">ENTER</button>
-</div>
+<!-- WELCOME SCREEN -->
 
-<canvas id="scene"></canvas>
+<section id="welcome">
+
+  <h1 class="logo">
+    ROTATE X
+  </h1>
+
+  <p class="subtitle">
+    Welcome to Rotate X<br>
+    Build your own hologram companion
+  </p>
+
+  <button id="enterButton" type="button">
+    ENTER EXPERIENCE
+  </button>
+
+</section>
+
+<!-- MAIN APPLICATION -->
+
+<main id="app">
+
+  <header>
+    <div class="brand">ROTATE X</div>
+    <div class="status">● SYSTEM ONLINE</div>
+  </header>
+
+  <canvas id="scene"></canvas>
+
+  <div class="controls">
+    <button class="control" id="rotateButton">
+      AUTO ROTATE: ON
+    </button>
+
+    <button class="control" id="changeButton">
+      CHANGE COMPANION
+    </button>
+  </div>
+
+  <p id="message">
+    Drag to rotate your companion
+  </p>
+
+</main>
 
 <script type="module">
+
 import * as THREE from
-'https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js';
+"https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js";
+
+import { OrbitControls } from
+"https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/controls/OrbitControls.js";
+
+// ELEMENTS
+
+const welcome = document.getElementById("welcome");
+const app = document.getElementById("app");
+const enterButton = document.getElementById("enterButton");
+const canvas = document.getElementById("scene");
+const message = document.getElementById("message");
+
+// ENTER BUTTON
+
+enterButton.addEventListener("click", () => {
+  welcome.classList.add("hide");
+  app.classList.add("active");
+
+  setTimeout(() => {
+    welcome.style.display = "none";
+    resizeScene();
+  }, 650);
+});
+
+// THREE JS SCENE
 
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x000000);
 
 const camera = new THREE.PerspectiveCamera(
-  40, innerWidth / innerHeight, 0.1, 100
+  45,
+  1,
+  0.1,
+  100
 );
-camera.position.z = 5;
+
+camera.position.set(0, 0.5, 6);
 
 const renderer = new THREE.WebGLRenderer({
-  canvas: document.querySelector('#scene'),
+  canvas: canvas,
+  alpha: true,
   antialias: true
 });
 
-renderer.setSize(innerWidth, innerHeight);
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setPixelRatio(
+  Math.min(window.devicePixelRatio, 2)
+);
 
-scene.add(new THREE.AmbientLight(0xffffff, 1.5));
+scene.add(
+  new THREE.AmbientLight(0xffffff, 1.5)
+);
 
-const light = new THREE.PointLight(0x00ffff, 30);
+const light = new THREE.PointLight(
+  0x00eeff,
+  35
+);
+
 light.position.set(2, 3, 4);
 scene.add(light);
+
+const blueLight = new THREE.PointLight(
+  0x3355ff,
+  25
+);
+
+blueLight.position.set(-3, 1, -2);
+scene.add(blueLight);
+
+// CONTROLS
+
+const orbit = new OrbitControls(
+  camera,
+  canvas
+);
+
+orbit.enableDamping = true;
+orbit.enablePan = false;
+orbit.minDistance = 3;
+orbit.maxDistance = 9;
+
+// COMPANION
 
 const companion = new THREE.Group();
 scene.add(companion);
 
-const material = new THREE.MeshBasicMaterial({
-  color: 0x45faff,
+const material = new THREE.MeshStandardMaterial({
+  color: 0x38f5ff,
+  emissive: 0x087d9c,
+  emissiveIntensity: 2,
   wireframe: true
 });
 
-const head = new THREE.Mesh(
-  new THREE.SphereGeometry(0.6, 32, 32),
-  material
-);
-head.position.y = 1;
-companion.add(head);
+function createCompanion(style = 0) {
 
-const body = new THREE.Mesh(
-  new THREE.CapsuleGeometry(0.4, 1, 8, 16),
-  material
-);
-body.position.y = -0.1;
-companion.add(body);
+  while (companion.children.length > 0) {
+    companion.remove(companion.children[0]);
+  }
 
-function start() {
-  document.querySelector('#welcome').style.display = 'none';
+  const colors = [
+    0x38f5ff,
+    0xa080ff,
+    0x66ffad
+  ];
+
+  const bodyMaterial = material.clone();
+  bodyMaterial.color.setHex(colors[style]);
+
+  // HEAD
+
+  const head = new THREE.Mesh(
+    new THREE.SphereGeometry(0.6, 32, 32),
+    bodyMaterial
+  );
+
+  head.position.y = 1;
+  companion.add(head);
+
+  // BODY
+
+  const body = new THREE.Mesh(
+    new THREE.CapsuleGeometry(0.38, 0.8, 8, 16),
+    bodyMaterial
+  );
+
+  body.position.y = -0.15;
+  companion.add(body);
+
+  // EYES
+
+  const eyeMaterial = new THREE.MeshBasicMaterial({
+    color: 0xffffff
+  });
+
+  [-1, 1].forEach(side => {
+
+    const eye = new THREE.Mesh(
+      new THREE.SphereGeometry(0.08, 16, 16),
+      eyeMaterial
+    );
+
+    eye.position.set(
+      side * 0.22,
+      1.08,
+      0.51
+    );
+
+    companion.add(eye);
+
+    // ARMS
+
+    const arm = new THREE.Mesh(
+      new THREE.CapsuleGeometry(0.12, 0.65, 5, 12),
+      bodyMaterial
+    );
+
+    arm.position.set(
+      side * 0.55,
+      -0.1,
+      0
+    );
+
+    arm.rotation.z = side * -0.2;
+    companion.add(arm);
+
+  });
+
+  // HOLOGRAPHIC RING
+
+  const ring = new THREE.Mesh(
+    new THREE.TorusGeometry(1.05, 0.015, 8, 80),
+    new THREE.MeshBasicMaterial({
+      color: colors[style]
+    })
+  );
+
+  ring.rotation.x = Math.PI / 2;
+  ring.position.y = 0.1;
+  companion.add(ring);
 }
 
+let style = 0;
+let autoRotate = true;
+
+createCompanion();
+
+// BUTTONS
+
+document.getElementById("rotateButton")
+.addEventListener("click", function() {
+
+  autoRotate = !autoRotate;
+
+  this.textContent =
+    "AUTO ROTATE: " + (autoRotate ? "ON" : "OFF");
+
+});
+
+document.getElementById("changeButton")
+.addEventListener("click", () => {
+
+  style = (style + 1) % 3;
+  createCompanion(style);
+
+});
+
+// RESPONSIVE SIZE
+
+function resizeScene() {
+
+  const width = canvas.clientWidth;
+  const height = canvas.clientHeight;
+
+  if (!width || !height) return;
+
+  camera.aspect = width / height;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize(width, height, false);
+}
+
+window.addEventListener("resize", resizeScene);
+
+new ResizeObserver(resizeScene).observe(
+  document.getElementById("app")
+);
+
+// ANIMATION
+
 function animate() {
+
   requestAnimationFrame(animate);
 
-  companion.rotation.y += 0.008;
+  if (autoRotate) {
+    companion.rotation.y += 0.006;
+  }
+
   companion.position.y =
-    Math.sin(Date.now() * 0.001) * 0.15;
+    Math.sin(Date.now() * 0.001) * 0.12;
+
+  orbit.update();
 
   renderer.render(scene, camera);
 }
 
 animate();
 
-window.addEventListener('resize', () => {
-  camera.aspect = innerWidth / innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(innerWidth, innerHeight);
-});
 </script>
 
 </body>
-</html>
+  </html>
+  
